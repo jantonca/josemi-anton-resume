@@ -1,14 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Button } from '../components/ui/button';
+import { Navigation } from '../components/Navigation';
+import { Hero } from '../components/Hero';
+import { Skills } from '../components/Skills';
 ---
 
-<Layout title="Josemi Anton - Resume">
-  <main class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold mb-4">Josemi Anton</h1>
-    <div class="space-x-4">
-      <Button client:load>Download CV</Button>
-      <Button client:load variant="outline">Contact Me</Button>
-    </div>
+<Layout title="Josemi Anton - Web Designer & Developer">
+  <Navigation client:load />
+  <main class="bg-background">
+    <Hero client:load />
+    <Skills client:load />
   </main>
 </Layout>
