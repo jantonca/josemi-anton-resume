@@ -1,7 +1,3 @@
-import React from 'react'
-import { Button } from './ui/button'
-import { Mail } from 'lucide-react'
-
 export function Hero() {
   return (
     <section className='min-h-screen flex items-center pt-16 pb-32'>
