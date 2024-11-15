@@ -3,12 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import { Navigation } from '../components/Navigation';
 import { Hero } from '../components/Hero';
 import { Skills } from '../components/Skills';
+import { About } from '../components/About';
+import { Experience } from '../components/Experience';
 ---
 
 <Layout title="Josemi Anton - Web Designer & Developer">
   <Navigation client:load />
   <main class="bg-background">
     <Hero client:load />
+    <About client:load />
+    <Experience client:load />
     <Skills client:load />
   </main>
 </Layout>
