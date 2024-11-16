@@ -1,68 +1,117 @@
+import { NumberedHeading } from './ui/numbered-heading'
+import { cn } from '../lib/utils/utils'
+import React from 'react'
+
 export function Skills() {
-  const skills = {
-    Frontend: [
-      'HTML5',
-      'CSS3',
-      'JavaScript',
-      'TypeScript',
-      'React.js',
-      'Next.js',
-      'Node.js',
-      'Webpack',
-    ],
-    'CMS & Tools': [
-      'WordPress',
-      'WooCommerce',
-      'Git',
-      'GitHub',
-      'Bitbucket',
-      'npm',
-      'REST API',
-    ],
-    Design: [
-      'UI/UX Design',
-      'Responsive Design',
-      'SEO',
-      'Adobe Creative Suite',
-    ],
-    Other: [
-      'PHP',
-      'MySQL',
-      'AWS',
-      'G Suite',
-      'API Development',
-      'WebGL',
-      'VR/AR',
-    ],
+  const TAGS = [
+    'HTML5',
+    'CSS3',
+    'JavaScript',
+    'TypeScript',
+    'React.js',
+    'Next.js',
+    'Node.js',
+    'Webpack',
+    'WordPress',
+    'WooCommerce',
+    'Git',
+    'GitHub',
+    'Bitbucket',
+    'npm',
+    'REST API',
+    'UI/UX Design',
+    'Responsive Design',
+    'SEO',
+    'Adobe Creative Suite',
+    'PHP',
+    'MySQL',
+    'AWS',
+    'API Development',
+    'WebGL',
+    'VR/AR',
+  ]
+  const DURATION = 15000
+  const ROWS = 5
+  const TAGS_PER_ROW = 8
+
+  const random = (min: number, max: number): number =>
+    Math.floor(Math.random() * (max - min)) + min
+  const shuffle = (arr: string[]): string[] =>
+    [...arr].sort(() => 0.5 - Math.random())
+
+  interface InfiniteLoopSliderProps {
+    children: React.ReactNode
+    duration: number
+    reverse?: boolean
   }
+
+  const InfiniteLoopSlider: React.FC<InfiniteLoopSliderProps> = ({
+    children,
+    duration,
+    reverse = false,
+  }) => {
+    return (
+      <div
+        className='loop-slider'
+        style={
+          {
+            '--duration': `${duration}ms`,
+            '--direction': reverse ? 'reverse' : 'normal',
+          } as React.CSSProperties
+        }
+      >
+        <div className={cn('inner flex w-fit')}>
+          {children}
+          {children}
+        </div>
+      </div>
+    )
+  }
+
+  interface TagProps {
+    text: string
+  }
+
+  const Tag: React.FC<TagProps> = ({ text }) => (
+    <div
+      className={cn(
+        'tag bg-honolulu text-nonphoto flex items-center py-[0.7rem] rounded-md px-4 mr-4 shadow-md whitespace-nowrap',
+        'shadow-[0_0.1rem_0.2rem_rgba(3,4,94,0.2),0_0.1rem_0.5rem_rgba(3,4,94,0.3),0_0.2rem_1.5rem_rgba(3,4,94,0.4)]'
+      )}
+    >
+      <span className='text-pacific'>#</span> {text}
+    </div>
+  )
 
   return (
     <section
       id='skills'
       className='py-32'
     >
-      <div className='container mx-auto px-4'>
-        <h2 className='text-3xl font-bold mb-12 text-primary'>
-          Skills & Technologies
-        </h2>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
-          {Object.entries(skills).map(([category, items]) => (
-            <div key={category}>
-              <h3 className='text-xl font-semibold mb-4 text-honolulu'>
-                {category}
-              </h3>
-              <ul className='space-y-2'>
-                {items.map((skill) => (
-                  <li
-                    key={skill}
-                    className='text-muted-foreground'
-                  >
-                    {skill}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <div
+        className={cn('container mx-auto px-4 InfiniteLoopSlider w-[900px]')}
+      >
+        <NumberedHeading number='03.'>Skills & Technologies</NumberedHeading>
+        <div>
+          <div className='w-[48rem] flex flex-shrink-0 flex-col gap-y-4 relative py-6 overflow-hidden'>
+            {[...new Array(ROWS)].map((_, i) => (
+              <InfiniteLoopSlider
+                key={i}
+                duration={random(DURATION - 5000, DURATION + 5000)}
+                reverse={i % 2 === 0}
+              >
+                {shuffle(TAGS)
+                  .slice(0, TAGS_PER_ROW)
+                  .map((tag) => (
+                    <Tag
+                      text={tag}
+                      key={tag}
+                    />
+                  ))}
+              </InfiniteLoopSlider>
+            ))}
+            <div className='pointer-events-none absolute inset-0 bg-gradient-to-r from-federal via-transparent to-federal'></div>
+          </div>
         </div>
       </div>
     </section>

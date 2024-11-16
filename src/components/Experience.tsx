@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { NumberedHeading } from './ui/numbered-heading'
 
 export function Experience() {
