@@ -1,14 +1,8 @@
-import { SiGithub } from '@icons-pack/react-simple-icons'
-
-const socialLinks = [
-  {
-    name: 'GitHub',
-    icon: SiGithub,
-    url: 'https://github.com/jantonca/josemi-anton-resume',
-  },
-]
+import { socialLinks } from '../data/socialLinks'
 
 export function Copyright() {
+  const githubLink = socialLinks.filter((link) => link.name === 'GitHub')
+
   return (
     <div className='flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground'>
       <div className='flex items-center gap-4'>
@@ -19,10 +13,10 @@ export function Copyright() {
         </span>
       </div>
       <div className='flex items-center gap-4'>
-        {socialLinks.map(({ name, icon: Icon, url }) => (
+        {githubLink.map(({ name, icon: Icon, url }) => (
           <a
             key={name}
-            href={url}
+            href={url + '/josemi-anton-resume'}
             className='hover:text-pacific transition-colors duration-300 flex items-center gap-2'
             target='_blank'
             rel='noopener noreferrer'
