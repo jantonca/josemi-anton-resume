@@ -30,7 +30,8 @@ export function Skills() {
     'WebGL',
     'VR/AR',
   ]
-  const DURATION = 15000
+
+  const DURATION = 18000
   const ROWS = 5
   const TAGS_PER_ROW = 8
 
@@ -60,7 +61,7 @@ export function Skills() {
           } as React.CSSProperties
         }
       >
-        <div className={cn('inner flex w-fit')}>
+        <div className='inner flex w-fit'>
           {children}
           {children}
         </div>
