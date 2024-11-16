@@ -28,7 +28,7 @@ export function About() {
   return (
     <section
       id='about'
-      className='py-32'
+      className=' py-8 lg:py-32'
     >
       <div className='container mx-auto px-4'>
         <NumberedHeading number='01.'>About Me</NumberedHeading>

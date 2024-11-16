@@ -87,7 +87,7 @@ export function Skills() {
   return (
     <section
       id='skills'
-      className='py-32'
+      className=' py-8 lg:py-32'
     >
       <div className={cn('container mx-auto px-4 lg:max-w-[900px]')}>
         <NumberedHeading number='03.'>Skills & Technologies</NumberedHeading>

@@ -27,7 +27,7 @@ export function Contact() {
   return (
     <section
       id='contact'
-      className='py-32'
+      className=' py-8 lg:py-32'
     >
       <div className='container mx-auto px-4 lg:max-w-[600px]'>
         <NumberedHeading number='04.'>What's Next?</NumberedHeading>
