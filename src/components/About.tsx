@@ -8,6 +8,7 @@ const skills = [
   'JavaScript',
   'PHP',
   'WordPress',
+  'Astro',
 ]
 
 const SkillList = ({ skills }: { skills: string[] }) => (
