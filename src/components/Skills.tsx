@@ -89,10 +89,10 @@ export function Skills() {
       id='skills'
       className='py-32'
     >
-      <div className={cn('container mx-auto px-4 lg:min-w-[900px]')}>
+      <div className={cn('container mx-auto px-4 lg:max-w-[900px]')}>
         <NumberedHeading number='03.'>Skills & Technologies</NumberedHeading>
         <div>
-          <div className='lg:min-w-[48rem] flex flex-shrink-0 flex-col gap-y-4 relative py-6 overflow-hidden'>
+          <div className='lg:max-w-[48rem] flex flex-shrink-0 flex-col gap-y-4 relative py-6 overflow-hidden'>
             {[...new Array(ROWS)].map((_, i) => (
               <InfiniteLoopSlider
                 key={i}

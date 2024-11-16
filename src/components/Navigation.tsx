@@ -7,8 +7,8 @@ export function Navigation() {
 
   const links = [
     { name: 'About', href: '#about' },
+    { name: 'Experience', href: '#experience' },
     { name: 'Skills', href: '#skills' },
-    { name: 'Education', href: '#education' },
     { name: 'Contact', href: '#contact' },
   ]
 
@@ -19,12 +19,15 @@ export function Navigation() {
           <div className='text-lg font-bold text-primary'>Josemi Anton</div>
 
           <div className='hidden md:flex items-center space-x-8'>
-            {links.map((link) => (
+            {links.map((link, index) => (
               <a
                 key={link.name}
                 href={link.href}
-                className='text-muted-foreground hover:text-primary transition-colors'
+                className='text-muted-foreground hover:text-primary transition-colors font-heading'
               >
+                <span className='text-pacific font-mono mr-1'>
+                  0{index + 1}.{' '}
+                </span>
                 {link.name}
               </a>
             ))}
