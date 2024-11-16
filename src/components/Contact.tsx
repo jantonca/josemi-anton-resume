@@ -1,20 +1,8 @@
 import React from 'react'
 import { Mail } from 'lucide-react'
-import { SiGithub, SiLinkedin } from '@icons-pack/react-simple-icons'
 import { NumberedHeading } from './ui/numbered-heading'
-
-const socialLinks = [
-  {
-    name: 'GitHub',
-    icon: SiGithub,
-    url: 'https://github.com/jantonca',
-  },
-  {
-    name: 'LinkedIn',
-    icon: SiLinkedin,
-    url: 'https://www.linkedin.com/in/josemiantoncasado/',
-  },
-]
+import { contactContent } from '../data/contactContent'
+import { filterSocialLinks } from '../lib/utils/utils'
 
 export function Contact() {
   const handleEmailClick = (e: React.MouseEvent) => {
@@ -24,26 +12,27 @@ export function Contact() {
     window.location.href = `mailto:${username}@${domain}`
   }
 
+  const filteredSocialLinks = filterSocialLinks(['GitHub', 'LinkedIn'])
+
   return (
     <section
       id='contact'
-      className=' py-8 lg:py-32'
+      className='py-8 lg:py-32'
     >
       <div className='container mx-auto px-4 lg:max-w-[600px]'>
-        <NumberedHeading number='04.'>What's Next?</NumberedHeading>
+        <NumberedHeading number={contactContent.headingNumber}>
+          {contactContent.headingText}
+        </NumberedHeading>
         <div className='max-w-2xl mx-auto'>
-          <h2 className='font-heading text-4xl md:text-5xl mb-6 text-primary'>
-            Get In Touch
-          </h2>
+          <h3 className='font-heading text-2xl mb-6 text-primary'>
+            {contactContent.subheading}
+          </h3>
           <p className='text-lg text-muted-foreground mb-12 font-extralight'>
-            Although I'm currently engaged in exciting projects at Rotor
-            Studios, I'm always open to new connections and opportunities.
-            Whether you have a question or just want to say hello, I'll do my
-            best to get back to you!
+            {contactContent.description}
           </p>
           <div className='flex justify-center'>
             <a
-              href='mailto:jantonca@gmail.com'
+              href={`mailto:${contactContent.email}`}
               onClick={handleEmailClick}
               className='inline-flex items-center gap-2 px-8 py-4 border-2 border-pacific 
                 text-pacific font-mono text-sm rounded-md hover:bg-pacific/10 
@@ -56,7 +45,7 @@ export function Contact() {
           <div className='mt-12 flex flex-col items-center gap-2 text-sm text-muted-foreground'>
             <p className='font-mono'>or find me on</p>
             <div className='flex items-center gap-4'>
-              {socialLinks.map(({ name, icon: Icon, url }) => (
+              {filteredSocialLinks.map(({ name, icon: Icon, url }) => (
                 <a
                   key={name}
                   href={url}
