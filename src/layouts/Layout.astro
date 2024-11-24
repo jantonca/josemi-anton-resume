@@ -1,12 +1,10 @@
 ---
+import type { LayoutProps } from '@/types'
 import ThemeProvider from '../components/ThemeProvider.astro'
 import Navigation from '../components/Navigation.astro'
 import '../styles/globals.css'
 
-interface Props {
-  title: string
-  description?: string
-}
+interface Props extends LayoutProps {}
 
 const {
   title,
