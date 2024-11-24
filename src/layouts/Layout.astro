@@ -1,46 +1,55 @@
 ---
-import '../styles/globals.css';
-import { ThemeProvider } from '../components/theme-provider';
-import { ThemeToggle } from '../components/theme-toggle';
+import '../styles/globals.css'
 
 interface Props {
-  title: string;
-  description?: string;
+  title: string
+  description?: string
 }
 
-const { 
+const {
   title,
-  description = "Josemi Anton's professional resume and portfolio"
-} = Astro.props;
+  description = "Josemi Anton's professional resume and portfolio",
+} = Astro.props
 ---
 
-<!DOCTYPE html>
-<html lang="en" class="dark">
+<!doctype html>
+<html
+  lang='en'
+  class='dark'
+>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="description" content={description} />
-    <meta name="generator" content={Astro.generator} />
+    <meta charset='UTF-8' />
+    <meta
+      name='viewport'
+      content='width=device-width'
+    />
+    <link
+      rel='icon'
+      type='image/svg+xml'
+      href='/favicon.svg'
+    />
+    <meta
+      name='description'
+      content={description}
+    />
+    <meta
+      name='generator'
+      content={Astro.generator}
+    />
     <title>{title}</title>
     <script is:inline>
-      // This script runs immediately at page load, before any React components
       if (typeof localStorage !== 'undefined') {
-        const theme = localStorage.getItem('vite-ui-theme') || 'dark';
-        document.documentElement.classList.toggle('dark', theme === 'dark');
+        const theme = localStorage.getItem('vite-ui-theme') || 'dark'
+        document.documentElement.classList.toggle('dark', theme === 'dark')
       }
     </script>
   </head>
-  <body class="font-sans font-light">
-    <ThemeProvider client:load defaultTheme="dark">
-      <div class="min-h-screen bg-background text-foreground">
-        <header class="container mx-auto px-4 py-2">
-          <div class="flex justify-end">
-            <ThemeToggle client:load />
-          </div>
-        </header>
-        <slot />
-      </div>
-    </ThemeProvider>
+  <body class='font-sans font-light'>
+    <div class='min-h-screen bg-background text-foreground'>
+      <header class='container mx-auto px-4 py-2'>
+        <div class='flex justify-end'></div>
+      </header>
+      <slot />
+    </div>
   </body>
 </html>
