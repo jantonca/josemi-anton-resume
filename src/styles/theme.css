@@ -1,0 +1,72 @@
+@layer base {
+  :root {
+    /* Color tokens */
+    --color-bg1: rgb(8, 10, 15);
+    --color-bg2: rgb(0, 17, 32);
+    --color1: 18, 113, 255;
+    --color2: 107, 74, 255;
+    --color3: 100, 100, 255;
+    --color4: 50, 160, 220;
+    --color5: 80, 47, 122;
+    --color-interactive: 140, 100, 255;
+
+    /* Theme colors - Light */
+    --background: 190 76% 82%;
+    --foreground: 239 94% 19%;
+    --card: 190 76% 82%;
+    --card-foreground: 239 94% 19%;
+    --popover: 190 76% 82%;
+    --popover-foreground: 239 94% 19%;
+    --primary: 239 94% 19%;
+    --primary-foreground: 190 76% 82%;
+    --secondary: 214 97% 27%;
+    --secondary-foreground: 190 76% 82%;
+    --muted: 201 100% 36%;
+    --muted-foreground: 190 76% 82%;
+    --accent: 195 100% 39%;
+    --accent-foreground: 190 76% 82%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 190 76% 82%;
+    --border: 214 97% 27%;
+    --input: 214 97% 27%;
+    --ring: 239 94% 19%;
+
+    /* Design tokens */
+    --radius: 0.5rem;
+    --circle-size: 80%;
+    --blending: overlay;
+  }
+
+  .dark {
+    --background: 239 94% 19%;
+    --foreground: 190 76% 82%;
+    --card: 239 94% 19%;
+    --card-foreground: 190 76% 82%;
+    --popover: 239 94% 19%;
+    --popover-foreground: 190 76% 82%;
+    --primary: 190 76% 82%;
+    --primary-foreground: 239 94% 19%;
+    --secondary: 214 97% 27%;
+    --secondary-foreground: 190 76% 82%;
+    --muted: 201 100% 36%;
+    --muted-foreground: 190 76% 82%;
+    --accent: 195 100% 39%;
+    --accent-foreground: 190 76% 82%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 190 76% 82%;
+    --border: 214 97% 27%;
+    --input: 214 97% 27%;
+    --ring: 190 76% 82%;
+  }
+}
+
+/* Base utility classes */
+.bg-background {
+  background-color: hsl(var(--background));
+}
+.text-foreground {
+  color: hsl(var(--foreground));
+}
+.border-border {
+  border-color: hsl(var(--border));
+}

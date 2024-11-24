@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'Proto Grotesk';
+  src:
+    url(/fonts/proto-grotesk-light.woff2) format('woff2'),
+    url(/fonts/proto-grotesk-light.woff) format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proto Grotesk';
+  src:
+    url(/fonts/proto-grotesk-extralight.woff2) format('woff2'),
+    url(/fonts/proto-grotesk-extralight.woff) format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proto Grotesk';
+  src:
+    url(/fonts/proto-grotesk-regular.woff2) format('woff2'),
+    url(/fonts/proto-grotesk-regular.woff) format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Akzidenz-Grotesk Pro';
+  src:
+    url(/fonts/akzidenz-grotesk-regular.woff2) format('woff2'),
+    url(/fonts/akzidenz-grotesk-regular.woff) format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
