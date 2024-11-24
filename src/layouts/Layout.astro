@@ -1,4 +1,6 @@
 ---
+import ThemeProvider from '../components/ThemeProvider.astro'
+import Navigation from '../components/Navigation.astro'
 import '../styles/globals.css'
 
 interface Props {
@@ -37,17 +39,12 @@ const {
       content={Astro.generator}
     />
     <title>{title}</title>
-    <script is:inline>
-      if (typeof localStorage !== 'undefined') {
-        const theme = localStorage.getItem('vite-ui-theme') || 'dark'
-        document.documentElement.classList.toggle('dark', theme === 'dark')
-      }
-    </script>
+    <ThemeProvider />
   </head>
   <body class='font-sans font-light'>
     <div class='min-h-screen bg-background text-foreground'>
       <header class='container mx-auto px-4 py-2'>
-        <div class='flex justify-end'></div>
+        <Navigation />
       </header>
       <slot />
     </div>
