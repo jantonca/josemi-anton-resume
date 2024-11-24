@@ -1,10 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Navigation from '../components/Navigation.astro'
-import { Hero } from '../components/Hero'
-import { Skills } from '../components/Skills'
+import Hero from '../components/Hero.astro'
+import Skills from '../components/Skills.astro'
 import About from '../components/About.astro'
-import { Experience } from '../components/Experience'
+import Experience from '../components/Experience.astro'
 import Footer from '../components/Footer.astro'
 import Contact from '../components/Contact.astro'
 ---
@@ -12,10 +12,10 @@ import Contact from '../components/Contact.astro'
 <Layout title='Josemi Anton - Web Designer & Developer'>
   <Navigation />
   <main class='bg-background'>
-    <Hero client:load />
+    <Hero />
     <About />
-    <Experience client:load />
-    <Skills client:load />
+    <Experience />
+    <Skills />
     <Contact />
     <Footer />
   </main>

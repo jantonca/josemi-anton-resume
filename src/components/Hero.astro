@@ -1,0 +1,39 @@
+---
+// Hero.astro
+import InnerGlowCard from './InnerGlowCard.astro'
+import InteractiveBackground from './InteractiveBackground.astro'
+---
+
+<section class='relative min-h-screen flex items-center pt-16 pb-32'>
+  <InteractiveBackground />
+  <div class='container mx-auto px-4 max-w-4xl relative z-10'>
+    <InnerGlowCard>
+      <p class='text-lg mb-5 mt-12 text-nonphoto'>Hi, my name is</p>
+      <h1 class='text-5xl md:text-7xl font-bold mb-4 text-primary font-heading'>
+        Josemi Anton
+      </h1>
+      <h2
+        class='text-4xl md:text-6xl mb-8 text-muted-foreground font-extralight'
+      >
+        I build things for the web.
+      </h2>
+      <div class='mb-12'>
+        <p class='text-lg text-muted-foreground'>
+          I'm a Web Designer & Developer based in Sydney, passionate about
+          crafting new sites and revitalizing older ones. Specializing in modern
+          HTML, ReactJS, and cutting-edge web technologies, I'm currently
+          working at{' '}
+          <a
+            href='https://www.rotorstudios.com/'
+            class='text-nonphoto hover:underline font-normal transition-colors duration-300'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            Rotor Studios
+          </a>{' '}
+          on groundbreaking projects in VR/AR and WebGL.
+        </p>
+      </div>
+    </InnerGlowCard>
+  </div>
+</section>

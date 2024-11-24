@@ -1,0 +1,150 @@
+---
+// Experience.astro
+import NumberedHeading from './NumberedHeading.astro'
+import { jobs } from '../data/jobs'
+
+// Initial active tab is 0
+const initialActiveTab = 0
+---
+
+<section
+  id='experience'
+  class='py-8 lg:py-32'
+>
+  <div class='container mx-auto px-4 max-w-[1200px]'>
+    <NumberedHeading
+      number='02.'
+      title="Where I've Worked"
+    />
+
+    <div class='flex flex-col md:grid md:grid-cols-[max-content,1fr] gap-4'>
+      {/* Vertical tabs */}
+      <div
+        class='flex flex-wrap gap-4 md:flex-col md:border-b-0 md:border-l md:border-border'
+      >
+        {
+          jobs.map((job, index) => (
+            <button
+              class:list={[
+                'experience-tab px-5 py-2 text-left font-mono text-sm relative transition-all duration-300 border md:border-0',
+                index === initialActiveTab
+                  ? 'text-white bg-pacific border-pacific md:text-pacific md:bg-transparent md:border-l-2 md:border-pacific'
+                  : 'text-muted-foreground border-border',
+                'md:hover:text-pacific md:hover:bg-pacific/5',
+              ]}
+              data-index={index}
+            >
+              {job.company}
+            </button>
+          ))
+        }
+      </div>
+
+      {/* Content */}
+      {
+        jobs.map((job, index) => (
+          <div
+            class:list={[
+              'experience-content',
+              index === initialActiveTab ? 'block' : 'hidden',
+            ]}
+            data-index={index}
+          >
+            <div class='mb-2'>
+              <h3 class='text-xl font-heading mb-2'>
+                <span>{job.title}</span>{' '}
+                <span class='text-pacific'>@ {job.company}</span>
+              </h3>
+              <p class='font-mono text-sm text-muted-foreground'>{job.date}</p>
+            </div>
+
+            <ul class='space-y-4'>
+              {job.points.map((point) => (
+                <li class="relative pl-6 before:content-['▹'] before:absolute before:left-0 before:text-pacific before:transition-all before:duration-300">
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  let activeTab = 0
+
+  function updateActiveTab(newIndex: number) {
+    // Update tabs
+    document.querySelectorAll('.experience-tab').forEach((tab, index) => {
+      if (index === newIndex) {
+        tab.classList.add(
+          'text-white',
+          'bg-pacific',
+          'border-pacific',
+          'md:text-pacific',
+          'md:bg-transparent',
+          'md:border-l-2',
+          'md:border-pacific'
+        )
+        tab.classList.remove('text-muted-foreground', 'border-border')
+      } else {
+        tab.classList.remove(
+          'text-white',
+          'bg-pacific',
+          'border-pacific',
+          'md:text-pacific',
+          'md:bg-transparent',
+          'md:border-l-2',
+          'md:border-pacific'
+        )
+        tab.classList.add('text-muted-foreground', 'border-border')
+      }
+    })
+
+    // Update content
+    document
+      .querySelectorAll('.experience-content')
+      .forEach((content, index) => {
+        if (index === newIndex) {
+          content.classList.remove('hidden')
+          content.classList.add('block')
+        } else {
+          content.classList.add('hidden')
+          content.classList.remove('block')
+        }
+      })
+
+    activeTab = newIndex
+  }
+
+  // Add click event listeners to tabs
+  document.querySelectorAll('.experience-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const index = Number(tab.getAttribute('data-index'))
+      updateActiveTab(index)
+    })
+  })
+</script>
+
+<style>
+  /* Optional: Add transition for content switching */
+  .experience-content {
+    transition: opacity 0.3s ease;
+  }
+
+  .experience-content.hidden {
+    opacity: 0;
+  }
+
+  .experience-content.block {
+    opacity: 1;
+  }
+
+  /* Optional: Improve focus styles */
+  .experience-tab:focus-visible {
+    outline: 2px solid var(--pacific);
+    outline-offset: 2px;
+  }
+</style>

@@ -1,0 +1,18 @@
+---
+// InnerGlowCard.astro
+import { cn } from '../lib/utils/utils'
+
+// Define the props interface for TypeScript support
+interface Props {
+  class?: string
+}
+
+// Destructure props with optional class
+const { class: className } = Astro.props
+---
+
+<div class={cn('rounded-2xl p-2 InnerGlowCard', className)}>
+  <div class='InnerGlowCard__content'>
+    <slot />
+  </div>
+</div>
