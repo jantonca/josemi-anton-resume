@@ -1,22 +1,22 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { Navigation } from '../components/Navigation';
-import { Hero } from '../components/Hero';
-import { Skills } from '../components/Skills';
-import { About } from '../components/About';
-import { Experience } from '../components/Experience';
-import { Footer } from '../components/Footer';
-import { Contact } from '../components/Contact';
+import Layout from '../layouts/Layout.astro'
+import Navigation from '../components/Navigation.astro'
+import { Hero } from '../components/Hero'
+import { Skills } from '../components/Skills'
+import About from '../components/About.astro'
+import { Experience } from '../components/Experience'
+import Footer from '../components/Footer.astro'
+import Contact from '../components/Contact.astro'
 ---
 
-<Layout title="Josemi Anton - Web Designer & Developer">
-  <Navigation client:load />
-  <main class="bg-background">
+<Layout title='Josemi Anton - Web Designer & Developer'>
+  <Navigation />
+  <main class='bg-background'>
     <Hero client:load />
-    <About client:load />
+    <About />
     <Experience client:load />
     <Skills client:load />
-    <Contact client:load />
-    <Footer client:load />
+    <Contact />
+    <Footer />
   </main>
 </Layout>

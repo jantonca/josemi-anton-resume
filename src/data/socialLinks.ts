@@ -1,30 +1,18 @@
-import {
-  SiGithub,
-  SiLinkedin,
-  SiInstagram,
-} from '@icons-pack/react-simple-icons'
-
-import { Globe } from 'lucide-react'
-
 export const socialLinks = [
   {
-    name: 'GitHub',
-    icon: SiGithub,
+    name: 'github',
     url: 'https://github.com/jantonca',
   },
   {
-    name: 'LinkedIn',
-    icon: SiLinkedin,
+    name: 'linkedin',
     url: 'https://www.linkedin.com/in/josemiantoncasado/',
   },
   {
-    name: 'Instagram',
-    icon: SiInstagram,
+    name: 'instagram',
     url: 'https://www.instagram.com/joxemiel_a_c',
   },
   {
-    name: 'Website',
-    icon: Globe,
+    name: 'web',
     url: 'https://bobeliadesign.com',
   },
 ]

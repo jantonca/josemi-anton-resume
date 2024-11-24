@@ -6,11 +6,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const handleEmailClick = (e: React.MouseEvent) => {
-  e.preventDefault()
-  const username = 'jantonca'
-  const domain = 'gmail.com'
-  window.location.href = `mailto:${username}@${domain}`
+interface EmailParts {
+  username: string
+  domain: string
+}
+
+export const emailParts: EmailParts = {
+  username: 'jantonca',
+  domain: 'gmail.com',
+} as const
+
+export const handleEmailClick = (emailParts: EmailParts): void => {
+  try {
+    const emailAddress = `${emailParts.username}@${emailParts.domain}`
+    const mailtoUrl = `mailto:${emailAddress}`
+    window.location.href = mailtoUrl
+  } catch (error) {
+    console.error('Error opening email client:', error)
+    alert('Unable to open email client. Please try again later.')
+  }
 }
 
 export const filterSocialLinks = (names: string[]) => {
