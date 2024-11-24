@@ -68,7 +68,6 @@
     transform-origin: center center;
     opacity: 1;
   }
-
   .g1 {
     animation: moveVertical 30s ease infinite;
   }
@@ -114,43 +113,6 @@
   @keyframes rotate {
     to {
       --a: 360deg;
-    }
-  }
-  @keyframes moveVertical {
-    0%,
-    100% {
-      transform: translateY(-50%);
-    }
-    50% {
-      transform: translateY(50%);
-    }
-  }
-
-  @keyframes moveInCircle {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes moveHorizontal {
-    0%,
-    100% {
-      transform: translateX(-50%);
-    }
-    50% {
-      transform: translateX(50%);
-    }
-  }
-
-  @keyframes loop {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
     }
   }
 }
