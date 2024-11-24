@@ -39,7 +39,10 @@ const {
       content={Astro.generator}
     />
     <title>{title}</title>
-    <ThemeProvider />
+    <ThemeProvider
+      defaultTheme='dark'
+      storageKey='theme-preference'
+    />
   </head>
   <body class='font-sans font-light'>
     <div class='min-h-screen bg-background text-foreground'>
