@@ -31,7 +31,7 @@ const rows = [...new Array(ROWS)].map((_, i) => ({
     />
     <div>
       <div
-        class='lg:max-w-[48rem] flex flex-shrink-0 flex-col gap-y-4 relative py-6 overflow-hidden'
+        class='lg:max-w-[48rem] flex flex-shrink-0 flex-col gap-y-6 relative py-12 overflow-hidden'
       >
         {
           rows.map(({ duration, reverse, tags }) => (
@@ -43,11 +43,12 @@ const rows = [...new Array(ROWS)].map((_, i) => ({
                 {[...tags, ...tags].map((tag) => (
                   <div
                     class={cn(
-                      'tag bg-honolulu text-nonphoto flex items-center py-[0.7rem] rounded-md px-4 mr-4 shadow-md whitespace-nowrap',
-                      'shadow-[0_0.1rem_0.2rem_rgba(3,4,94,0.2),0_0.1rem_0.5rem_rgba(3,4,94,0.3),0_0.2rem_1.5rem_rgba(3,4,94,0.4)]'
+                      'tag flex items-center py-[0.7rem] rounded-md px-6 mr-6 shadow-md whitespace-nowrap',
+                      'bg-[hsl(var(--background))] text-[hsl(var(--foreground))]',
+                      'shadow-[0_0.1rem_0.2rem_hsl(var(--foreground)/0.2),0_0.1rem_0.5rem_hsl(var(--foreground)/0.3),0_0.2rem_1.5rem_hsl(var(--foreground)/0.4)]'
                     )}
                   >
-                    <span class='text-pacific'>#</span> {tag}
+                    <span class='text-[hsl(var(--primary))]'>#</span> {tag}
                   </div>
                 ))}
               </div>
@@ -55,7 +56,7 @@ const rows = [...new Array(ROWS)].map((_, i) => ({
           ))
         }
         <div
-          class='pointer-events-none absolute inset-0 bg-gradient-to-r from-federal via-transparent to-federal'
+          class='pointer-events-none absolute inset-0 bg-gradient-to-r from-[hsl(var(--background))] via-transparent to-[hsl(var(--background))]'
         >
         </div>
       </div>
