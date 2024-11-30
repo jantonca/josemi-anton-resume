@@ -1,0 +1,31 @@
+import type { Skills } from '@/types/components'
+
+export const skillsContent: Skills = {
+  tags: [
+    'HTML5',
+    'CSS3',
+    'JavaScript',
+    'TypeScript',
+    'React.js',
+    'Next.js',
+    'Node.js',
+    'Webpack',
+    'WordPress',
+    'WooCommerce',
+    'Git',
+    'GitHub',
+    'Bitbucket',
+    'npm',
+    'REST API',
+    'UI/UX Design',
+    'Responsive Design',
+    'SEO',
+    'Adobe Creative Suite',
+    'PHP',
+    'MySQL',
+    'AWS',
+    'API Development',
+    'WebGL',
+    'VR/AR',
+  ],
+}

@@ -71,3 +71,15 @@ export interface JobContent {
 export interface JobsContent {
   jobs: JobContent[]
 }
+
+export interface Skills {
+  tags: string[]
+}
+
+export interface Contact {
+  headingNumber: string
+  headingText: string
+  subheading: string
+  description: string
+  email: string
+}

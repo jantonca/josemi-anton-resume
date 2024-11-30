@@ -1,35 +1,7 @@
 ---
-// Skills.astro
 import NumberedHeading from './NumberedHeading.astro'
 import { cn } from '../lib/utils/utils'
-
-const TAGS = [
-  'HTML5',
-  'CSS3',
-  'JavaScript',
-  'TypeScript',
-  'React.js',
-  'Next.js',
-  'Node.js',
-  'Webpack',
-  'WordPress',
-  'WooCommerce',
-  'Git',
-  'GitHub',
-  'Bitbucket',
-  'npm',
-  'REST API',
-  'UI/UX Design',
-  'Responsive Design',
-  'SEO',
-  'Adobe Creative Suite',
-  'PHP',
-  'MySQL',
-  'AWS',
-  'API Development',
-  'WebGL',
-  'VR/AR',
-]
+import { skillsContent } from '@/content/skills'
 
 const DURATION = 18000
 const ROWS = 5
@@ -41,11 +13,10 @@ const random = (min: number, max: number): number =>
 const shuffle = (arr: string[]): string[] =>
   [...arr].sort(() => 0.5 - Math.random())
 
-// Generate rows data at build time
 const rows = [...new Array(ROWS)].map((_, i) => ({
   duration: random(DURATION - 5000, DURATION + 5000),
   reverse: i % 2 === 0,
-  tags: shuffle(TAGS).slice(0, TAGS_PER_ROW),
+  tags: shuffle(skillsContent.tags).slice(0, TAGS_PER_ROW),
 }))
 ---
 
@@ -69,7 +40,6 @@ const rows = [...new Array(ROWS)].map((_, i) => ({
               style={`--duration: ${duration}ms; --direction: ${reverse ? 'reverse' : 'normal'};`}
             >
               <div class='inner flex w-fit'>
-                {/* Double the tags for seamless loop */}
                 {[...tags, ...tags].map((tag) => (
                   <div
                     class={cn(

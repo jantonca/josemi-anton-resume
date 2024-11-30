@@ -1,11 +1,10 @@
 ---
 import NumberedHeading from './NumberedHeading.astro'
-import { contactContent } from '../data/contactContent'
+import { contactContent } from '@/content/contact'
 import { filterSocialLinks } from '../lib/utils/utils'
 import { Icon } from 'astro-icon/components'
 
 const filteredSocialLinks = filterSocialLinks(['github', 'linkedin'])
-console.log(filteredSocialLinks)
 ---
 
 <section
@@ -87,8 +86,6 @@ console.log(filteredSocialLinks)
 
 <script>
   import { handleEmailClick, emailParts } from '../lib/utils/utils'
-
-  // Add click event listener to email button
   const emailButton = document.getElementById('email-button')
   if (emailButton) {
     emailButton.addEventListener('click', () => handleEmailClick(emailParts))

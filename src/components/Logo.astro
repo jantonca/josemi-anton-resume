@@ -1,0 +1,42 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'svg'> {
+  class?: string
+  name: string
+  width?: number | string
+  height?: number | string
+  title?: string
+}
+
+const {
+  class: className,
+  name,
+  width = 40,
+  height = 40,
+  title = 'Logo',
+  ...rest
+} = Astro.props
+---
+
+<div class:list={['logo', className]}>
+  <Icon
+    name={name}
+    width={width}
+    height={height}
+    title={title}
+    {...rest}
+  />
+</div>
+
+<style>
+  .logo {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .logo:hover {
+    transform: scale(1.1);
+  }
+</style>

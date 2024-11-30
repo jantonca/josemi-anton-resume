@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from './ThemeToggle.astro'
+import Logo from './Logo.astro'
 
 const links = [
   { name: 'About', href: '#about' },
@@ -14,8 +15,12 @@ const links = [
 >
   <div class='container mx-auto px-4'>
     <div class='flex items-center justify-between h-16'>
-      <div class='text-lg font-bold text-primary'>Josemi Anton</div>
-
+      <Logo
+        name='josemi_logo_theme_palette_dark'
+        width={50}
+        height={50}
+        title='Josemi Anton Logo'
+      />
       <div class='hidden md:flex items-center space-x-8'>
         {
           links.map((link, index) => (
