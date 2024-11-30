@@ -1,8 +1,12 @@
 ---
-import { socialLinks } from '../data/socialLinks'
+import { socialLinksContent } from '@/content/socialLinksContent'
 import { Icon } from 'astro-icon/components'
 
-const githubLink = socialLinks.find((link) => link.name === 'github')
+const socialLinks = socialLinksContent.socialLinks
+
+const githubLink = socialLinks.find(
+  (link: { name: string }) => link.name === 'github'
+)
 ---
 
 <div

@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { socialLinks } from '../../data/socialLinks'
+import { socialLinksContent } from '@/content/socialLinksContent'
+
+const socialLinks = socialLinksContent.socialLinks
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

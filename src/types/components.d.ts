@@ -83,3 +83,12 @@ export interface Contact {
   description: string
   email: string
 }
+
+export interface socialLink {
+  name: string
+  url: string
+}
+
+export interface SocialLinks {
+  socialLinks: socialLink[]
+}
