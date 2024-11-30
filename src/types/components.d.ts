@@ -43,3 +43,31 @@ export interface InteractiveBackgroundProps {
   blur?: number
   opacity?: number
 }
+
+export interface AboutContent {
+  skills: string[]
+  description: string[]
+  profileImage: {
+    alt: string
+  }
+  currentWork: {
+    company: string
+    url: string
+  }
+  previousWork: {
+    company: string
+    url: string
+  }[]
+}
+
+export interface JobContent {
+  company: string
+  title: string
+  url: string
+  date: string
+  points: string[]
+}
+
+export interface JobsContent {
+  jobs: JobContent[]
+}
