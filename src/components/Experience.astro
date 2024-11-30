@@ -1,7 +1,7 @@
 ---
 import NumberedHeading from './NumberedHeading.astro'
 import { jobsContent } from '@/content/jobs'
-import type { JobsContent, JobContent } from '@/types/components'
+import type { JobsContent } from '@/types/components'
 
 const jobs: JobsContent['jobs'] = jobsContent.jobs
 const initialActiveTab = 0
@@ -84,8 +84,7 @@ const initialActiveTab = 0
 </section>
 
 <script>
-  // Script on the client
-  const tabList = document.querySelector('[role="tablist"]')
+  // Script on the client side
   const tabs = document.querySelectorAll<HTMLButtonElement>('[role="tab"]')
   const panels = document.querySelectorAll('[role="tabpanel"]')
   let activeTab = 0
@@ -136,7 +135,6 @@ const initialActiveTab = 0
     })
 
     tab.addEventListener('keydown', (e: KeyboardEvent) => {
-      const target = e.target as HTMLButtonElement
       const key = e.key
 
       let newIndex = activeTab

@@ -4,19 +4,7 @@ import { cn } from '../lib/utils/utils'
 
 interface Props extends InteractiveBackgroundProps {}
 
-const {
-  class: className,
-  sensitivity = 20,
-  blur = 40,
-  opacity = 0.8,
-  colors = {
-    primary: '18, 113, 255',
-    secondary: '107, 74, 255',
-    tertiary: '100, 100, 255',
-    quaternary: '50, 160, 220',
-    quinary: '80, 47, 122',
-  },
-} = Astro.props
+const { class: className } = Astro.props
 ---
 
 <div
