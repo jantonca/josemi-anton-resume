@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 import react from '@astrojs/react'
 import icon from 'astro-icon'
+import sitemap from '@astrojs/sitemap'
 import autoprefixer from 'autoprefixer'
 import cssnano from 'cssnano'
 
@@ -43,6 +44,7 @@ export default defineConfig({
         ],
       },
     }),
+    sitemap(),
   ],
 
   vite: {
