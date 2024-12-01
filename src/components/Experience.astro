@@ -1,0 +1,185 @@
+---
+import NumberedHeading from './NumberedHeading.astro'
+import { jobsContent } from '@/content/jobs'
+import type { JobsContent } from '@/types/components'
+
+const jobs: JobsContent['jobs'] = jobsContent.jobs
+const initialActiveTab = 0
+---
+
+<section
+  id='experience'
+  class='py-8 lg:py-32'
+>
+  <div class='container mx-auto px-4 max-w-[1200px]'>
+    <NumberedHeading
+      number='02.'
+      title="Where I've Worked"
+    />
+
+    <div class='flex flex-col md:grid md:grid-cols-[max-content,1fr] gap-4'>
+      {/* Tabs list */}
+      <div
+        role='tablist'
+        aria-label='Job experiences'
+        class='flex flex-wrap gap-4 md:flex-col md:border-b-0 md:border-l md:border-border'
+      >
+        {
+          jobs.map((job, index) => (
+            <button
+              role='tab'
+              aria-selected={index === initialActiveTab}
+              aria-controls={`panel-${index}`}
+              id={`tab-${index}`}
+              tabindex={index === initialActiveTab ? 0 : -1}
+              class:list={[
+                'experience-tab px-5 py-2 text-left font-mono text-sm relative transition-colors duration-300 border md:border-0',
+                index === initialActiveTab
+                  ? 'text-white bg-pacific border-pacific md:text-pacific md:bg-transparent md:border-l-2 md:border-pacific'
+                  : 'text-muted-foreground border-border',
+                'md:hover:text-pacific md:hover:bg-pacific/5',
+              ]}
+              data-index={index}
+            >
+              {job.company}
+            </button>
+          ))
+        }
+      </div>
+
+      {/* Tab panels */}
+      {
+        jobs.map((job, index) => (
+          <div
+            role='tabpanel'
+            id={`panel-${index}`}
+            aria-labelledby={`tab-${index}`}
+            class:list={[
+              'experience-content',
+              index === initialActiveTab ? 'block' : 'hidden',
+            ]}
+            data-index={index}
+            tabindex='0'
+          >
+            <div class='mb-2'>
+              <h3 class='text-xl font-heading mb-2'>
+                <span>{job.title}</span>{' '}
+                <span class='text-pacific'>@ {job.company}</span>
+              </h3>
+              <p class='font-mono text-sm text-muted-foreground'>{job.date}</p>
+            </div>
+
+            <ul class='space-y-4'>
+              {job.points.map((point) => (
+                <li class="relative pl-6 before:content-['▹'] before:absolute before:left-0 before:text-pacific before:transition-colors before:duration-300">
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Script on the client side
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+  const panels = document.querySelectorAll('[role="tabpanel"]')
+  let activeTab = 0
+
+  function switchTab(oldIndex: number, newIndex: number) {
+    tabs[oldIndex].setAttribute('aria-selected', 'false')
+    tabs[oldIndex].setAttribute('tabindex', '-1')
+    tabs[oldIndex].classList.remove(
+      'text-white',
+      'bg-pacific',
+      'border-pacific',
+      'md:text-pacific',
+      'md:bg-transparent',
+      'md:border-l-2',
+      'md:border-pacific'
+    )
+    tabs[oldIndex].classList.add('text-muted-foreground', 'border-border')
+
+    tabs[newIndex].setAttribute('aria-selected', 'true')
+    tabs[newIndex].setAttribute('tabindex', '0')
+    tabs[newIndex].classList.add(
+      'text-white',
+      'bg-pacific',
+      'border-pacific',
+      'md:text-pacific',
+      'md:bg-transparent',
+      'md:border-l-2',
+      'md:border-pacific'
+    )
+    tabs[newIndex].classList.remove('text-muted-foreground', 'border-border')
+
+    panels[oldIndex].classList.add('hidden')
+    panels[oldIndex].classList.remove('block')
+
+    panels[newIndex].classList.remove('hidden')
+    panels[newIndex].classList.add('block')
+
+    activeTab = newIndex
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', (e) => {
+      const target = e.target as HTMLButtonElement
+      const newIndex = parseInt(target.getAttribute('data-index') || '0')
+      if (newIndex !== activeTab) {
+        switchTab(activeTab, newIndex)
+      }
+    })
+
+    tab.addEventListener('keydown', (e: KeyboardEvent) => {
+      const key = e.key
+
+      let newIndex = activeTab
+
+      if (key === 'ArrowLeft' || key === 'ArrowUp') {
+        newIndex = activeTab === 0 ? tabs.length - 1 : activeTab - 1
+        e.preventDefault()
+      } else if (key === 'ArrowRight' || key === 'ArrowDown') {
+        newIndex = activeTab === tabs.length - 1 ? 0 : activeTab + 1
+        e.preventDefault()
+      }
+
+      if (newIndex !== activeTab) {
+        switchTab(activeTab, newIndex)
+        ;(tabs[newIndex] as HTMLButtonElement).focus()
+      }
+    })
+  })
+</script>
+
+<style>
+  :root {
+    --transition-duration: 300ms;
+    --transition-timing: ease;
+  }
+
+  .experience-content {
+    transition: opacity var(--transition-duration) var(--transition-timing);
+  }
+
+  .experience-content.hidden {
+    opacity: 0;
+  }
+
+  .experience-content.block {
+    opacity: 1;
+  }
+
+  .experience-tab:focus-visible {
+    outline: 2px solid var(--pacific);
+    outline-offset: 2px;
+  }
+
+  /* Content still accessible when hidden */
+  .experience-content.hidden {
+    display: none;
+  }
+</style>

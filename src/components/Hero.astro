@@ -1,0 +1,60 @@
+---
+import type { HeroProps } from '@/types/components'
+import { cn } from '../lib/utils/utils'
+import InnerGlowCard from './InnerGlowCard.astro'
+import InteractiveBackground from './InteractiveBackground.astro'
+import { heroContent } from '@/content/hero'
+
+interface Props extends HeroProps {}
+
+const { content = heroContent, class: className } = Astro.props
+---
+
+<section
+  class={cn('relative min-h-screen flex items-center pt-16 pb-32', className)}
+  aria-labelledby='hero-heading'
+>
+  <InteractiveBackground />
+
+  <div class='container mx-auto px-4 max-w-4xl relative z-10'>
+    <InnerGlowCard>
+      {/* Intro Text */}
+      <p class='text-lg mb-5 mt-12 text-nonphoto'>
+        {content.greeting}
+      </p>
+
+      {/* Main Heading */}
+      <h1
+        id='hero-heading'
+        class='text-5xl md:text-7xl font-bold mb-4 text-primary font-heading'
+      >
+        {content.name}
+      </h1>
+
+      {/* Tagline */}
+      <h2
+        class='text-4xl md:text-6xl mb-8 text-muted-foreground font-extralight'
+      >
+        {content.tagline}
+      </h2>
+
+      {/* Description */}
+      <div class='mb-12'>
+        <p class='text-lg text-muted-foreground'>
+          {content.description} I'm currently working at{' '}
+          <a
+            href={content.currentWork.url}
+            class='text-nonphoto hover:underline font-normal transition-colors duration-300
+                   focus:outline-none focus:ring-2 focus:ring-pacific focus:ring-offset-2'
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label={`Visit ${content.currentWork.company} website`}
+          >
+            {content.currentWork.company}
+          </a>{' '}
+          {content.currentWork.role}
+        </p>
+      </div>
+    </InnerGlowCard>
+  </div>
+</section>

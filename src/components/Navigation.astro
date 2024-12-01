@@ -1,0 +1,63 @@
+---
+import ThemeToggle from './ThemeToggle.astro'
+import Logo from './Logo.astro'
+
+const links = [
+  { name: 'About', href: '#about' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Contact', href: '#contact' },
+] as const
+---
+
+<nav
+  class='fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-sm z-50 border-b border-border'
+>
+  <div class='container mx-auto px-4'>
+    <div class='flex items-center justify-between h-16'>
+      <Logo
+        name='josemi_logo_theme_palette_dark'
+        width={50}
+        height={50}
+        title='Josemi Anton Logo'
+      />
+      <div class='hidden md:flex items-center space-x-8'>
+        {
+          links.map((link, index) => (
+            <a
+              href={link.href}
+              class='text-muted-foreground hover:text-primary transition-colors font-heading group'
+            >
+              <span class='text-pacific font-mono mr-1'>0{index + 1}. </span>
+              {link.name}
+            </a>
+          ))
+        }
+      </div>
+
+      <ThemeToggle />
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* Optional: Add hover effect for nav links */
+  a {
+    position: relative;
+  }
+
+  a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transition: width 0.3s ease-in-out;
+  }
+
+  a:hover::after {
+    width: 100%;
+  }
+</style>

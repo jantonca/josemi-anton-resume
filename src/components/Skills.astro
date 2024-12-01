@@ -1,0 +1,65 @@
+---
+import NumberedHeading from './NumberedHeading.astro'
+import { cn } from '../lib/utils/utils'
+import { skillsContent } from '@/content/skills'
+
+const DURATION = 18000
+const ROWS = 5
+const TAGS_PER_ROW = 8
+
+const random = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min)) + min
+
+const shuffle = (arr: string[]): string[] =>
+  [...arr].sort(() => 0.5 - Math.random())
+
+const rows = [...new Array(ROWS)].map((_, i) => ({
+  duration: random(DURATION - 5000, DURATION + 5000),
+  reverse: i % 2 === 0,
+  tags: shuffle(skillsContent.tags).slice(0, TAGS_PER_ROW),
+}))
+---
+
+<section
+  id='skills'
+  class='py-8 lg:py-32'
+>
+  <div class={cn('container mx-auto px-4 lg:max-w-[900px]')}>
+    <NumberedHeading
+      number='03.'
+      title='Skills & Technologies'
+    />
+    <div>
+      <div
+        class='lg:max-w-[48rem] flex flex-shrink-0 flex-col gap-y-6 relative py-12 overflow-hidden'
+      >
+        {
+          rows.map(({ duration, reverse, tags }) => (
+            <div
+              class='loop-slider'
+              style={`--duration: ${duration}ms; --direction: ${reverse ? 'reverse' : 'normal'};`}
+            >
+              <div class='inner flex w-fit'>
+                {[...tags, ...tags].map((tag) => (
+                  <div
+                    class={cn(
+                      'tag flex items-center py-[0.7rem] rounded-md px-6 mr-6 shadow-md whitespace-nowrap',
+                      'bg-[hsl(var(--background))] text-[hsl(var(--foreground))]',
+                      'shadow-[0_0.1rem_0.2rem_hsl(var(--foreground)/0.2),0_0.1rem_0.5rem_hsl(var(--foreground)/0.3),0_0.2rem_1.5rem_hsl(var(--foreground)/0.4)]'
+                    )}
+                  >
+                    <span class='text-[hsl(var(--primary))]'>#</span> {tag}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+        <div
+          class='pointer-events-none absolute inset-0 bg-gradient-to-r from-[hsl(var(--background))] via-transparent to-[hsl(var(--background))]'
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

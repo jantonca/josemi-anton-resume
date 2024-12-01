@@ -1,0 +1,41 @@
+---
+// src/components/InnerGlowCard.astro
+import type { InnerGlowCardProps } from '@/types/components'
+import { cn } from '../lib/utils/utils'
+
+interface Props extends InnerGlowCardProps {}
+
+const {
+  class: className,
+  variant = 'default',
+  animation = 'default',
+} = Astro.props
+
+const variants = {
+  default: 'rounded-2xl p-2',
+  subtle: 'rounded-lg p-1',
+  prominent: 'rounded-3xl p-3',
+} as const
+
+const animations = {
+  default: 'animate-glow',
+  none: '',
+} as const
+---
+
+<div
+  class={cn(
+    'InnerGlowCard',
+    variants[variant],
+    animations[animation],
+    className
+  )}
+>
+  <div
+    class='InnerGlowCard__content'
+    role='region'
+    aria-label='Content with glow effect'
+  >
+    <slot />
+  </div>
+</div>

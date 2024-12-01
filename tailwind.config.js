@@ -12,6 +12,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['"Proto Grotesk"', 'sans-serif'],
+        heading: ['"Akzidenz-Grotesk Pro"', 'sans-serif'],
+        mono: ['Consolas', 'Monaco', 'Courier New', 'monospace'],
+      },
       colors: {
         federal: '#03045e',
         marian: '#023e8a',

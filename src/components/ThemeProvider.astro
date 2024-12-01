@@ -1,0 +1,68 @@
+---
+// src/components/ThemeProvider.astro
+import type { ThemeConfig } from '../types/theme'
+
+interface Props extends ThemeConfig {}
+
+const { defaultTheme = 'dark', storageKey = 'theme-preference' } = Astro.props
+---
+
+<!--
+  Initialized in head, so it only runs once and applies theme immediately
+-->
+<script is:inline define:vars={{ defaultTheme, storageKey }}>
+  function getInitialTheme() {
+    const savedTheme = localStorage.getItem(storageKey)
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches
+
+    return savedTheme || (prefersDark ? 'dark' : defaultTheme)
+  }
+
+  // Apply theme immediately to avoid flash
+  const theme = getInitialTheme()
+  document.documentElement.classList.toggle('dark', theme === 'dark')
+  localStorage.setItem(storageKey, theme)
+</script>
+
+<script>
+  const storageKey = 'theme-preference'
+
+  // Theme management functions
+  function updateTheme(newTheme: 'light' | 'dark') {
+    document.documentElement.classList.remove('light', 'dark')
+    document.documentElement.classList.add(newTheme)
+    localStorage.setItem(storageKey, newTheme)
+
+    window.dispatchEvent(
+      new CustomEvent('theme-change', { detail: { theme: newTheme } })
+    )
+  }
+
+  // Expose theme functions globally
+  window.handleThemeChange = () => {
+    const current = window.getCurrentTheme()
+    const newTheme = current === 'dark' ? 'light' : 'dark'
+    window.setTheme(newTheme)
+  }
+
+  window.getCurrentTheme = () => {
+    return document.documentElement.classList.contains('dark')
+      ? 'dark'
+      : 'light'
+  }
+
+  window.setTheme = (theme) => {
+    updateTheme(theme)
+  }
+
+  // Watch system theme changes
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', (e) => {
+      if (!localStorage.getItem(storageKey)) {
+        updateTheme(e.matches ? 'dark' : 'light')
+      }
+    })
+</script>

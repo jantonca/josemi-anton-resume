@@ -1,0 +1,93 @@
+---
+import NumberedHeading from './NumberedHeading.astro'
+import { contactContent } from '@/content/contact'
+import { filterSocialLinks } from '../lib/utils/utils'
+import { Icon } from 'astro-icon/components'
+
+const filteredSocialLinks = filterSocialLinks(['github', 'linkedin'])
+---
+
+<section
+  id='contact'
+  class='py-8 lg:py-32 scroll-mt-16'
+  aria-labelledby='contact-heading'
+>
+  <div class='container mx-auto px-4 lg:max-w-[600px]'>
+    <NumberedHeading
+      number={contactContent.headingNumber}
+      title={contactContent.headingText}
+    />
+    <div class='max-w-2xl mx-auto'>
+      <h3 class='font-heading text-2xl mb-6 text-primary'>
+        {contactContent.subheading}
+      </h3>
+      <p class='text-lg text-muted-foreground mb-12 font-extralight'>
+        {contactContent.description}
+      </p>
+
+      {/* Email Button Container */}
+      <div class='flex justify-center'>
+        <button
+          type='button'
+          id='email-button'
+          class='group inline-flex items-center gap-2 px-8 py-4 border-2 border-pacific
+            text-pacific font-mono text-sm rounded-md
+            hover:bg-pacific/10 hover:scale-[1.02]
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific
+            focus-visible:ring-offset-2
+            transition-all duration-300 ease-out'
+          aria-label='Send email'
+        >
+          <Icon
+            name='mailOutline'
+            class='w-4 h-4 transition-transform duration-300 group-hover:-rotate-12'
+          />
+          <span
+            class="relative after:content-[''] after:absolute after:w-full after:scale-x-0
+                       after:h-0.5 after:bottom-0 after:left-0 after:bg-pacific
+                       after:origin-bottom-left after:transition-transform after:duration-300
+                       group-hover:after:scale-x-100"
+          >
+            Say Hello
+          </span>
+        </button>
+      </div>
+      <div
+        class='mt-12 flex flex-col items-center gap-2 text-sm text-muted-foreground'
+        role='complementary'
+      >
+        <p class='font-mono'>or find me on</p>
+        <div class='flex items-center gap-4'>
+          {
+            filteredSocialLinks.map(({ name, url }) => (
+              <a
+                href={url}
+                aria-label={`Visit my ${name} profile`}
+                target='_blank'
+                rel='noreferrer noopener'
+                class='text-muted-foreground p-2 rounded-full
+                       hover:text-pacific hover:bg-pacific/10
+                       focus-visible:outline-none focus-visible:ring-2 
+                       focus-visible:ring-pacific focus-visible:ring-offset-2
+                       transition-all duration-300'
+              >
+                <Icon
+                  name={name}
+                  class='h-6 w-6 transform transition-transform duration-300 hover:scale-110'
+                />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { handleEmailClick, emailParts } from '../lib/utils/utils'
+  const emailButton = document.getElementById('email-button')
+  if (emailButton) {
+    emailButton.addEventListener('click', () => handleEmailClick(emailParts))
+  }
+</script>
