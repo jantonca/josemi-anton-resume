@@ -7,7 +7,7 @@ import autoprefixer from 'autoprefixer'
 import cssnano from 'cssnano'
 
 export default defineConfig({
-  site: 'https://josemianton.com',
+  site: 'https://www.josemianton.com',
   output: 'static',
 
   build: {
@@ -44,7 +44,10 @@ export default defineConfig({
         ],
       },
     }),
-    sitemap(),
+    sitemap({
+      customPages: ['https://www.josemianton.com'],
+      lastmod: new Date(),
+    }),
   ],
 
   vite: {
