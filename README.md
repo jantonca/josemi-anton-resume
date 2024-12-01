@@ -134,14 +134,6 @@ The project uses Tailwind CSS with custom configurations:
 
 The site is built as a static output and can be deployed to any static hosting service.
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
 ## License
 
 MIT License
@@ -166,7 +158,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-### Get In Touch
+## Get In Touch
 
 You can reach out to me through various channels:
 
