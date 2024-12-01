@@ -30,6 +30,7 @@
     --border: 214 97% 27%;
     --input: 214 97% 27%;
     --ring: 239 94% 19%;
+    --links: #000;
 
     /* Design tokens */
     --radius: 0.5rem;
@@ -57,6 +58,7 @@
     --border: 214 97% 27%;
     --input: 214 97% 27%;
     --ring: 190 76% 82%;
+    --links: #fff;
   }
 
   .light-mode {

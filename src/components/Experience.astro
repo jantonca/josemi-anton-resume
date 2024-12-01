@@ -33,9 +33,9 @@ const initialActiveTab = 0
               id={`tab-${index}`}
               tabindex={index === initialActiveTab ? 0 : -1}
               class:list={[
-                'experience-tab px-5 py-2 text-left font-mono text-sm relative transition-colors duration-300 border md:border-0',
+                'experience-tab px-5 py-2 text-left font-mono text-lg relative transition-colors duration-300 border md:border-0',
                 index === initialActiveTab
-                  ? 'text-white bg-pacific border-pacific md:text-pacific md:bg-transparent md:border-l-2 md:border-pacific'
+                  ? 'text-[--link] font-semibold text-lg bg-pacific border-pacific md:text-[--link] md:bg-transparent md:border-l-2 md:border-pacific'
                   : 'text-muted-foreground border-border',
                 'md:hover:text-pacific md:hover:bg-pacific/5',
               ]}
@@ -93,10 +93,11 @@ const initialActiveTab = 0
     tabs[oldIndex].setAttribute('aria-selected', 'false')
     tabs[oldIndex].setAttribute('tabindex', '-1')
     tabs[oldIndex].classList.remove(
-      'text-white',
+      'text-[--link]',
+      'font-semibold',
       'bg-pacific',
       'border-pacific',
-      'md:text-pacific',
+      'md:text-[--link]',
       'md:bg-transparent',
       'md:border-l-2',
       'md:border-pacific'
@@ -106,10 +107,11 @@ const initialActiveTab = 0
     tabs[newIndex].setAttribute('aria-selected', 'true')
     tabs[newIndex].setAttribute('tabindex', '0')
     tabs[newIndex].classList.add(
-      'text-white',
+      'text-[--link]',
+      'font-semibold',
       'bg-pacific',
       'border-pacific',
-      'md:text-pacific',
+      'md:text-[--link]',
       'md:bg-transparent',
       'md:border-l-2',
       'md:border-pacific'
