@@ -1,0 +1,13 @@
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Specify the location of your XML sitemap
+Sitemap: https://josemianton.com/sitemap.xml
+
+# Optional: Specify paths you don't want crawled
+# Disallow: /private/
+# Disallow: /admin/
+
+# Crawl-delay is optional - use if you want to limit request rate
+# Crawl-delay: 10
