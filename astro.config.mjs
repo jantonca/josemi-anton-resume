@@ -45,8 +45,20 @@ export default defineConfig({
       },
     }),
     sitemap({
-      customPages: ['https://www.josemianton.com'],
+      changefreq: 'weekly',
+      priority: 0.9,
       lastmod: new Date(),
+      serialize(item) {
+        if (item.url === 'https://www.josemianton.com/') {
+          return {
+            url: item.url,
+            changefreq: 'weekly',
+            priority: 1.0,
+            lastmod: new Date().toISOString(),
+          }
+        }
+        return item
+      }
     }),
   ],
 
