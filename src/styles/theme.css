@@ -58,6 +58,10 @@
     --input: 214 97% 27%;
     --ring: 190 76% 82%;
   }
+
+  .light-mode {
+    mix-blend-mode: lighten;
+  }
 }
 
 /* Base utility classes */
