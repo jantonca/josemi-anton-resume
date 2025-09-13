@@ -49,8 +49,10 @@ const generateImageUrl = (
   if (width && !isDev) {
     // Remove extension from filename
     const nameWithoutExt = src.replace(/\.[^.]+$/, '')
-    // Find closest size from our presets: 800 or 1600
-    const targetWidth = width <= 800 ? 800 : 1600
+    // Mobile-first: Find closest size from our presets: 400, 800, or 1200
+    const targetWidth = width <= 400 ? 400 :    // Mobile
+                       width <= 800 ? 800 :     // Tablet
+                       1200;                    // Desktop
     // Use format preference or default to webp
     const targetFormat = preferredFormat || format || 'webp'
     
@@ -76,10 +78,11 @@ const generateSrcset = () => {
     return undefined
   }
   
-  // In production, use our optimized versions
+  // In production, use our optimized versions (mobile-first)
   return [
+    `${baseUrl}/images/${nameWithoutExt}-400.${preferredFormat} 400w`,
     `${baseUrl}/images/${nameWithoutExt}-800.${preferredFormat} 800w`,
-    `${baseUrl}/images/${nameWithoutExt}-1600.${preferredFormat} 1600w`
+    `${baseUrl}/images/${nameWithoutExt}-1200.${preferredFormat} 1200w`
   ].join(', ')
 }
 

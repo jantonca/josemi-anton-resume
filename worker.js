@@ -20,8 +20,8 @@ export default {
 
 async function handleImageRequest(request, env) {
   const url = new URL(request.url)
-  // Remove /images/ prefix to get the actual path in R2
-  const imagePath = url.pathname.replace('/images/', '')
+  // Keep the full path as it is in R2 (including 'images/' prefix)
+  const imagePath = url.pathname.substring(1) // Remove leading slash
 
   try {
     // Get image from R2 bucket
