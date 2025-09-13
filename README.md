@@ -6,40 +6,49 @@ A personal website/resume built with Astro, React, and TypeScript. The site feat
 
 ## Tech Stack
 
-- **Framework**: [Astro](https://astro.build/) v4.16
+- **Framework**: [Astro](https://astro.build/) v5.13
 - **UI Library**: React 18
 - **Styling**: Tailwind CSS
 - **Language**: TypeScript
 - **Icons**: Lucide React, Simple Icons
 - **Build Tools**: Vite (integrated with Astro)
+- **Hosting**: Cloudflare Workers (static assets)
+- **Image Service**: Squoosh (Cloudflare Workers compatible)
 
 ## Project Structure
 
 ```
 josemi-anton-resume/
 ├── public/            # Static assets
-│   ├── fonts/
-│   └── images/
+│   ├── fonts/        # Custom fonts (Proto Grotesk, Akzidenz Grotesk)
+│   └── images/       # Profile images and assets
 ├── src/
 │   ├── components/    # Reusable Astro/React components
 │   ├── content/       # TypeScript content definitions
-│   ├── hooks/         # Custom React hooks
+│   ├── hooks/         # Custom React hooks (theme management)
 │   ├── icons/         # SVG icons and related components
 │   ├── layouts/       # Page layouts
 │   ├── lib/          # Utility functions
 │   ├── pages/        # Route pages
 │   ├── styles/       # Global styles and themes
 │   └── types/        # TypeScript type definitions
+├── dist/             # Build output (generated)
+├── astro.config.mjs  # Astro configuration
+├── wrangler.toml     # Cloudflare Workers config
+└── tailwind.config.mjs # Tailwind CSS config
 ```
 
 ## Key Features
 
-- Server-side rendering with Astro
-- Interactive React components where needed
-- Responsive design
-- Dark theme
-- Optimized assets and performance
-- Type-safe development with TypeScript
+- **Static Site Generation**: Server-side rendering with Astro for optimal performance
+- **Interactive Components**: React components for dynamic functionality (theme toggle, navigation)
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Dark Theme**: Custom dark theme with theme persistence
+- **Optimized Assets**: Image optimization (AVIF, WebP) and performance tuning
+- **Type Safety**: Full TypeScript implementation with strict typing
+- **Global CDN**: Deployed on Cloudflare Workers for worldwide performance
+- **Accessibility**: Semantic HTML, ARIA support, and keyboard navigation
+- **Modern Stack**: Latest Astro v5, React 18, and cutting-edge web technologies
 
 ## Getting Started
 
@@ -78,6 +87,9 @@ pnpm lint
 
 # Clean build files
 pnpm clean
+
+# Deploy to Cloudflare Workers
+npx wrangler deploy
 ```
 
 ## Build & Optimization
@@ -95,11 +107,14 @@ The project includes several optimizations:
 
 The build process is configured in `astro.config.mjs` with the following features:
 
+- Static build output (no server-side adapter needed)
 - Optimized asset handling
 - Minified Tailwind output
 - Selective React hydration
-- SVG optimization
+- SVG optimization with astro-icon
 - Manual chunk splitting for vendor code
+- Squoosh image service for Cloudflare Workers compatibility
+- Terser minification with console stripping in production
 
 ## Components
 
@@ -124,15 +139,59 @@ The project uses Tailwind CSS with custom configurations:
 
 ## Performance Considerations
 
-- Images are optimized and served in modern formats
-- JavaScript is split into chunks
-- Styles are minified
+- Images are optimized and served in modern formats (AVIF, WebP)
+- JavaScript is split into chunks (vendor, react-vendor, astro-vendor)
+- Styles are minified with cssnano
 - Development source maps are available
 - Console logs are stripped in production
+- Global CDN delivery via Cloudflare Workers
+- Static assets cached at the edge
+
+## Configuration Files
+
+### Key Configuration Files
+
+- **astro.config.mjs**: Main Astro configuration with static build settings
+- **wrangler.toml**: Cloudflare Workers deployment configuration
+- **tailwind.config.mjs**: Tailwind CSS customization
+- **tsconfig.json**: TypeScript compiler options
+- **package.json**: Dependencies and build scripts
+
+### Migration from Pages to Workers
+
+This project was migrated from Cloudflare Pages to Cloudflare Workers for better performance and control:
+
+- **Before**: Cloudflare Pages with server-side adapter
+- **After**: Cloudflare Workers with static assets hosting
+- **Benefits**: Faster deployments, better caching, simplified configuration
 
 ## Deployment
 
-The site is built as a static output and can be deployed to any static hosting service.
+The site is deployed to **Cloudflare Workers** using static assets hosting. The deployment process:
+
+1. **Build**: Static files are generated in the `dist/` directory
+2. **Deploy**: Uses Wrangler CLI to deploy to Cloudflare Workers
+3. **Hosting**: Served via Cloudflare's global edge network
+
+### Deployment Configuration
+
+- **wrangler.toml**: Configures Cloudflare Workers deployment
+- **Static Assets**: All site content served from `dist/` directory
+- **Custom Domain**: `josemianton.com` configured via Cloudflare Workers
+- **Performance**: Global CDN with edge caching
+
+### Deploy Commands
+
+```bash
+# Build and deploy
+pnpm build && npx wrangler deploy
+
+# Deploy with dry run (test configuration)
+npx wrangler deploy --dry-run
+
+# View deployment history
+npx wrangler deployments list
+```
 
 ## License
 
