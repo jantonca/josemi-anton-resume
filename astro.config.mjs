@@ -20,7 +20,7 @@ export default defineConfig({
       format: ['avif', 'webp'],
     },
   },
-
+  adapter: cloudflare(),
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -58,7 +58,7 @@ export default defineConfig({
           }
         }
         return item
-      }
+      },
     }),
   ],
 
