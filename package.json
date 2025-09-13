@@ -14,7 +14,9 @@
     "deploy": "pnpm build && npx wrangler deploy",
     "images:upload": "node src/scripts/upload-images.js",
     "images:batch": "node src/scripts/upload-images.js batch",
-    "r2:list": "node src/scripts/upload-images.js list",
+    "images:add": "node src/scripts/optimize-images.js add",
+    "images:optimize": "node src/scripts/optimize-images.js batch",
+    "r2:list": "node src/scripts/optimize-images.js list",
     "r2:stats": "node src/scripts/upload-images.js list",
     "r2:test": "curl -I https://josemianton.com/images/test.jpg"
   },

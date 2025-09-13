@@ -25,24 +25,36 @@ const {
 
 const baseUrl = src.startsWith('http') ? src : `/images/${src}`
 
-// Generate srcset for a specific format
+// Generate srcset for pre-optimized images
 const generateSrcset = (format?: string) => {
   return widths
     .map((w) => {
-      const params = new URLSearchParams()
-      params.append('w', w.toString())
-      params.append('q', quality.toString())
-      if (format && format !== 'original') {
-        params.append('f', format)
+      let filename
+      if (format === 'avif') {
+        // Use size suffix for optimized images
+        if (w <= 400) filename = `${src}-sm.avif`
+        else if (w <= 800) filename = `${src}-md.avif`
+        else if (w <= 1200) filename = `${src}-lg.avif`
+        else filename = `${src}-xl.avif`
+      } else if (format === 'webp') {
+        if (w <= 400) filename = `${src}-sm.webp`
+        else if (w <= 800) filename = `${src}-md.webp`
+        else if (w <= 1200) filename = `${src}-lg.webp`
+        else filename = `${src}-xl.webp`
+      } else {
+        // Original format (JPEG)
+        if (w <= 400) filename = `${src}-sm.jpg`
+        else if (w <= 800) filename = `${src}-md.jpg`
+        else if (w <= 1200) filename = `${src}-lg.jpg`
+        else filename = `${src}-xl.jpg`
       }
-      return `${baseUrl}?${params} ${w}w`
+      return `/images/${filename} ${w}w`
     })
     .join(', ')
 }
 
-// Default image URL (medium size)
-const defaultWidth = widths[Math.floor(widths.length / 2)]
-const defaultUrl = `${baseUrl}?w=${defaultWidth}&q=${quality}`
+// Default image URL (medium size JPEG as fallback)
+const defaultUrl = `/images/${src}-md.jpg`
 ---
 
 <picture class={pictureClass}>

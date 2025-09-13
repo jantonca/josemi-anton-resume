@@ -9,7 +9,12 @@ export default {
     }
 
     // Handle static assets (your existing Astro site)
-    return env.ASSETS.fetch(request)
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request)
+    } else {
+      // Fallback if ASSETS is not available
+      return new Response('Not found', { status: 404 })
+    }
   },
 }
 
@@ -34,22 +39,14 @@ async function handleImageRequest(request, env) {
     headers.set('Cache-Control', 'public, max-age=31536000, immutable')
     headers.set('Access-Control-Allow-Origin', '*')
 
-    // Optional: Add image transformation parameters
+    // Get optimization parameters from URL
     const width = url.searchParams.get('w')
     const quality = url.searchParams.get('q')
+    const format = url.searchParams.get('f')
 
-    if (width || quality) {
-      // Use Cloudflare Image Resizing (if you have it enabled)
-      // This requires the paid Images plan
-      return fetch(request, {
-        cf: {
-          image: {
-            width: width ? parseInt(width) : undefined,
-            quality: quality ? parseInt(quality) : 85,
-            format: 'auto',
-          },
-        },
-      })
+    // Apply Cloudflare Image Optimization if parameters are provided
+    if (width || quality || format) {
+      return applyImageOptimization(request, object, { width, quality, format }, headers)
     }
 
     // Return the original image
@@ -57,5 +54,55 @@ async function handleImageRequest(request, env) {
   } catch (error) {
     console.error('Error fetching image:', error)
     return new Response('Error loading image', { status: 500 })
+  }
+}
+
+// Apply Cloudflare Image Optimization
+async function applyImageOptimization(request, object, params, headers) {
+  const { width, quality, format } = params
+  
+  // Create a temporary URL for the image
+  const imageUrl = new URL(request.url)
+  
+  // Use Cloudflare's Image Resizing feature
+  // Note: This requires Cloudflare Images (paid feature) or Pro plan with Image Resizing
+  const optimizationOptions = {
+    cf: {
+      image: {
+        width: width ? parseInt(width) : undefined,
+        quality: quality ? parseInt(quality) : 85,
+        format: format || 'webp', // Default to WebP for better compression
+        fit: 'scale-down',
+        metadata: 'none',
+        sharpen: 1.0
+      }
+    }
+  }
+
+  try {
+    // Create a response with the image body
+    const imageResponse = new Response(object.body, { headers })
+    
+    // Apply Cloudflare Image Resizing
+    const optimizedRequest = new Request(imageUrl.toString(), {
+      method: 'GET',
+      ...optimizationOptions
+    })
+    
+    // For free tier, we'll return the original image with optimization headers
+    // To enable actual resizing, uncomment the line below (requires paid plan):
+    // return fetch(optimizedRequest)
+    
+    // Free tier fallback: just return original with WebP content-type hint
+    headers.set('X-Optimization-Note', 'Image resizing requires Cloudflare Images plan')
+    if (format === 'webp') {
+      headers.set('Vary', 'Accept')
+    }
+    
+    return new Response(object.body, { headers })
+  } catch (error) {
+    console.error('Optimization error:', error)
+    // Fallback to original image
+    return new Response(object.body, { headers })
   }
 }
