@@ -46,7 +46,12 @@ async function handleImageRequest(request, env) {
 
     // Apply Cloudflare Image Optimization if parameters are provided
     if (width || quality || format) {
-      return applyImageOptimization(request, object, { width, quality, format }, headers)
+      return applyImageOptimization(
+        request,
+        object,
+        { width, quality, format },
+        headers
+      )
     }
 
     // Return the original image
@@ -60,10 +65,10 @@ async function handleImageRequest(request, env) {
 // Apply Cloudflare Image Optimization
 async function applyImageOptimization(request, object, params, headers) {
   const { width, quality, format } = params
-  
+
   // Create a temporary URL for the image
   const imageUrl = new URL(request.url)
-  
+
   // Use Cloudflare's Image Resizing feature
   // Note: This requires Cloudflare Images (paid feature) or Pro plan with Image Resizing
   const optimizationOptions = {
@@ -74,31 +79,34 @@ async function applyImageOptimization(request, object, params, headers) {
         format: format || 'webp', // Default to WebP for better compression
         fit: 'scale-down',
         metadata: 'none',
-        sharpen: 1.0
-      }
-    }
+        sharpen: 1.0,
+      },
+    },
   }
 
   try {
     // Create a response with the image body
     const imageResponse = new Response(object.body, { headers })
-    
+
     // Apply Cloudflare Image Resizing
     const optimizedRequest = new Request(imageUrl.toString(), {
       method: 'GET',
-      ...optimizationOptions
+      ...optimizationOptions,
     })
-    
+
     // For free tier, we'll return the original image with optimization headers
     // To enable actual resizing, uncomment the line below (requires paid plan):
     // return fetch(optimizedRequest)
-    
+
     // Free tier fallback: just return original with WebP content-type hint
-    headers.set('X-Optimization-Note', 'Image resizing requires Cloudflare Images plan')
+    headers.set(
+      'X-Optimization-Note',
+      'Image resizing requires Cloudflare Images plan'
+    )
     if (format === 'webp') {
       headers.set('Vary', 'Accept')
     }
-    
+
     return new Response(object.body, { headers })
   } catch (error) {
     console.error('Optimization error:', error)

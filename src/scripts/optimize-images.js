@@ -3,7 +3,11 @@
 // Image Optimization and Upload Tool for R2
 // This script optimizes images before uploading to R2
 
-import { S3Client, PutObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
+import {
+  S3Client,
+  PutObjectCommand,
+  ListObjectsV2Command,
+} from '@aws-sdk/client-s3'
 import sharp from 'sharp'
 import fs from 'fs'
 import path from 'path'
@@ -46,8 +50,12 @@ async function optimizeImage(inputPath, outputDir) {
   try {
     const image = sharp(inputPath)
     const metadata = await image.metadata()
-    
-    console.log(`📊 Original: ${metadata.width}x${metadata.height}, ${(metadata.size / 1024).toFixed(2)}KB`)
+
+    console.log(
+      `📊 Original: ${metadata.width}x${metadata.height}, ${(
+        metadata.size / 1024
+      ).toFixed(2)}KB`
+    )
 
     // Define size variants
     const sizes = [
@@ -55,10 +63,10 @@ async function optimizeImage(inputPath, outputDir) {
       { width: 800, suffix: '-md' },
       { width: 1200, suffix: '-lg' },
       { width: 1920, suffix: '-xl' },
-    ].filter(size => size.width <= metadata.width) // Don't upscale
+    ].filter((size) => size.width <= metadata.width) // Don't upscale
 
     // Add original size if not covered
-    if (!sizes.find(s => s.width === metadata.width)) {
+    if (!sizes.find((s) => s.width === metadata.width)) {
       sizes.push({ width: metadata.width, suffix: '' })
     }
 
@@ -70,9 +78,11 @@ async function optimizeImage(inputPath, outputDir) {
         .resize(size.width, null, { withoutEnlargement: true })
         .webp({ quality: 85, effort: 6 })
         .toFile(webpPath)
-      
+
       const webpStats = fs.statSync(webpPath)
-      console.log(`✅ ${path.basename(webpPath)}: ${(webpStats.size / 1024).toFixed(2)}KB`)
+      console.log(
+        `✅ ${path.basename(webpPath)}: ${(webpStats.size / 1024).toFixed(2)}KB`
+      )
       optimizedFiles.push({ path: webpPath, format: 'webp', width: size.width })
 
       // AVIF version (even better compression, newer format)
@@ -81,9 +91,11 @@ async function optimizeImage(inputPath, outputDir) {
         .resize(size.width, null, { withoutEnlargement: true })
         .avif({ quality: 75, effort: 6 })
         .toFile(avifPath)
-      
+
       const avifStats = fs.statSync(avifPath)
-      console.log(`✅ ${path.basename(avifPath)}: ${(avifStats.size / 1024).toFixed(2)}KB`)
+      console.log(
+        `✅ ${path.basename(avifPath)}: ${(avifStats.size / 1024).toFixed(2)}KB`
+      )
       optimizedFiles.push({ path: avifPath, format: 'avif', width: size.width })
 
       // JPEG version (fallback for older browsers)
@@ -92,9 +104,11 @@ async function optimizeImage(inputPath, outputDir) {
         .resize(size.width, null, { withoutEnlargement: true })
         .jpeg({ quality: 85, progressive: true })
         .toFile(jpegPath)
-      
+
       const jpegStats = fs.statSync(jpegPath)
-      console.log(`✅ ${path.basename(jpegPath)}: ${(jpegStats.size / 1024).toFixed(2)}KB`)
+      console.log(
+        `✅ ${path.basename(jpegPath)}: ${(jpegStats.size / 1024).toFixed(2)}KB`
+      )
       optimizedFiles.push({ path: jpegPath, format: 'jpeg', width: size.width })
     }
 
@@ -112,13 +126,13 @@ async function uploadToR2(filePath, r2Key) {
   try {
     const fileContent = fs.readFileSync(filePath)
     const ext = path.extname(filePath).toLowerCase()
-    
+
     const contentTypes = {
       '.jpg': 'image/jpeg',
       '.jpeg': 'image/jpeg',
       '.webp': 'image/webp',
       '.avif': 'image/avif',
-      '.png': 'image/png'
+      '.png': 'image/png',
     }
 
     const command = new PutObjectCommand({
@@ -129,7 +143,7 @@ async function uploadToR2(filePath, r2Key) {
       CacheControl: 'public, max-age=31536000, immutable',
       Metadata: {
         'uploaded-at': new Date().toISOString(),
-        'optimized': 'true'
+        optimized: 'true',
       },
     })
 
@@ -148,17 +162,17 @@ async function uploadToR2(filePath, r2Key) {
 async function processImage(inputPath, r2BasePath = '') {
   const fileName = path.parse(inputPath).name
   const tempDir = path.join(__dirname, '../temp')
-  
+
   // Create temp directory
   if (!fs.existsSync(tempDir)) {
     fs.mkdirSync(tempDir, { recursive: true })
   }
 
   console.log(`\n🎨 Processing: ${path.basename(inputPath)}`)
-  
+
   // Optimize image
   const optimizedFiles = await optimizeImage(inputPath, tempDir)
-  
+
   if (optimizedFiles.length === 0) {
     console.log('❌ No optimized files generated')
     return
@@ -167,20 +181,22 @@ async function processImage(inputPath, r2BasePath = '') {
   // Upload optimized versions
   console.log('\n📤 Uploading to R2...')
   let uploaded = 0
-  
+
   for (const file of optimizedFiles) {
-    const r2Key = r2BasePath 
+    const r2Key = r2BasePath
       ? `${r2BasePath}/${path.basename(file.path)}`
       : path.basename(file.path)
-    
+
     const success = await uploadToR2(file.path, r2Key)
     if (success) uploaded++
-    
+
     // Clean up temp file
     fs.unlinkSync(file.path)
   }
 
-  console.log(`\n✨ Uploaded ${uploaded}/${optimizedFiles.length} files for ${fileName}`)
+  console.log(
+    `\n✨ Uploaded ${uploaded}/${optimizedFiles.length} files for ${fileName}`
+  )
 }
 
 /**
@@ -197,24 +213,27 @@ async function listBucket() {
 
     if (response.Contents && response.Contents.length > 0) {
       console.log('\n📦 R2 Bucket Contents:')
-      
+
       // Group by base name
       const grouped = {}
-      response.Contents.forEach(obj => {
-        const baseName = obj.Key.replace(/(-sm|-md|-lg|-xl)?\.(webp|avif|jpg|jpeg|png|svg)$/, '')
+      response.Contents.forEach((obj) => {
+        const baseName = obj.Key.replace(
+          /(-sm|-md|-lg|-xl)?\.(webp|avif|jpg|jpeg|png|svg)$/,
+          ''
+        )
         if (!grouped[baseName]) grouped[baseName] = []
         grouped[baseName].push(obj)
       })
 
       Object.entries(grouped).forEach(([baseName, files]) => {
         console.log(`\n📁 ${baseName}:`)
-        files.forEach(file => {
+        files.forEach((file) => {
           const size = (file.Size / 1024).toFixed(2)
           const format = path.extname(file.Key).substring(1)
           console.log(`   ${file.Key} (${size} KB, ${format})`)
         })
       })
-      
+
       console.log(`\nTotal: ${response.Contents.length} files`)
     } else {
       console.log('\n📦 Bucket is empty')
@@ -238,19 +257,23 @@ async function main() {
   switch (command) {
     case 'add':
       if (args.length < 1) {
-        console.log('Usage: node optimize-images.js add <image-path> [r2-folder]')
-        console.log('Example: node optimize-images.js add ./profile.jpg profile')
+        console.log(
+          'Usage: node optimize-images.js add <image-path> [r2-folder]'
+        )
+        console.log(
+          'Example: node optimize-images.js add ./profile.jpg profile'
+        )
         break
       }
-      
+
       const imagePath = args[0]
       const r2Folder = args[1] || ''
-      
+
       if (!fs.existsSync(imagePath)) {
         console.error(`❌ File not found: ${imagePath}`)
         break
       }
-      
+
       await processImage(imagePath, r2Folder)
       break
 
@@ -261,20 +284,21 @@ async function main() {
     case 'batch':
       console.log('🔄 Processing all images in public/images...')
       const imagesDir = path.join(process.cwd(), 'public/images')
-      
+
       if (!fs.existsSync(imagesDir)) {
         console.error(`❌ Directory not found: ${imagesDir}`)
         break
       }
 
-      const files = fs.readdirSync(imagesDir)
-        .filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file))
-        .map(file => path.join(imagesDir, file))
+      const files = fs
+        .readdirSync(imagesDir)
+        .filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))
+        .map((file) => path.join(imagesDir, file))
 
       for (const file of files) {
         await processImage(file)
       }
-      
+
       console.log(`\n🎉 Processed ${files.length} images`)
       break
 

@@ -34,18 +34,23 @@ const baseUrl = isDev
   : 'https://josemianton-com.bobeliadesign.workers.dev' // Production Workers URL
 
 // Generate optimized image URL with query parameters
-const generateImageUrl = (src: string, width?: number, quality?: number, format?: string) => {
+const generateImageUrl = (
+  src: string,
+  width?: number,
+  quality?: number,
+  format?: string
+) => {
   if (src.startsWith('http')) return src
-  
+
   const url = new URL(`${baseUrl}/images/${src}`)
-  
+
   // Add optimization parameters for production
   if (!isDev) {
     if (width) url.searchParams.set('w', width.toString())
     if (quality && quality !== 85) url.searchParams.set('q', quality.toString())
     if (format && format !== 'auto') url.searchParams.set('f', format)
   }
-  
+
   return url.toString()
 }
 
