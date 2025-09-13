@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
+import cloudflare from '@astrojs/cloudflare'
 import react from '@astrojs/react'
 import icon from 'astro-icon'
 import sitemap from '@astrojs/sitemap'
@@ -15,12 +16,13 @@ export default defineConfig({
     inlineStylesheets: 'auto',
     image: {
       service: {
-        entrypoint: 'astro/assets/services/sharp',
+        entrypoint: 'astro/assets/services/squoosh',
       },
       format: ['avif', 'webp'],
     },
   },
-  adapter: cloudflare(),
+  // Remove adapter for static builds or configure properly for Workers
+  // adapter: cloudflare(),
   integrations: [
     tailwind({
       applyBaseStyles: false,
