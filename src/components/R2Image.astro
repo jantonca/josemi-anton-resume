@@ -25,13 +25,17 @@ const {
   aspectRatio,
 } = Astro.props
 
-// For now, use direct R2 public URLs
-// TODO: Update to use custom Worker when needed
-const baseUrl = `https://pub-your-r2-public-url.r2.dev/${src}`
+// For development and production image handling
+// In development, use local images as fallback
+// In production, we'll use the deployed domain to proxy through to R2
+const isDev = import.meta.env.DEV
+const baseUrl = isDev 
+  ? 'http://localhost:4322' // Development server
+  : 'https://josemianton-com.bobeliadesign.workers.dev' // Production Workers URL
 
-const imageUrl = baseUrl
-
-// Generate srcset for responsive images
+const imageUrl = src.startsWith('http') 
+  ? src 
+  : `${baseUrl}/images/${src}`// Generate srcset for responsive images
 const generateSrcset = () => {
   if (!width) return undefined
 
@@ -45,7 +49,7 @@ const generateSrcset = () => {
 
   return widths
     .map((w) => {
-      return `${baseUrl} ${Math.round(w)}w`
+      return `${imageUrl} ${Math.round(w)}w`
     })
     .join(', ')
 }

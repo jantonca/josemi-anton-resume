@@ -1,9 +1,8 @@
 ---
 import NumberedHeading from './NumberedHeading.astro'
 import SkillList from './SkillList.astro'
-import { Image } from 'astro:assets'
+import R2Image from './R2Image.astro'
 import { aboutContent } from '@/content/about'
-import profileImageSrc from '../../public/images/profile.jpg'
 
 const { skills, description, profileImage, currentWork, previousWork } =
   aboutContent
@@ -65,8 +64,8 @@ const { skills, description, profileImage, currentWork, previousWork } =
             class='absolute inset-0 transform translate-x-4 translate-y-4 border-2 border-pacific rounded transition-transform duration-300 group-hover:translate-x-6 group-hover:translate-y-6'
           >
           </div>
-          <Image
-            src={profileImageSrc}
+          <R2Image
+            src='profile.jpg'
             width={300}
             height={300}
             alt={profileImage.alt}
