@@ -14,7 +14,7 @@
     "deploy": "pnpm build && npx wrangler deploy",
     "images:upload": "node src/scripts/upload-images.js",
     "images:batch": "node src/scripts/upload-images.js batch",
-    "images:add": "node src/scripts/optimize-images.js add",
+    "images:add": "./scripts/add-image.sh",
     "images:optimize": "node src/scripts/optimize-images.js batch",
     "r2:list": "node src/scripts/optimize-images.js list",
     "r2:stats": "node src/scripts/upload-images.js list",

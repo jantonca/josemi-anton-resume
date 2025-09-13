@@ -24,11 +24,9 @@ pnpm-debug.log*
 downloaded-*.jpg
 *.tmp
 
-# Large images (use R2 instead)
-public/images/*.jpg
-public/images/*.png
-public/images/*.jpeg
-!public/images/placeholder.jpg
+# Large images (use R2 instead) - NEVER commit these
+public/images/
+!public/images/.gitkeep
 
 # macOS-specific files
 .DS_Store

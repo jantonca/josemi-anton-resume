@@ -178,25 +178,48 @@ async function processImage(inputPath, r2BasePath = '') {
     return
   }
 
-  // Upload optimized versions
+  // Upload optimized versions to R2 and copy to local
   console.log('\n📤 Uploading to R2...')
+  console.log('📁 Copying to local public/images...')
+
   let uploaded = 0
+  const localImagesDir = path.join(process.cwd(), 'public/images')
+
+  // Ensure local images directory exists
+  if (!fs.existsSync(localImagesDir)) {
+    fs.mkdirSync(localImagesDir, { recursive: true })
+  }
 
   for (const file of optimizedFiles) {
     const r2Key = r2BasePath
       ? `${r2BasePath}/${path.basename(file.path)}`
       : path.basename(file.path)
 
+    // Upload to R2
     const success = await uploadToR2(file.path, r2Key)
     if (success) uploaded++
+
+    // Copy to local public/images (preserving folder structure)
+    const localPath = r2BasePath
+      ? path.join(localImagesDir, r2BasePath, path.basename(file.path))
+      : path.join(localImagesDir, path.basename(file.path))
+
+    // Create subdirectory if needed
+    const localDir = path.dirname(localPath)
+    if (!fs.existsSync(localDir)) {
+      fs.mkdirSync(localDir, { recursive: true })
+    }
+
+    // Copy file to local
+    fs.copyFileSync(file.path, localPath)
+    console.log(`📁 Local: ${path.relative(process.cwd(), localPath)}`)
 
     // Clean up temp file
     fs.unlinkSync(file.path)
   }
 
-  console.log(
-    `\n✨ Uploaded ${uploaded}/${optimizedFiles.length} files for ${fileName}`
-  )
+  console.log(`\n✨ Uploaded ${uploaded}/${optimizedFiles.length} files to R2`)
+  console.log(`📁 Copied ${optimizedFiles.length} files to local public/images`)
 }
 
 /**
