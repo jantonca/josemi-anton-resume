@@ -9,6 +9,6 @@ export const heroContent: HeroContent = {
   currentWork: {
     company: 'Rotor Studios',
     url: 'https://www.rotorstudios.com/',
-    role: 'on groundbreaking projects in VR/AR and WebGL',
+    role: 'on innovative projects in VR/AR and WebGL',
   },
 }
