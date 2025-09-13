@@ -29,13 +29,11 @@ const {
 // In development, use local images as fallback
 // In production, we'll use the deployed domain to proxy through to R2
 const isDev = import.meta.env.DEV
-const baseUrl = isDev 
+const baseUrl = isDev
   ? 'http://localhost:4322' // Development server
   : 'https://josemianton-com.bobeliadesign.workers.dev' // Production Workers URL
 
-const imageUrl = src.startsWith('http') 
-  ? src 
-  : `${baseUrl}/images/${src}`// Generate srcset for responsive images
+const imageUrl = src.startsWith('http') ? src : `${baseUrl}/images/${src}` // Generate srcset for responsive images
 const generateSrcset = () => {
   if (!width) return undefined
 
