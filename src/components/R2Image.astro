@@ -30,7 +30,7 @@ const {
 const isDev = import.meta.env.DEV
 const baseUrl = isDev
   ? '' // In dev, serve from /images/ directly
-  : 'https://josemianton-com.bobeliadesign.workers.dev' // Production Workers URL
+  : 'https://cdn.josemianton.com' // CDN subdomain for optimized delivery
 
 // Generate optimized image URL based on our naming convention
 const generateImageUrl = (
