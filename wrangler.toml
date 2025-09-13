@@ -1,0 +1,13 @@
+# Cloudflare Workers configuration for josemianton.com
+# Migrated from Pages to Workers with static assets support
+
+name = "josemianton-com"
+main = "dist/_worker.js/index.js"
+compatibility_date = "2025-09-13"
+compatibility_flags = ["nodejs_compat"]
+
+# Static assets configuration - serves CSS, JS, images, fonts, etc.
+[assets]
+directory = "dist"
+not_found_handling = "404-page"
+binding = "ASSETS"
