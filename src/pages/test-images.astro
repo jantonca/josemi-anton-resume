@@ -24,7 +24,7 @@ const isDev = import.meta.env.DEV
         </p>
       ) : (
         <p class="text-sm text-green-600 dark:text-green-400">
-          ✅ In production, using optimized images from R2 (name-800.webp, name-1600.webp, etc.)
+          ✅ In production, using optimized images from R2 (name-400.webp, name-800.webp, name-1200.webp, etc.)
         </p>
       )}
     </div>
@@ -142,11 +142,13 @@ const isDev = import.meta.env.DEV
       <section class="bg-blue-50 dark:bg-blue-950 p-6 rounded-lg">
         <h2 class="text-xl font-semibold mb-4">Production URLs Generated</h2>
         <div class="font-mono text-sm space-y-2">
-          <p>Base URL: https://josemianton-com.bobeliadesign.workers.dev</p>
-          <p>Small WebP: /images/profile-800.webp</p>
-          <p>Large WebP: /images/profile-1600.webp</p>
-          <p>Small AVIF: /images/profile-800.avif</p>
-          <p>Large AVIF: /images/profile-1600.avif</p>
+          <p>Base URL: https://cdn.josemianton.com</p>
+          <p>Mobile WebP: /images/profile-400.webp</p>
+          <p>Tablet WebP: /images/profile-800.webp</p>
+          <p>Desktop WebP: /images/profile-1200.webp</p>
+          <p>Mobile AVIF: /images/profile-400.avif</p>
+          <p>Tablet AVIF: /images/profile-800.avif</p>
+          <p>Desktop AVIF: /images/profile-1200.avif</p>
         </div>
       </section>
     )}

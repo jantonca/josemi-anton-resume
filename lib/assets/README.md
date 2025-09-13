@@ -5,11 +5,13 @@ A simple, reusable asset optimization and upload system for Cloudflare R2.
 ## ✨ Features
 
 - 🎨 Automatic image optimization (AVIF + WebP)
+- 📱 Mobile-first responsive sizes (400px, 800px, 1200px)
 - 📁 Mirrors local folder structure in R2
 - 🔄 Smart change detection (skip unchanged files)
 - 📊 Storage monitoring (10GB free tier aware)
 - 🚀 Zero configuration for basic usage
 - 📝 Manifest tracking for processed files
+- ⚡ Adaptive quality settings per size
 
 ## 🚀 Quick Start
 
@@ -89,29 +91,39 @@ npm run assets:status
 ```
 Original: profile.jpg
 Outputs:
-  - profile-800.webp   (mobile)
-  - profile-800.avif   (mobile, best)
-  - profile-1600.webp  (desktop)
-  - profile-1600.avif  (desktop, best)
+  - profile-400.webp   (mobile, quality 90)
+  - profile-400.avif   (mobile, quality 90)
+  - profile-800.webp   (tablet, quality 85)
+  - profile-800.avif   (tablet, quality 85)
+  - profile-1200.webp  (desktop, quality 80)
+  - profile-1200.avif  (desktop, quality 80)
 ```
 
 ## 🔧 Customization
 
 ### Change Output Sizes
 
-Edit `processor.js` line 47-50:
+Edit `processor.js` RULES object:
 
 ```javascript
-'.jpg': { outputs: ['webp', 'avif'], sizes: [800, 1600] },
+'.jpg': { 
+  outputs: ['webp', 'avif'], 
+  sizes: [400, 800, 1200],
+  quality: { 400: 90, 800: 85, 1200: 80 }
+},
 ```
 
 ### Change Quality Settings
 
-Edit `processor.js` lines 207-210:
+The processor uses adaptive quality based on image size:
 
 ```javascript
-pipeline.webp({ quality: 85, effort: 6 })
-pipeline.avif({ quality: 80, effort: 6 })
+// Mobile-first quality strategy
+const quality = this.getQualityForSize(width)
+// 400px → 90, 800px → 85, 1200px → 80
+
+pipeline.webp({ quality, effort: 6 })
+pipeline.avif({ quality, effort: 6 })
 ```
 
 ### Add More Formats
@@ -156,17 +168,32 @@ The system creates `public/assets-manifest.json`:
 
 ```astro
 ---
-// Get optimized image URL
-const getImageUrl = (src, width) => {
-  if (import.meta.env.DEV) {
-    return `/images/${src}`
-  }
-  const name = src.replace(/\.[^.]+$/, '')
-  return `https://your-cdn.com/images/${name}-${width}.webp`
-}
+// R2Image component example
+import R2Image from './R2Image.astro'
 ---
 
-<img src={getImageUrl('profile.jpg', 800)} alt="Profile" />
+<R2Image 
+  src="profile.jpg" 
+  alt="Profile"
+  width={800}
+  height={800}
+  class="rounded-lg"
+/>
+```
+
+### Picture Element with Multiple Formats
+
+```astro
+---
+import R2Picture from './R2Picture.astro'
+---
+
+<R2Picture 
+  src="hero.jpg" 
+  alt="Hero image"
+  sizes="(max-width: 768px) 100vw, 50vw"
+  class="w-full"
+/>
 ```
 
 ### Programmatic Usage
