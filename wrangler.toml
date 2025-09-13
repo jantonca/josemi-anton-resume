@@ -5,7 +5,15 @@ name = "josemianton-com"
 compatibility_date = "2025-09-13"
 compatibility_flags = ["nodejs_compat"]
 
+# Account ID (get from Cloudflare dashboard)
+account_id = "25a61ab8f9c60a0937e2090a56eea721"
+
 # Static assets configuration - serves the entire static site
 [assets]
 directory = "dist"
 not_found_handling = "single-page-application"
+
+# R2 bucket binding for portfolio images (for future use)
+[[r2_buckets]]
+binding = "IMAGES_BUCKET"
+bucket_name = "josemianton-com"

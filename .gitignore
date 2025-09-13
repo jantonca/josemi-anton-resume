@@ -17,6 +17,19 @@ pnpm-debug.log*
 .env
 .env.production
 
+# Wrangler files
+.wrangler/
+
+# R2 temp files
+downloaded-*.jpg
+*.tmp
+
+# Large images (use R2 instead)
+public/images/*.jpg
+public/images/*.png
+public/images/*.jpeg
+!public/images/placeholder.jpg
+
 # macOS-specific files
 .DS_Store
 

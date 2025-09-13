@@ -1,0 +1,90 @@
+---
+export interface Props {
+  src: string
+  alt: string
+  width?: number
+  height?: number
+  quality?: number
+  format?: 'webp' | 'avif' | 'auto'
+  loading?: 'lazy' | 'eager'
+  class?: string
+  sizes?: string
+  aspectRatio?: string
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  quality = 85,
+  format,
+  loading = 'lazy',
+  class: className,
+  sizes,
+  aspectRatio,
+} = Astro.props
+
+// For now, use direct R2 public URLs
+// TODO: Update to use custom Worker when needed
+const baseUrl = `https://pub-your-r2-public-url.r2.dev/${src}`
+
+const imageUrl = baseUrl
+
+// Generate srcset for responsive images
+const generateSrcset = () => {
+  if (!width) return undefined
+
+  const widths = [
+    width * 0.5, // 50%
+    width * 0.75, // 75%
+    width, // 100%
+    width * 1.5, // 150%
+    width * 2, // 200% for retina
+  ].filter((w) => w <= 2400) // Max width cap
+
+  return widths
+    .map((w) => {
+      return `${baseUrl} ${Math.round(w)}w`
+    })
+    .join(', ')
+}
+
+const srcset = generateSrcset()
+
+// Container styles for aspect ratio
+const containerStyle = aspectRatio ? `aspect-ratio: ${aspectRatio};` : undefined
+---
+
+{
+  aspectRatio ? (
+    <div
+      style={containerStyle}
+      class='relative overflow-hidden'
+    >
+      <img
+        src={imageUrl}
+        srcset={srcset}
+        sizes={sizes}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        class={`absolute inset-0 w-full h-full object-cover ${className || ''}`}
+        decoding='async'
+      />
+    </div>
+  ) : (
+    <img
+      src={imageUrl}
+      srcset={srcset}
+      sizes={sizes}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      class={className}
+      decoding='async'
+    />
+  )
+}

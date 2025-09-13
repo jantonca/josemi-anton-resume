@@ -10,12 +10,19 @@
     "astro": "astro",
     "clean": "rm -rf dist .astro .vite-cache",
     "type-check": "astro check && tsc --noEmit",
-    "lint": "astro check"
+    "lint": "astro check",
+    "deploy": "pnpm build && npx wrangler deploy",
+    "images:upload": "node src/scripts/upload-images.js",
+    "images:batch": "node src/scripts/upload-images.js batch",
+    "r2:list": "node src/scripts/upload-images.js list",
+    "r2:stats": "node src/scripts/upload-images.js list",
+    "r2:test": "curl -I https://josemianton.com/images/test.jpg"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.8",
     "@astrojs/react": "^4.3.1",
     "@astrojs/sitemap": "^3.5.1",
+    "@aws-sdk/client-s3": "^3.888.0",
     "@icons-pack/react-simple-icons": "^10.2.0",
     "@radix-ui/react-slot": "^1.2.3",
     "astro": "^5.13.7",
@@ -23,6 +30,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.456.0",
+    "mime-types": "^3.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sharp": "^0.33.5",
