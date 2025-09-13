@@ -1,0 +1,154 @@
+---
+import Layout from '../layouts/Layout.astro'
+import R2Image from '../components/R2Image.astro'
+import R2Picture from '../components/R2Picture.astro'
+
+// Test in both dev and production
+const isDev = import.meta.env.DEV
+---
+
+<Layout 
+  title="Image Component Test"
+  description="Testing R2 image components with new naming convention"
+>
+  <div class="container mx-auto p-8 space-y-12">
+    <h1 class="text-3xl font-bold mb-8">R2 Image Components Test</h1>
+    
+    <div class="bg-card p-6 rounded-lg border">
+      <p class="text-sm text-muted-foreground mb-4">
+        Environment: <span class="font-mono text-primary">{isDev ? 'Development' : 'Production'}</span>
+      </p>
+      {isDev ? (
+        <p class="text-sm text-yellow-600 dark:text-yellow-400">
+          ⚠️ In development, using original images from /public/images/
+        </p>
+      ) : (
+        <p class="text-sm text-green-600 dark:text-green-400">
+          ✅ In production, using optimized images from R2 (name-800.webp, name-1600.webp, etc.)
+        </p>
+      )}
+    </div>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">R2Image Component</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <h3 class="text-lg font-medium">Small (width=400)</h3>
+          <R2Image 
+            src="profile.jpg" 
+            alt="Profile test - small"
+            width={400}
+            height={400}
+            class="rounded-lg border"
+          />
+          <p class="text-xs text-muted-foreground font-mono">
+            {isDev ? '/images/profile.jpg' : 'images/profile-800.webp'}
+          </p>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-medium">Large (width=1200)</h3>
+          <R2Image 
+            src="profile.jpg" 
+            alt="Profile test - large"
+            width={1200}
+            height={1200}
+            class="rounded-lg border"
+          />
+          <p class="text-xs text-muted-foreground font-mono">
+            {isDev ? '/images/profile.jpg' : 'images/profile-1600.webp'}
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-6 space-y-4">
+        <h3 class="text-lg font-medium">With AVIF format preference</h3>
+        <R2Image 
+          src="profile.jpg" 
+          alt="Profile test - AVIF"
+          width={800}
+          format="avif"
+          class="rounded-lg border max-w-md"
+        />
+        <p class="text-xs text-muted-foreground font-mono">
+          {isDev ? '/images/profile.jpg' : 'images/profile-800.avif'}
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">R2Picture Component</h2>
+      
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium">Multi-format with srcset</h3>
+        <R2Picture 
+          src="profile.jpg" 
+          alt="Profile test - Picture element"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          class="rounded-lg border max-w-2xl"
+        />
+        <div class="text-xs text-muted-foreground font-mono space-y-1">
+          <p>Generates &lt;picture&gt; with:</p>
+          {!isDev && (
+            <>
+              <p>- AVIF sources: profile-800.avif, profile-1600.avif</p>
+              <p>- WebP sources: profile-800.webp, profile-1600.webp</p>
+              <p>- Fallback: profile-800.webp</p>
+            </>
+          )}
+          {isDev && (
+            <p>- Original image: /images/profile.jpg</p>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Responsive Behavior</h2>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="space-y-2">
+          <R2Image 
+            src="profile.jpg" 
+            alt="Responsive 1"
+            width={600}
+            class="w-full h-auto rounded"
+          />
+          <p class="text-xs text-center">width=600</p>
+        </div>
+        <div class="space-y-2">
+          <R2Image 
+            src="profile.jpg" 
+            alt="Responsive 2"
+            width={900}
+            class="w-full h-auto rounded"
+          />
+          <p class="text-xs text-center">width=900</p>
+        </div>
+        <div class="space-y-2">
+          <R2Image 
+            src="profile.jpg" 
+            alt="Responsive 3"
+            width={1400}
+            class="w-full h-auto rounded"
+          />
+          <p class="text-xs text-center">width=1400</p>
+        </div>
+      </div>
+    </section>
+
+    {!isDev && (
+      <section class="bg-blue-50 dark:bg-blue-950 p-6 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">Production URLs Generated</h2>
+        <div class="font-mono text-sm space-y-2">
+          <p>Base URL: https://josemianton-com.bobeliadesign.workers.dev</p>
+          <p>Small WebP: /images/profile-800.webp</p>
+          <p>Large WebP: /images/profile-1600.webp</p>
+          <p>Small AVIF: /images/profile-800.avif</p>
+          <p>Large AVIF: /images/profile-1600.avif</p>
+        </div>
+      </section>
+    )}
+  </div>
+</Layout>

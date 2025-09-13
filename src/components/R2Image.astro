@@ -25,55 +25,62 @@ const {
   aspectRatio,
 } = Astro.props
 
-// For development and production image handling
-// In development, use local images as fallback
-// In production, we'll use the deployed domain to proxy through to R2
+// Handle development and production image paths
+// Our asset processor creates: name-800.webp, name-1600.webp, name-800.avif, name-1600.avif
 const isDev = import.meta.env.DEV
 const baseUrl = isDev
-  ? 'http://localhost:4322' // Development server
+  ? '' // In dev, serve from /images/ directly
   : 'https://josemianton-com.bobeliadesign.workers.dev' // Production Workers URL
 
-// Generate optimized image URL with query parameters
+// Generate optimized image URL based on our naming convention
 const generateImageUrl = (
   src: string,
   width?: number,
-  quality?: number,
-  format?: string
+  preferredFormat?: string
 ) => {
   if (src.startsWith('http')) return src
-
-  const url = new URL(`${baseUrl}/images/${src}`)
-
-  // Add optimization parameters for production
-  if (!isDev) {
-    if (width) url.searchParams.set('w', width.toString())
-    if (quality && quality !== 85) url.searchParams.set('q', quality.toString())
-    if (format && format !== 'auto') url.searchParams.set('f', format)
+  
+  // For SVG files, just return as-is
+  if (src.endsWith('.svg')) {
+    return `${baseUrl}/images/${src}`
   }
-
-  return url.toString()
+  
+  // For processed images, use our naming convention
+  if (width && !isDev) {
+    // Remove extension from filename
+    const nameWithoutExt = src.replace(/\.[^.]+$/, '')
+    // Find closest size from our presets: 800 or 1600
+    const targetWidth = width <= 800 ? 800 : 1600
+    // Use format preference or default to webp
+    const targetFormat = preferredFormat || format || 'webp'
+    
+    return `${baseUrl}/images/${nameWithoutExt}-${targetWidth}.${targetFormat}`
+  }
+  
+  // Fallback to original image in dev or if no width specified
+  return `${baseUrl}/images/${src}`
 }
 
-const imageUrl = generateImageUrl(src, width, quality, format)
+const imageUrl = generateImageUrl(src, width, format)
 
-// Generate srcset for responsive images with optimization
+// Generate srcset using our preprocessed images
 const generateSrcset = () => {
-  if (!width) return undefined
-
-  const widths = [
-    Math.round(width * 0.5), // 50%
-    Math.round(width * 0.75), // 75%
-    width, // 100%
-    Math.round(width * 1.5), // 150%
-    Math.round(width * 2), // 200% for retina
-  ].filter((w) => w <= 2400) // Max width cap
-
-  return widths
-    .map((w) => {
-      const optimizedUrl = generateImageUrl(src, w, quality, format)
-      return `${optimizedUrl} ${w}w`
-    })
-    .join(', ')
+  if (!src || src.endsWith('.svg')) return undefined
+  
+  // We have two sizes: 800 and 1600
+  const nameWithoutExt = src.replace(/\.[^.]+$/, '')
+  const preferredFormat = format || 'webp'
+  
+  if (isDev) {
+    // In dev, just use the original image
+    return undefined
+  }
+  
+  // In production, use our optimized versions
+  return [
+    `${baseUrl}/images/${nameWithoutExt}-800.${preferredFormat} 800w`,
+    `${baseUrl}/images/${nameWithoutExt}-1600.${preferredFormat} 1600w`
+  ].join(', ')
 }
 
 const srcset = generateSrcset()

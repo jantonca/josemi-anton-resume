@@ -15,41 +15,41 @@ const {
   src,
   alt,
   sizes = '100vw',
-  widths = [400, 800, 1200, 1600],
-  formats = ['avif', 'webp', 'original'],
+  widths = [800, 1600], // Our processor creates these two sizes
+  formats = ['avif', 'webp'],
   loading = 'lazy',
   class: imgClass,
   pictureClass,
 } = Astro.props
 
-// Generate srcset for optimized images (works for both dev and production)
-const generateSrcset = (format?: string) => {
+const isDev = import.meta.env.DEV
+const baseUrl = isDev 
+  ? '' 
+  : 'https://josemianton-com.bobeliadesign.workers.dev'
+
+// Remove extension from source filename
+const nameWithoutExt = src.replace(/\.[^.]+$/, '')
+
+// Generate srcset for our naming convention: name-800.webp, name-1600.webp
+const generateSrcset = (format: string) => {
+  if (isDev) {
+    // In dev, just use the original image
+    return `/images/${src}`
+  }
+  
+  // In production, use our optimized versions
   return widths
     .map((w) => {
-      let filename
-      if (format === 'avif') {
-        if (w <= 400) filename = `${src}-sm.avif`
-        else if (w <= 800) filename = `${src}-md.avif`
-        else if (w <= 1200) filename = `${src}-lg.avif`
-        else filename = `${src}-xl.avif`
-      } else if (format === 'webp') {
-        if (w <= 400) filename = `${src}-sm.webp`
-        else if (w <= 800) filename = `${src}-md.webp`
-        else if (w <= 1200) filename = `${src}-lg.webp`
-        else filename = `${src}-xl.webp`
-      } else {
-        if (w <= 400) filename = `${src}-sm.jpg`
-        else if (w <= 800) filename = `${src}-md.jpg`
-        else if (w <= 1200) filename = `${src}-lg.jpg`
-        else filename = `${src}-xl.jpg`
-      }
-      return `/images/${filename} ${w}w`
+      const filename = `${nameWithoutExt}-${w}.${format}`
+      return `${baseUrl}/images/${filename} ${w}w`
     })
     .join(', ')
 }
 
-// Default fallback image (medium size JPEG)
-const defaultUrl = `/images/${src}-md.jpg`
+// Default fallback image (use webp as default)
+const defaultUrl = isDev 
+  ? `/images/${src}`
+  : `${baseUrl}/images/${nameWithoutExt}-800.webp`
 ---
 
 {
@@ -73,7 +73,7 @@ const defaultUrl = `/images/${src}-md.jpg`
 
       <img
         src={defaultUrl}
-        srcset={generateSrcset()}
+        srcset={!isDev ? generateSrcset('webp') : undefined}
         sizes={sizes}
         alt={alt}
         loading={loading}

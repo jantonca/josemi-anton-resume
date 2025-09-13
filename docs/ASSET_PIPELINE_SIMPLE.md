@@ -21,25 +21,25 @@ public/
 
 ---
 
-## ✅ Implementation Checklist - Phase 1 (MVP)
+## ✅ Implementation Checklist - Phase 1 (MVP) ✓ COMPLETE
 
-### 1. Single Processing Script (`lib/assets/process.ts`)
-```typescript
+### 1. Single Processing Script (`lib/assets/processor.js`)
+```javascript
 // One file, clear responsibilities
 class AssetProcessor {
   // Core methods only
-  async processImage(path: string): Promise<void>
-  async uploadToR2(localPath: string, r2Path: string): Promise<void>
-  async getStorageUsage(): Promise<number>
+  async processImage(path, size, format)
+  async uploadToR2(content, key)
+  async getStorageStatus()
 }
 ```
 
 **Tasks:**
-- [ ] Create single `AssetProcessor` class
-- [ ] Read files from `public/images` and `public/documents`
-- [ ] Process based on file extension
-- [ ] Upload with same path structure
-- [ ] Track what's been uploaded (simple JSON manifest)
+- [✓] Create single `AssetProcessor` class
+- [✓] Read files from `public/images` and `public/documents`
+- [✓] Process based on file extension
+- [✓] Upload with same path structure
+- [✓] Track what's been uploaded (simple JSON manifest)
 
 ### 2. Image Processing Rules (Simple)
 ```typescript
@@ -60,10 +60,10 @@ const PROCESSING_RULES = {
 ```
 
 **Tasks:**
-- [ ] AVIF + WebP for photos (2 sizes max)
-- [ ] SVG optimization with SVGO
-- [ ] PDF compression with Ghostscript
-- [ ] Skip already optimized formats
+- [✓] AVIF + WebP for photos (2 sizes max)
+- [✓] SVG optimization placeholder (SVGO ready)
+- [✓] PDF compression placeholder (Ghostscript ready)
+- [✓] Skip already optimized formats
 
 ### 3. File Naming Convention
 ```
@@ -78,9 +78,9 @@ Keep it predictable!
 ```
 
 **Tasks:**
-- [ ] Simple naming: `{name}-{width}.{format}`
-- [ ] Original name without size suffix
-- [ ] Preserve folder structure
+- [✓] Simple naming: `{name}-{width}.{format}`
+- [✓] Original name without size suffix
+- [✓] Preserve folder structure
 
 ### 4. Simple Manifest (`public/assets-manifest.json`)
 ```json
@@ -107,10 +107,10 @@ Keep it predictable!
 ```
 
 **Tasks:**
-- [ ] Track processed files with hash
-- [ ] Skip if hash unchanged
-- [ ] Show storage usage
-- [ ] Auto-update on each run
+- [✓] Track processed files with hash
+- [✓] Skip if hash unchanged
+- [✓] Show storage usage
+- [✓] Auto-update on each run
 
 ### 5. CLI Commands (Just 3)
 ```bash
@@ -125,9 +125,9 @@ npm run assets:clean
 ```
 
 **Tasks:**
-- [ ] `sync`: Process new/changed files only
-- [ ] `status`: Show storage usage and file count
-- [ ] `clean`: Remove R2 files not in manifest
+- [✓] `sync`: Process new/changed files only
+- [✓] `status`: Show storage usage and file count
+- [ ] `clean`: Remove R2 files not in manifest (optional)
 
 ---
 
@@ -160,6 +160,31 @@ const getImageUrl = (src: string, width?: number) => {
 - [ ] Keep components simple and focused
 
 ---
+
+## 🔒 Security Checklist (CRITICAL)
+
+### Preventing Secret Leaks
+- [✓] No hardcoded API keys or secrets in code
+- [✓] All credentials via environment variables
+- [✓] `.env` added to `.gitignore`
+- [✓] `assets-manifest.json` added to `.gitignore` 
+- [✓] No default bucket names in code
+- [✓] `.env.example` with placeholder values only
+- [✓] Wrangler.toml checked for secrets
+
+### Environment Variables Required
+```env
+CF_ACCOUNT_ID=xxx        # From Cloudflare dashboard
+R2_ACCESS_KEY_ID=xxx     # From R2 API tokens
+R2_SECRET_ACCESS_KEY=xxx # From R2 API tokens  
+R2_BUCKET_NAME=xxx       # Your bucket name
+```
+
+### Before Committing
+- [ ] Run `git status` - ensure no `.env` file
+- [ ] Check `git diff` - no secrets in changes
+- [ ] Verify manifest not tracked
+- [ ] Test with `.env.example` values fail properly
 
 ## 🚀 Phase 3: Developer Experience (Minimal)
 

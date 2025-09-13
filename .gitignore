@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# Asset manifest (contains file hashes, no secrets)
+public/assets-manifest.json
+
 # Wrangler files
 .wrangler/
 

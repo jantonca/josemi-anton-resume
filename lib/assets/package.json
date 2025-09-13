@@ -1,0 +1,35 @@
+{
+  "name": "@local/r2-asset-processor",
+  "version": "1.0.0",
+  "description": "Simple, reusable asset optimization and upload system for Cloudflare R2",
+  "type": "module",
+  "main": "processor.js",
+  "scripts": {
+    "setup": "node setup.js"
+  },
+  "keywords": [
+    "cloudflare",
+    "r2",
+    "assets",
+    "optimization",
+    "images",
+    "webp",
+    "avif"
+  ],
+  "dependencies": {
+    "sharp": "^0.33.5",
+    "@aws-sdk/client-s3": "^3.888.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "processor.js",
+    "sync.js",
+    "status.js",
+    "setup.js",
+    "README.md"
+  ],
+  "author": "",
+  "license": "MIT"
+}
