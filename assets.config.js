@@ -18,7 +18,7 @@ export default {
   },
 
   // Optional features
-  enablePlaceholders: false, // Generate base64 placeholders
+  enablePlaceholders: true, // Generate base64 placeholders
   skipUnchanged: true, // Skip files that haven't changed
 
   // Optional: Custom processing rules

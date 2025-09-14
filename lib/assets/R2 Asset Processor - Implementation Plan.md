@@ -12,19 +12,18 @@ Transform your existing asset processor into a **flexible, reusable package** th
 
 **File:** `lib/assets/processor.js`
 
-**Key Improvements:**
+**Key Improvements (implemented):**
 
-- ✅ **Configuration object** instead of hardcoded values
-- ✅ **Hooks system** for extensibility (onProgress, onError, beforeUpload, afterUpload)
-- ✅ **Quality mapping** based on image size (mobile-first)
-- ✅ **Placeholder generation** (optional, for progressive loading)
-- ✅ **Better error handling** with recovery strategies
+- ✅ **Configuration object** instead of hardcoded values (reads `assets.config.js` or uses defaults)
+- ✅ **Hooks system** for extensibility (supports `onProgress`, `onError`, `beforeUpload`, `afterUpload` hooks)
+- ✅ **Quality mapping** based on image size (mobile-first quality presets)
+- ✅ **Placeholder generation** (implemented; small base64 placeholders are stored in the manifest)
+- ✅ **Better error handling** with recovery strategies (skips failed files, preserves manifest state)
 
-**No Over-engineering:**
+**Notes:**
 
-- Keep single file structure
-- No complex dependency injection
-- Simple config with sensible defaults
+- The processor remains a single-file implementation with sensible defaults to avoid over-engineering.
+- Default behavior is conservative: unchanged files are skipped and not re-uploaded unless content changes or `--force` is used.
 
 ### 1.2 Add Configuration Support
 
@@ -36,7 +35,7 @@ export default {
   quality: { 400: 90, 800: 85, 1200: 80 },
   enableWebP: true,
   enableAVIF: true,
-  enablePlaceholders: false, // Optional feature
+  enablePlaceholders: false, // Optional feature (see Placeholder section)
 }
 ```
 
@@ -121,27 +120,75 @@ npm run assets:sync
 
 ### Day 1: Core Enhancement (2-3 hours)
 
-- [ ] Update processor.js with config support
-- [ ] Add quality-per-size mapping
-- [ ] Implement hooks system
-- [ ] Add placeholder generation (optional)
-- [ ] Test with existing images
+- [x] Update processor.js with config support
+- [x] Add quality-per-size mapping
+- [x] Implement hooks system
+- [x] Add placeholder generation (implemented)
+- [x] Test with existing images (dry-run + manifest verification)
 
 ### Day 2: Worker & Setup (2 hours)
 
-- [ ] Update worker.js with smart serving
-- [ ] Add format negotiation
-- [ ] Implement fallback chain
-- [ ] Create setup.js script
-- [ ] Write configuration template
+- [x] Update worker.js with smart serving
+- [x] Add format negotiation
+- [x] Implement fallback chain
+- [x] Create setup.js script
+- [x] Write configuration template
 
 ### Day 3: Documentation & Testing (1 hour)
 
-- [ ] Update README with new features
-- [ ] Create migration guide
-- [ ] Test in fresh project
-- [ ] Document configuration options
-- [ ] Create troubleshooting guide
+- [x] Update README with new features (basic)
+- [x] Create migration guide (outlined in plan)
+- [x] Test in fresh project (manual copy validated)
+- [x] Document configuration options
+- [x] Create troubleshooting guide (short checklist)
+
+---
+
+## Placeholder generation — Details (Implemented)
+
+This section documents how the processor generates, stores, and consumes tiny placeholders used for progressive image loading (blur-up or LQIP).
+
+How it works
+
+- When `enablePlaceholders: true` (in `assets.config.js` or passed to `AssetProcessor`), the processor will generate a very small blurred image representation for each source file. The implementation uses `sharp` to resize the image to a tiny width (default 20px), optionally reduce quality, and then encode to `webp` (or keep original) and export as a base64 data URL.
+
+What is stored in the manifest
+
+- For each processed source file the manifest includes a `placeholder` object similar to:
+
+```json
+"images/profile.jpg": {
+  "outputs": {
+    "profile-400.webp": {"size":400,"hash":"..."},
+    "profile-800.webp": {"size":800,"hash":"..."}
+  },
+  "placeholder": {
+    "dataUrl": "data:image/webp;base64,...",
+    "w": 20,
+    "h": 12,
+    "aspectRatio": 1.66
+  }
+}
+```
+
+How to enable
+
+- Edit `assets.config.js` and set `enablePlaceholders: true` or instantiate the processor with `{ enablePlaceholders: true }`.
+- Run `pnpm run assets:sync` (or `node lib/assets/sync.js`) to generate placeholders and update `public/assets-manifest.json`.
+
+How to use in components
+
+- `R2Image.astro` and `R2Picture.astro` will read `public/assets-manifest.json` at build time (or runtime in dev) and use the `placeholder.dataUrl` for the `blur`/`background-image` CSS or the `src` of a tiny inline image. They will also output the appropriate `width`/`height` attributes to avoid layout shift.
+
+Verification
+
+- After running the processor with placeholders enabled, open `public/assets-manifest.json` and confirm each entry has a `placeholder` object with a `dataUrl` string.
+- Load the page in dev or a test build — you should see the blurred placeholder while the main image loads.
+
+Notes & Edge Cases
+
+- Placeholders increase manifest size slightly (base64 strings), keep the placeholder width small (10–32px) to limit growth.
+- For very large batches you may prefer a flag to store placeholders as dedicated tiny files instead of inline base64. This is not the default to keep R2 object counts low.
 
 ---
 
@@ -157,7 +204,7 @@ npm run assets:sync
 
 ### Nice to Have (Optional)
 
-- ⭕ Placeholder generation
+- ✅ Placeholder generation (implemented)
 - ⭕ Progress callbacks
 - ⭕ Custom processing rules
 - ⭕ Save-Data header support
