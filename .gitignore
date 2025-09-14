@@ -15,7 +15,7 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+.env.*.local
 
 # Asset manifest (contains file hashes, no secrets)
 public/assets-manifest.json
@@ -36,3 +36,4 @@ public/images/
 
 # jetbrains setting folder
 .idea/
+.env.production
