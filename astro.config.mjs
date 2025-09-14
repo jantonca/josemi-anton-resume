@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
-import cloudflare from '@astrojs/cloudflare'
 import react from '@astrojs/react'
 import icon from 'astro-icon'
 import sitemap from '@astrojs/sitemap'
@@ -8,7 +7,7 @@ import autoprefixer from 'autoprefixer'
 import cssnano from 'cssnano'
 
 export default defineConfig({
-  site: 'https://www.josemianton.com',
+  site: process.env.PUBLIC_SITE_URL || 'https://www.josemianton.com',
   output: 'static',
 
   build: {
