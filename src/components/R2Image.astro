@@ -1,126 +1,257 @@
 ---
+// R2Image.astro - Enhanced with blur placeholder support
+import fs from 'fs/promises'
+import path from 'path'
+
 export interface Props {
   src: string
   alt: string
   width?: number
   height?: number
-  quality?: number
-  format?: 'webp' | 'avif' | 'auto'
+  sizes?: string
   loading?: 'lazy' | 'eager'
   class?: string
-  sizes?: string
-  aspectRatio?: string
+  style?: string
+  placeholder?: 'blur' | 'none'
+  quality?: 'mobile' | 'tablet' | 'desktop' | 'auto'
+  format?: 'webp' | 'avif' | 'auto'
 }
 
-const {
-  src,
-  alt,
-  width,
-  height,
-  quality = 85,
-  format,
+const { 
+  src, 
+  alt, 
+  width, 
+  height, 
+  sizes = '100vw',
   loading = 'lazy',
-  class: className,
-  sizes,
-  aspectRatio,
+  class: className = '',
+  style = '',
+  placeholder = 'blur',
+  quality = 'auto',
+  format = 'auto'
 } = Astro.props
 
-// Handle development and production image paths
-// Our asset processor creates: name-800.webp, name-1600.webp, name-800.avif, name-1600.avif
+// Determine the domain based on environment
 const isDev = import.meta.env.DEV
-const baseUrl = isDev
-  ? '' // In dev, serve from /images/ directly
-  : 'https://cdn.josemianton.com' // CDN subdomain for optimized delivery
+const domain = isDev 
+  ? '' 
+  : import.meta.env.PUBLIC_CDN_URL || 'https://cdn.josemianton.com'
 
-// Generate optimized image URL based on our naming convention
-const generateImageUrl = (
-  src: string,
-  width?: number,
-  preferredFormat?: string
-) => {
-  if (src.startsWith('http')) return src
-  
-  // For SVG files, just return as-is
-  if (src.endsWith('.svg')) {
-    return `${baseUrl}/images/${src}`
-  }
-  
-  // For processed images, use our naming convention
-  if (width && !isDev) {
-    // Remove extension from filename
-    const nameWithoutExt = src.replace(/\.[^.]+$/, '')
-    // Mobile-first: Find closest size from our presets: 400, 800, or 1200
-    const targetWidth = width <= 400 ? 400 :    // Mobile
-                       width <= 800 ? 800 :     // Tablet
-                       1200;                    // Desktop
-    // Use format preference or default to webp
-    const targetFormat = preferredFormat || format || 'webp'
-    
-    return `${baseUrl}/images/${nameWithoutExt}-${targetWidth}.${targetFormat}`
-  }
-  
-  // Fallback to original image in dev or if no width specified
-  return `${baseUrl}/images/${src}`
-}
-
-const imageUrl = generateImageUrl(src, width, format)
-
-// Generate srcset using our preprocessed images
-const generateSrcset = () => {
-  if (!src || src.endsWith('.svg')) return undefined
-  
-  // We have two sizes: 800 and 1600
-  const nameWithoutExt = src.replace(/\.[^.]+$/, '')
-  const preferredFormat = format || 'webp'
-  
+// Function to get optimized image URL
+function getImageUrl(src: string, size?: number): string {
   if (isDev) {
-    // In dev, just use the original image
-    return undefined
+    // In dev, serve original from public folder
+    return `/images/${src}`
   }
   
-  // In production, use our optimized versions (mobile-first)
-  return [
-    `${baseUrl}/images/${nameWithoutExt}-400.${preferredFormat} 400w`,
-    `${baseUrl}/images/${nameWithoutExt}-800.${preferredFormat} 800w`,
-    `${baseUrl}/images/${nameWithoutExt}-1200.${preferredFormat} 1200w`
-  ].join(', ')
+  // In production, construct CDN URL
+  const basePath = '/images/'
+  
+  // Handle SVGs - no size variants
+  if (src.endsWith('.svg')) {
+    return `${domain}${basePath}${src}`
+  }
+  
+  // For raster images, use size variants
+  if (size) {
+    const nameParts = src.split('.')
+    nameParts.pop() // Remove extension
+    const name = nameParts.join('.')
+    
+    // Determine output format based on format prop
+    let outputFormat = 'webp' // Default
+    if (format === 'avif') {
+      outputFormat = 'avif'
+    } else if (format === 'webp') {
+      outputFormat = 'webp'
+    }
+    // format === 'auto' uses WebP as default
+    
+    return `${domain}${basePath}${name}-${size}.${outputFormat}`
+  }
+  
+  return `${domain}${basePath}${src}`
 }
 
-const srcset = generateSrcset()
+// Function to get AVIF variant
+function getAvifUrl(src: string, size: number): string {
+  if (isDev || src.endsWith('.svg')) return ''
+  
+  const nameParts = src.split('.')
+  nameParts.pop() // Remove extension
+  const name = nameParts.join('.')
+  
+  return `${domain}/images/${name}-${size}.avif`
+}
 
-// Container styles for aspect ratio
-const containerStyle = aspectRatio ? `aspect-ratio: ${aspectRatio};` : undefined
+// Load placeholder data from manifest
+let placeholderData = null
+let imageMetadata = null
+
+if (placeholder === 'blur' && !isDev) {
+  try {
+    const manifestPath = path.join(process.cwd(), 'public', 'assets-manifest.json')
+    const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf-8'))
+    const imageKey = `images/${src}`
+    
+    if (manifest.processed[imageKey]?.placeholder) {
+      placeholderData = manifest.processed[imageKey].placeholder
+      imageMetadata = {
+        width: placeholderData.width,
+        height: placeholderData.height,
+        aspectRatio: placeholderData.aspectRatio
+      }
+    }
+  } catch (error) {
+    // Silently fail if manifest not found
+    console.warn(`Placeholder data not found for ${src}`)
+  }
+}
+
+// Determine quality settings based on prop or auto-detect
+const qualityMap = {
+  mobile: 400,
+  tablet: 800,
+  desktop: 1200,
+  auto: width ? (width <= 400 ? 400 : width <= 800 ? 800 : 1200) : 800
+}
+
+const targetSize = qualityMap[quality]
+
+// Build srcset for responsive images
+const buildSrcSet = (srcsetFormat: 'webp' | 'avif') => {
+  if (src.endsWith('.svg')) return ''
+  
+  const sizes = [400, 800, 1200]
+  return sizes
+    .map(size => {
+      if (isDev) {
+        // In dev, all formats serve the same original image
+        return `/images/${src} ${size}w`
+      }
+      
+      // In production, use the specified format
+      const nameParts = src.split('.')
+      nameParts.pop() // Remove extension
+      const name = nameParts.join('.')
+      const url = `${domain}/images/${name}-${size}.${srcsetFormat}`
+      return `${url} ${size}w`
+    })
+    .join(', ')
+}
+
+// Calculate dimensions if not provided
+const imgWidth = width || imageMetadata?.width
+const imgHeight = height 
+  || (imageMetadata && width && imageMetadata.aspectRatio
+    ? Math.round(width / imageMetadata.aspectRatio)
+    : imageMetadata?.height)
+
+// Build inline styles
+const inlineStyles = [
+  style,
+  placeholderData && placeholder === 'blur' ? `background-image: url('${placeholderData.base64}'); background-size: cover; background-position: center;` : ''
+].filter(Boolean).join('; ')
+
+// Generate unique ID for this image instance
+const imageId = `img-${Math.random().toString(36).substring(2, 11)}`
 ---
 
-{
-  aspectRatio ? (
-    <div
-      style={containerStyle}
-      class='relative overflow-hidden'
-    >
-      <img
-        src={imageUrl}
-        srcset={srcset}
-        sizes={sizes}
-        alt={alt}
-        width={width}
-        height={height}
-        loading={loading}
-        class={`absolute inset-0 w-full h-full object-cover ${className || ''}`}
-        decoding='async'
-      />
-    </div>
-  ) : (
-    <img
-      src={imageUrl}
-      srcset={srcset}
+<picture class={`r2-picture ${className}`}>
+  {/* AVIF source for modern browsers */}
+  {!src.endsWith('.svg') && !isDev && (
+    <source
+      type="image/avif"
+      srcset={buildSrcSet('avif')}
       sizes={sizes}
-      alt={alt}
-      width={width}
-      height={height}
-      loading={loading}
-      class={className}
-      decoding='async'
     />
-  )
-}
+  )}
+  
+  {/* WebP source as fallback */}
+  {!src.endsWith('.svg') && !isDev && (
+    <source
+      type="image/webp"
+      srcset={buildSrcSet('webp')}
+      sizes={sizes}
+    />
+  )}
+  
+  {/* Main img element */}
+  <img
+    id={imageId}
+    src={getImageUrl(src, targetSize)}
+    alt={alt}
+    width={imgWidth}
+    height={imgHeight}
+    loading={loading}
+    decoding="async"
+    class={`r2-image ${placeholderData && placeholder === 'blur' ? 'with-placeholder' : ''} ${className}`}
+    style={inlineStyles}
+    data-sizes={sizes}
+  />
+</picture>
+
+{/* Progressive enhancement for blur removal */}
+{placeholderData && placeholder === 'blur' && (
+  <script is:inline define:vars={{ imageId }}>
+    // Progressive image loading with blur effect
+    (function() {
+      const img = document.getElementById(imageId);
+      if (!img) return;
+      
+      // Add blur filter initially
+      img.style.filter = 'blur(20px)';
+      img.style.transform = 'scale(1.05)';
+      img.style.transition = 'filter 0.3s ease-out, transform 0.3s ease-out';
+      
+      // Remove blur when image loads
+      if (img.complete) {
+        img.style.filter = 'none';
+        img.style.transform = 'scale(1)';
+      } else {
+        img.addEventListener('load', function() {
+          requestAnimationFrame(() => {
+            img.style.filter = 'none';
+            img.style.transform = 'scale(1)';
+          });
+        }, { once: true });
+      }
+      
+      // Intersection Observer for lazy loading enhancement
+      if ('IntersectionObserver' in window && img.loading === 'lazy') {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              // Image is in viewport, browser will start loading
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          rootMargin: '50px'
+        });
+        
+        observer.observe(img);
+      }
+    })();
+  </script>
+)}
+
+<style>
+  .r2-picture {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .r2-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .r2-image.with-placeholder {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+</style>
