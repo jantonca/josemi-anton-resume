@@ -2,15 +2,14 @@
 
 ## Overview
 
-A personal website/resume built with Astro, React, and TypeScript. The site features a clean, professional design with a dark theme and interactive elements.
+A personal website/resume built with Astro and TypeScript. The site features a clean, professional design with a dark theme and interactive elements.
 
 ## Tech Stack
 
 - **Framework**: [Astro](https://astro.build/) v5.13
-- **UI Library**: React 18
 - **Styling**: Tailwind CSS
 - **Language**: TypeScript
-- **Icons**: Lucide React, Simple Icons
+- **Icons**: Simple Icons
 - **Build Tools**: Vite (integrated with Astro)
 - **Hosting**: Cloudflare Workers (static assets)
 - **Image Service**: Squoosh (Cloudflare Workers compatible)
@@ -23,9 +22,8 @@ josemi-anton-resume/
 │   ├── fonts/        # Custom fonts (Proto Grotesk, Akzidenz Grotesk)
 │   └── images/       # Profile images and assets
 ├── src/
-│   ├── components/    # Reusable Astro/React components
+│   ├── components/    # Reusable Astro components
 │   ├── content/       # TypeScript content definitions
-│   ├── hooks/         # Custom React hooks (theme management)
 │   ├── icons/         # SVG icons and related components
 │   ├── layouts/       # Page layouts
 │   ├── lib/          # Utility functions
@@ -41,14 +39,13 @@ josemi-anton-resume/
 ## Key Features
 
 - **Static Site Generation**: Server-side rendering with Astro for optimal performance
-- **Interactive Components**: React components for dynamic functionality (theme toggle, navigation)
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Dark Theme**: Custom dark theme with theme persistence
 - **Optimized Assets**: Image optimization (AVIF, WebP) and performance tuning
 - **Type Safety**: Full TypeScript implementation with strict typing
 - **Global CDN**: Deployed on Cloudflare Workers for worldwide performance
 - **Accessibility**: Semantic HTML, ARIA support, and keyboard navigation
-- **Modern Stack**: Latest Astro v5, React 18, and cutting-edge web technologies
+- **Modern Stack**: Latest Astro v5 and cutting-edge web technologies
 
 ## Getting Started
 
@@ -110,7 +107,6 @@ The build process is configured in `astro.config.mjs` with the following feature
 - Static build output (no server-side adapter needed)
 - Optimized asset handling
 - Minified Tailwind output
-- Selective React hydration
 - SVG optimization with astro-icon
 - Manual chunk splitting for vendor code
 - Squoosh image service for Cloudflare Workers compatibility
@@ -140,7 +136,7 @@ The project uses Tailwind CSS with custom configurations:
 ## Performance Considerations
 
 - Images are optimized and served in modern formats (AVIF, WebP)
-- JavaScript is split into chunks (vendor, react-vendor, astro-vendor)
+- JavaScript is split into chunks (vendor, astro-vendor)
 - Styles are minified with cssnano
 - Development source maps are available
 - Console logs are stripped in production
