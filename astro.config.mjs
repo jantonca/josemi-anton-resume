@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
-import react from '@astrojs/react'
 import icon from 'astro-icon'
 import sitemap from '@astrojs/sitemap'
 import autoprefixer from 'autoprefixer'
@@ -20,16 +19,10 @@ export default defineConfig({
       format: ['avif', 'webp'],
     },
   },
-  // Remove adapter for static builds or configure properly for Workers
-  // adapter: cloudflare(),
   integrations: [
     tailwind({
       applyBaseStyles: false,
       minify: true,
-    }),
-    react({
-      include: ['**/react/*'],
-      exclude: ['**/node_modules/**'],
     }),
     icon({
       svgoOptions: {
@@ -71,9 +64,6 @@ export default defineConfig({
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (id.includes('react')) {
-                return 'react-vendor'
-              }
               if (id.includes('@astrojs')) {
                 return 'astro-vendor'
               }
@@ -94,7 +84,6 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      include: ['react', 'react-dom'],
       exclude: ['@astrojs/image'],
     },
     css: {
