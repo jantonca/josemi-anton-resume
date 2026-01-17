@@ -47,6 +47,38 @@ josemi-anton-resume/
 - **Accessibility**: Semantic HTML, ARIA support, and keyboard navigation
 - **Modern Stack**: Latest Astro v5 and cutting-edge web technologies
 
+## 🤖 AI Governance
+
+This project uses **Cortex TMS 2.6.0-beta.1** for AI-assisted development governance.
+
+### Governance Commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm run cortex:validate` | Run governance validation checks |
+| `pnpm run cortex:status` | Show project health status |
+| `pnpm run cortex:version` | Display Cortex TMS version |
+
+### Governance Files
+
+- **`.cortex/constitution.md`**: Primary AI governance rules and workflows
+- **`.cortex/glossary.md`**: Project-specific terminology and definitions
+- **`.cortex/validation.json`**: Custom validation rules for code quality
+- **`.cortexrc`**: Cortex configuration and project metadata
+- **`.github/copilot-instructions.md`**: Detailed collaboration protocol
+
+### Key Governance Principles
+
+- **Security First**: No hardcoded credentials, environment variables only
+- **Performance Optimized**: Image optimization, CDN delivery, code splitting
+- **Accessibility**: WCAG 2.1 AA compliance, semantic HTML, ARIA support
+- **Type Safety**: Strict TypeScript, no `any` types
+- **R2 Asset Management**: Automated image optimization and CDN upload
+
+For detailed governance rules, see `.cortex/constitution.md`.
+
+---
+
 ## Getting Started
 
 ### Prerequisites

@@ -1,3 +1,9 @@
+**Governance Framework**: Cortex TMS 2.6.0-beta.1
+**Primary Governance**: `.cortex/constitution.md`
+**This File**: Detailed collaboration protocol
+
+---
+
 # AI Pair Programmer: Collaboration Protocol & Guidelines
 
 ## 🎯 Our Mission
