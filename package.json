@@ -12,12 +12,15 @@
     "type-check": "astro check && tsc --noEmit",
     "lint": "astro check",
     "deploy": "pnpm build && npx wrangler deploy",
-    "assets:sync": "export $(grep -v '^#' .env | xargs) && node lib/assets/sync.js",
-    "assets:status": "export $(grep -v '^#' .env | xargs) && node lib/assets/status.js",
+    "assets:sync": "node lib/assets/sync.js",
+    "assets:status": "node lib/assets/status.js",
     "images:add": "./scripts/add-image.sh",
-    "dev:images": "export $(grep -v '^#' .env | xargs) && node lib/assets/dev-images.js",
-    "dev:images:pull": "export $(grep -v '^#' .env | xargs) && node lib/assets/dev-images.js pull",
-    "dev:images:check": "export $(grep -v '^#' .env | xargs) && node lib/assets/dev-images.js check"
+    "dev:images": "node lib/assets/dev-images.js",
+    "dev:images:pull": "node lib/assets/dev-images.js pull",
+    "dev:images:check": "node lib/assets/dev-images.js check",
+    "cortex:validate": "cortex-tms validate",
+    "cortex:status": "cortex-tms status",
+    "cortex:version": "cortex-tms --version"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.8",
@@ -27,6 +30,7 @@
     "astro-icon": "^1.1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.2",
     "mime-types": "^3.0.1",
     "sharp": "^0.33.5",
     "tailwind-merge": "^2.6.0"
@@ -35,6 +39,7 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/tailwind": "^6.0.2",
     "autoprefixer": "^10.4.21",
+    "cortex-tms": "link:/home/jma/repos-ubuntu/github/cortex-tms",
     "cssnano": "^7.1.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",

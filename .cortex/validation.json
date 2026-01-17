@@ -1,0 +1,186 @@
+{
+  "version": "2.6.0-beta.1",
+  "rules": {
+    "r2AssetManifest": {
+      "enabled": true,
+      "severity": "info",
+      "description": "Track R2 asset manifest updates",
+      "message": "Ensure .asset-manifest.json is up to date after adding images",
+      "filePatterns": ["public/.asset-manifest.json"],
+      "applicableWhen": "changes to public/images/**"
+    },
+    "defaultDocumentToken": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "Ensure default document token matches Cortex version",
+      "message": "CLAUDE.md should have @cortex-tms-version comment matching 2.6.0-beta.1",
+      "filePatterns": ["CLAUDE.md"]
+    },
+    "hardcodedR2Credentials": {
+      "enabled": true,
+      "severity": "error",
+      "description": "Prevent hardcoded R2 credentials in source code",
+      "message": "Never hardcode R2 credentials. Use environment variables.",
+      "patterns": [
+        "R2_ACCESS_KEY_ID\\s*=\\s*['\"][a-zA-Z0-9]+['\"]",
+        "R2_SECRET_ACCESS_KEY\\s*=\\s*['\"][a-zA-Z0-9/+=]+['\"]",
+        "CF_ACCOUNT_ID\\s*=\\s*['\"][a-f0-9]{32}['\"]"
+      ],
+      "excludePatterns": [".env.example", "docs/", ".cortex/"]
+    },
+    "localImagePaths": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "Detect hardcoded local image paths in production code",
+      "message": "Use R2Image or R2Picture components for CDN delivery instead of hardcoded paths",
+      "patterns": [
+        "src=['\"]/?images/[^'\"]+['\"]",
+        "src=['\"]/?public/images/[^'\"]+['\"]"
+      ],
+      "excludePatterns": ["src/components/R2Image.astro", "src/components/R2Picture.astro", "lib/assets/"]
+    },
+    "envFileCommitted": {
+      "enabled": true,
+      "severity": "error",
+      "description": "Prevent .env files from being committed",
+      "message": "Never commit .env files. They contain sensitive credentials.",
+      "filePatterns": [".env", ".env.local", ".env.production"],
+      "action": "block"
+    },
+    "assetManifestCommitted": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "Prevent asset manifest from being committed",
+      "message": "Asset manifest should be gitignored as it's regenerated on each sync",
+      "filePatterns": ["public/.asset-manifest.json", ".asset-manifest.json"]
+    },
+    "cdnDomainHardcoded": {
+      "enabled": true,
+      "severity": "info",
+      "description": "Track hardcoded CDN domain references",
+      "message": "Consider using environment variable for CDN domain if it may change",
+      "patterns": ["cdn\\.josemianton\\.com"],
+      "excludePatterns": [".cortex/", "docs/", "README.md", "CHANGELOG.md"]
+    },
+    "missingAltText": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "Ensure all images have alt text for accessibility",
+      "message": "All <img> and <R2Image> elements must have descriptive alt text",
+      "patterns": ["<img[^>]*(?<!alt=)>", "<R2Image[^>]*(?<!alt=)/>"],
+      "filePatterns": ["src/**/*.astro", "src/**/*.tsx"]
+    },
+    "consoleStatements": {
+      "enabled": true,
+      "severity": "info",
+      "description": "Detect console statements in production code",
+      "message": "Remove console.log statements before production deployment (or ensure Terser drops them)",
+      "patterns": ["console\\.(log|debug|info|warn|error)\\("],
+      "excludePatterns": ["lib/assets/", "scripts/", "dev-images.js"]
+    },
+    "typeScriptAny": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "Discourage use of 'any' type in TypeScript",
+      "message": "Avoid 'any' type. Use specific types or 'unknown' with type guards.",
+      "patterns": [":\\s*any\\b", "as any\\b"],
+      "excludePatterns": ["*.d.ts", "node_modules/"]
+    },
+    "unusedImports": {
+      "enabled": true,
+      "severity": "info",
+      "description": "Track potentially unused imports",
+      "message": "Run ESLint to identify and remove unused imports",
+      "applicableWhen": "before_commit"
+    },
+    "securityHeaders": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "Ensure security headers are configured in Cloudflare Workers",
+      "message": "Verify CSP, X-Frame-Options, and other security headers in wrangler.toml",
+      "filePatterns": ["wrangler.toml"]
+    },
+    "responsiveImages": {
+      "enabled": true,
+      "severity": "info",
+      "description": "Ensure images use responsive srcset attributes",
+      "message": "Use R2Picture component with sizes prop for responsive image delivery",
+      "applicableWhen": "adding new image components"
+    },
+    "assetPipelineConfig": {
+      "enabled": true,
+      "severity": "error",
+      "description": "Validate asset pipeline configuration",
+      "message": "Ensure lib/assets/ scripts use environment variables for R2 credentials",
+      "filePatterns": ["lib/assets/**/*.js"],
+      "patterns": ["process\\.env\\.R2_ACCESS_KEY_ID", "process\\.env\\.R2_SECRET_ACCESS_KEY"]
+    },
+    "buildSuccess": {
+      "enabled": true,
+      "severity": "error",
+      "description": "Ensure production build succeeds",
+      "message": "Run 'pnpm build' before committing to verify build integrity",
+      "applicableWhen": "before_commit"
+    },
+    "typeCheck": {
+      "enabled": true,
+      "severity": "error",
+      "description": "Ensure TypeScript type checking passes",
+      "message": "Run 'pnpm type-check' to catch type errors before committing",
+      "applicableWhen": "before_commit"
+    },
+    "lintCheck": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "Ensure ESLint passes",
+      "message": "Run 'pnpm lint' to maintain code quality standards",
+      "applicableWhen": "before_commit"
+    }
+  },
+  "customChecks": {
+    "assetSyncBeforeDeploy": {
+      "description": "Remind to run assets:sync before deployment",
+      "message": "Run 'pnpm run assets:sync' to upload latest optimized images to R2 before deploying",
+      "applicableWhen": "before_deployment"
+    },
+    "r2StorageQuota": {
+      "description": "Check R2 storage usage is within limits",
+      "message": "Run 'pnpm run assets:status' to verify storage usage is under 8GB (80% of 10GB free tier)",
+      "applicableWhen": "after_asset_sync"
+    },
+    "cdnVerification": {
+      "description": "Verify CDN delivery after deployment",
+      "message": "Check browser DevTools Network tab to confirm images are served from cdn.josemianton.com with AVIF/WebP formats",
+      "applicableWhen": "after_deployment"
+    },
+    "accessibilityAudit": {
+      "description": "Run accessibility audit on new content",
+      "message": "Use Lighthouse or axe DevTools to verify WCAG 2.1 AA compliance",
+      "applicableWhen": "adding_new_content"
+    },
+    "mobileResponsiveness": {
+      "description": "Test mobile layouts",
+      "message": "Verify layouts at 375px, 768px, 1024px, and 1440px viewports",
+      "applicableWhen": "layout_changes"
+    }
+  },
+  "fileExclusions": [
+    "node_modules/",
+    "dist/",
+    ".astro/",
+    "public/.asset-manifest.json",
+    ".env",
+    ".env.local",
+    ".env.production",
+    "*.log",
+    ".DS_Store",
+    "coverage/"
+  ],
+  "metadata": {
+    "projectType": "astro-ssg-resume",
+    "deployment": "cloudflare-workers",
+    "assetCdn": "cloudflare-r2",
+    "primaryGovernance": ".cortex/constitution.md",
+    "detailedProtocol": ".github/copilot-instructions.md"
+  }
+}
