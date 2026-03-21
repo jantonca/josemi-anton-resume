@@ -12,12 +12,6 @@ export default defineConfig({
   build: {
     assets: 'assets',
     inlineStylesheets: 'auto',
-    image: {
-      service: {
-        entrypoint: 'astro/assets/services/squoosh',
-      },
-      format: ['avif', 'webp'],
-    },
   },
   integrations: [
     tailwind({
@@ -82,9 +76,6 @@ export default defineConfig({
           drop_debugger: true,
         },
       },
-    },
-    optimizeDeps: {
-      exclude: ['@astrojs/image'],
     },
     css: {
       devSourcemap: true,
