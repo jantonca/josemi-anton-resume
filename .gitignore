@@ -27,6 +27,9 @@ public/assets-manifest.json
 downloaded-*.jpg
 *.tmp
 
+# Private local planning notes
+.private/
+
 # Large images (use R2 instead) - NEVER commit these
 public/images/
 !public/images/.gitkeep
