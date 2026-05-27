@@ -51,9 +51,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.6)
-      cortex-tms:
-        specifier: link:/home/jma/repos-ubuntu/github/cortex-tms
-        version: link:../cortex-tms
       cssnano:
         specifier: ^7.1.1
         version: 7.1.1(postcss@8.5.6)

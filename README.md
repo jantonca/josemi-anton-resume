@@ -47,9 +47,9 @@ josemi-anton-resume/
 - **Accessibility**: Semantic HTML, ARIA support, and keyboard navigation
 - **Modern Stack**: Latest Astro v5 and cutting-edge web technologies
 
-## 🤖 AI Governance
+## 🤖 AI Governance (Optional)
 
-This project uses **Cortex TMS 2.6.0-beta.1** for AI-assisted development governance.
+This project includes **Cortex TMS 2.6.0-beta.1** governance files for AI-assisted development, but the `cortex-tms` CLI is not bundled. Install it separately if you want to run the commands below.
 
 ### Governance Commands
 

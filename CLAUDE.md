@@ -23,7 +23,7 @@ Expert Senior Developer. Follow the **"Propose, Justify, Recommend"** framework.
 - **Images Add**: `pnpm run images:add` - Interactive image addition
 - **Dev Images Pull**: `pnpm run dev:images:pull` - Pull images from R2 for development
 
-### Governance
+### Governance (Optional — requires `cortex-tms` installed separately)
 - **Validate**: `pnpm run cortex:validate` - Run Cortex validation checks
 - **Status**: `pnpm run cortex:status` - Show project health
 - **Version**: `pnpm run cortex:version` - Display Cortex version
@@ -45,20 +45,21 @@ Expert Senior Developer. Follow the **"Propose, Justify, Recommend"** framework.
 
 After completing a task, follow the **Maintenance Protocol**:
 
-1. **Run Validation**: Execute `pnpm run cortex:validate` to ensure project health.
-2. **Type Check**: Run `pnpm type-check` to catch TypeScript errors.
-3. **Lint**: Run `pnpm lint` to maintain code quality.
-4. **Build Test**: Run `pnpm build` to verify production build succeeds.
-5. **Asset Sync** (if images changed): Run `pnpm run assets:sync` to upload to R2.
-6. **Commit Changes**: Follow conventional commit format with co-authorship.
-7. **Merge to Main**: Merge feature branch to `main` (via PR or direct merge).
-8. **Branch Cleanup (MANDATORY)**:
+1. **Type Check**: Run `pnpm type-check` to catch TypeScript errors.
+2. **Lint**: Run `pnpm lint` to maintain code quality.
+3. **Build Test**: Run `pnpm build` to verify production build succeeds.
+4. **Asset Sync** (if images changed): Run `pnpm run assets:sync` to upload to R2.
+5. **Commit Changes**: Follow conventional commit format with co-authorship.
+6. **Merge to Main**: Merge feature branch to `main` (via PR or direct merge).
+7. **Branch Cleanup (MANDATORY)**:
    ```bash
    git checkout main
    git pull origin main
    git branch -d <feature-branch-name>
    ```
-9. **Deploy** (when ready): Run `pnpm deploy` to publish to Cloudflare Workers.
+8. **Deploy** (when ready): Run `pnpm deploy` to publish to Cloudflare Workers.
+
+**Optional**: Run `pnpm run cortex:validate` if `cortex-tms` is installed locally.
 
 **Exception**: Small tasks (typos, formatting) only require git commit and branch cleanup.
 
