@@ -1,5 +1,6 @@
 {
-  "version": "2.6.0-beta.1",
+  "status": "reference-only",
+  "note": "Project-specific check spec (R2 secrets, alt text, etc.). Not executed by any installed tool; seed for future ESLint/astro rules.",
   "rules": {
     "r2AssetManifest": {
       "enabled": true,
@@ -8,13 +9,6 @@
       "message": "Ensure .asset-manifest.json is up to date after adding images",
       "filePatterns": ["public/.asset-manifest.json"],
       "applicableWhen": "changes to public/images/**"
-    },
-    "defaultDocumentToken": {
-      "enabled": true,
-      "severity": "warning",
-      "description": "Ensure default document token matches Cortex version",
-      "message": "CLAUDE.md should have @cortex-tms-version comment matching 2.6.0-beta.1",
-      "filePatterns": ["CLAUDE.md"]
     },
     "hardcodedR2Credentials": {
       "enabled": true,
@@ -26,7 +20,7 @@
         "R2_SECRET_ACCESS_KEY\\s*=\\s*['\"][a-zA-Z0-9/+=]+['\"]",
         "CF_ACCOUNT_ID\\s*=\\s*['\"][a-f0-9]{32}['\"]"
       ],
-      "excludePatterns": [".env.example", "docs/", ".cortex/"]
+      "excludePatterns": [".env.example", "docs/"]
     },
     "localImagePaths": {
       "enabled": true,
@@ -60,7 +54,7 @@
       "description": "Track hardcoded CDN domain references",
       "message": "Consider using environment variable for CDN domain if it may change",
       "patterns": ["cdn\\.josemianton\\.com"],
-      "excludePatterns": [".cortex/", "docs/", "README.md", "CHANGELOG.md"]
+      "excludePatterns": ["docs/", "README.md", "CHANGELOG.md"]
     },
     "missingAltText": {
       "enabled": true,
@@ -90,7 +84,7 @@
       "enabled": true,
       "severity": "info",
       "description": "Track potentially unused imports",
-      "message": "Run ESLint to identify and remove unused imports",
+      "message": "Run `pnpm lint` (astro check) to surface unused imports",
       "applicableWhen": "before_commit"
     },
     "securityHeaders": {
@@ -132,7 +126,7 @@
     "lintCheck": {
       "enabled": true,
       "severity": "warning",
-      "description": "Ensure ESLint passes",
+      "description": "Ensure astro check (pnpm lint) passes",
       "message": "Run 'pnpm lint' to maintain code quality standards",
       "applicableWhen": "before_commit"
     }
@@ -179,8 +173,6 @@
   "metadata": {
     "projectType": "astro-ssg-resume",
     "deployment": "cloudflare-workers",
-    "assetCdn": "cloudflare-r2",
-    "primaryGovernance": ".cortex/constitution.md",
-    "detailedProtocol": ".github/copilot-instructions.md"
+    "assetCdn": "cloudflare-r2"
   }
 }

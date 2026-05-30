@@ -45,37 +45,16 @@ josemi-anton-resume/
 - **Type Safety**: Full TypeScript implementation with strict typing
 - **Global CDN**: Deployed on Cloudflare Workers for worldwide performance
 - **Accessibility**: Semantic HTML, ARIA support, and keyboard navigation
-- **Modern Stack**: Latest Astro v5 and cutting-edge web technologies
+- **Modern Stack**: Latest Astro v6 and cutting-edge web technologies
 
-## 🤖 AI Governance (Optional)
+## 🤖 AI Collaboration
 
-This project includes **Cortex TMS 2.6.0-beta.1** governance files for AI-assisted development, but the `cortex-tms` CLI is not bundled. Install it separately if you want to run the commands below.
-
-### Governance Commands
-
-| Command | Description |
-|---------|-------------|
-| `pnpm run cortex:validate` | Run governance validation checks |
-| `pnpm run cortex:status` | Show project health status |
-| `pnpm run cortex:version` | Display Cortex TMS version |
-
-### Governance Files
-
-- **`.cortex/constitution.md`**: Primary AI governance rules and workflows
-- **`.cortex/glossary.md`**: Project-specific terminology and definitions
-- **`.cortex/validation.json`**: Custom validation rules for code quality
-- **`.cortexrc`**: Cortex configuration and project metadata
-- **`.github/copilot-instructions.md`**: Detailed collaboration protocol
-
-### Key Governance Principles
-
-- **Security First**: No hardcoded credentials, environment variables only
-- **Performance Optimized**: Image optimization, CDN delivery, code splitting
-- **Accessibility**: WCAG 2.1 AA compliance, semantic HTML, ARIA support
-- **Type Safety**: Strict TypeScript, no `any` types
-- **R2 Asset Management**: Automated image optimization and CDN upload
-
-For detailed governance rules, see `.cortex/constitution.md`.
+AI agent rules live in `AGENTS.md`. Codex and OpenCode read it directly;
+Claude Code loads it through the one-line `CLAUDE.md` shim (`@AGENTS.md`).
+It inherits shared collaboration + frontend rules from the
+personal-ai-assistant manual. `docs/validation-rules.json` is a reference
+spec of project-specific checks (R2 secrets, alt text, etc.) kept for
+future linting — it is not executed automatically.
 
 ---
 

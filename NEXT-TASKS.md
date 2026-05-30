@@ -2,12 +2,11 @@
 
 ## Current Status
 
-✅ **Project Status**: Stable - Cortex TMS integration complete
+✅ **Project Status**: Stable
 
 ## Completed
 
-- [x] Cortex TMS 2.6.0-beta.1 integration
-- [x] Governance framework setup (.cortex/ directory)
+- [x] AI collaboration rules via AGENTS.md (+ inherited personal-ai-assistant rules)
 - [x] R2 asset processor configuration
 - [x] CDN delivery via cdn.josemianton.com
 - [x] TypeScript strict mode

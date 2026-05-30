@@ -17,10 +17,7 @@
     "images:add": "./scripts/add-image.sh",
     "dev:images": "node lib/assets/dev-images.js",
     "dev:images:pull": "node lib/assets/dev-images.js pull",
-    "dev:images:check": "node lib/assets/dev-images.js check",
-    "cortex:validate": "if which cortex-tms > /dev/null 2>&1; then cortex-tms validate; else echo 'Cortex TMS is not installed. Install it separately to run governance checks.' && exit 1; fi",
-    "cortex:status": "if which cortex-tms > /dev/null 2>&1; then cortex-tms status; else echo 'Cortex TMS is not installed. Install it separately to run governance checks.' && exit 1; fi",
-    "cortex:version": "if which cortex-tms > /dev/null 2>&1; then cortex-tms --version; else echo 'Cortex TMS is not installed. Install it separately to run governance checks.' && exit 1; fi"
+    "dev:images:check": "node lib/assets/dev-images.js check"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.6.0",
