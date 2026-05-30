@@ -46,6 +46,11 @@ reason.
 - **Accessibility:** all `<img>` / `R2Image` need descriptive alt text
   (target WCAG AA).
 - **Deployment:** static build to Cloudflare Workers via `wrangler`.
+- **Cloudflare deploy:** this is a single-package repo deployed on
+  Cloudflare Workers with pnpm 10.x. Do not add `pnpm-workspace.yaml`
+  unless converting to a real workspace with a valid `packages:` field.
+  Handle local pnpm build-approval issues per-machine with
+  `pnpm approve-builds`, not with committed workspace config.
 
 ## Verification requirements
 `pnpm build` must pass before declaring done (it runs `astro check` first,
