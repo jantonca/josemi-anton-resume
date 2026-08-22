@@ -7,7 +7,6 @@ export interface Props {
   alt: string
   width?: number
   height?: number
-  quality?: number
   format?: 'webp' | 'avif' | 'auto'
   loading?: 'lazy' | 'eager'
   class?: string
@@ -21,7 +20,6 @@ const {
   alt,
   width,
   height,
-  quality = 85,
   format,
   loading = 'lazy',
   class: className,
@@ -87,7 +85,8 @@ const generateImageUrl = (
           ? 800 // Tablet
           : 1200 // Desktop
     // Use format preference or default to webp
-    const targetFormat = preferredFormat || format || 'webp'
+    const targetFormat =
+      preferredFormat === 'auto' ? 'webp' : preferredFormat || 'webp'
 
     return `${r2BaseUrl}/images/${nameWithoutExt}-${targetWidth}.${targetFormat}`
   }
@@ -112,7 +111,7 @@ const generateSrcset = () => {
 
   // Use R2 optimized versions
   const nameWithoutExt = src.replace(/\.[^.]+$/, '')
-  const preferredFormat = format || 'webp'
+  const preferredFormat = format === 'auto' ? 'webp' : format || 'webp'
 
   return [
     `${r2BaseUrl}/images/${nameWithoutExt}-400.${preferredFormat} 400w`,
