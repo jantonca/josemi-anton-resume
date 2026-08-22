@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout
+  title='Page not found | Josemi Anton'
+  description='The requested page could not be found.'
+>
+  <main
+    class='container mx-auto flex min-h-screen max-w-4xl flex-col items-start justify-center gap-6 px-4 py-24'
+  >
+    <p class='font-mono text-sm text-pacific'>404</p>
+    <h1 class='font-heading text-4xl font-bold md:text-6xl'>Page not found</h1>
+    <p class='max-w-2xl text-lg text-muted-foreground'>
+      The page you requested does not exist or may have moved.
+    </p>
+    <a
+      href='/'
+      class='rounded-md border border-pacific px-5 py-3 text-pacific transition-colors hover:bg-pacific/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific focus-visible:ring-offset-2'
+    >
+      Return home
+    </a>
+  </main>
+</Layout>
