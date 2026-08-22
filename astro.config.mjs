@@ -1,8 +1,7 @@
 import { defineConfig } from 'astro/config'
-import tailwind from '@astrojs/tailwind'
 import icon from 'astro-icon'
 import sitemap from '@astrojs/sitemap'
-import autoprefixer from 'autoprefixer'
+import tailwindcss from '@tailwindcss/vite'
 import cssnano from 'cssnano'
 
 export default defineConfig({
@@ -14,10 +13,6 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-      minify: true,
-    }),
     icon({
       svgoOptions: {
         plugins: [
@@ -46,6 +41,7 @@ export default defineConfig({
   ],
 
   vite: {
+    plugins: [tailwindcss()],
     build: {
       cssCodeSplit: true,
       chunkSizeWarningLimit: 1000,
@@ -75,7 +71,7 @@ export default defineConfig({
     css: {
       devSourcemap: true,
       postcss: {
-        plugins: [autoprefixer(), cssnano()],
+        plugins: [cssnano()],
       },
     },
   },
