@@ -1,5 +1,8 @@
 # 📋 Asset Pipeline Implementation Checklist
 
+> Historical implementation notes. For the current pipeline and commands,
+> follow `lib/assets/README.md` and the root `README.md`.
+
 ## 🎯 Project Goal
 Build a **secure, performant, and reusable** asset management system optimized for Cloudflare R2's 10GB free tier, following all collaboration protocols.
 
@@ -391,11 +394,11 @@ Total: ~6.5MB (vs 14MB original)
 ### 4.1 CLI Interface
 ```bash
 # Commands to implement
-npm run assets:add <image>      # Add single image
-npm run assets:process          # Process all pending
-npm run assets:status           # Show storage usage
-npm run assets:clean            # Remove unused
-npm run assets:dev              # Start dev server
+pnpm run assets:add <image>      # Add single image
+pnpm run assets:process          # Process all pending
+pnpm run assets:status           # Show storage usage
+pnpm run assets:clean            # Remove unused
+pnpm run assets:dev              # Start dev server
 ```
 
 **Tasks:**

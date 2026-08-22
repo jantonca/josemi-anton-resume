@@ -6,13 +6,13 @@ A personal website/resume built with Astro and TypeScript. The site features a c
 
 ## Tech Stack
 
-- **Framework**: [Astro](https://astro.build/) v5.13
-- **Styling**: Tailwind CSS
+- **Framework**: [Astro](https://astro.build/) v7
+- **Styling**: Tailwind CSS v4 via its Vite plugin
 - **Language**: TypeScript
 - **Icons**: Simple Icons
 - **Build Tools**: Vite (integrated with Astro)
 - **Hosting**: Cloudflare Workers (static assets)
-- **Image Service**: Squoosh (Cloudflare Workers compatible)
+- **Image Pipeline**: Sharp preprocessing with Cloudflare R2 delivery
 
 ## Project Structure
 
@@ -33,19 +33,19 @@ josemi-anton-resume/
 ├── dist/             # Build output (generated)
 ├── astro.config.mjs  # Astro configuration
 ├── wrangler.toml     # Cloudflare Workers config
-└── tailwind.config.mjs # Tailwind CSS config
+└── tailwind.config.js  # Tailwind theme config
 ```
 
 ## Key Features
 
-- **Static Site Generation**: Server-side rendering with Astro for optimal performance
+- **Static Site Generation**: Pre-rendered HTML with Astro
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Dark Theme**: Custom dark theme with theme persistence
 - **Optimized Assets**: Image optimization (AVIF, WebP) and performance tuning
 - **Type Safety**: Full TypeScript implementation with strict typing
 - **Global CDN**: Deployed on Cloudflare Workers for worldwide performance
 - **Accessibility**: Semantic HTML, ARIA support, and keyboard navigation
-- **Modern Stack**: Latest Astro v6 and cutting-edge web technologies
+- **Modern Stack**: Astro 7 and Tailwind CSS 4
 
 ## 🤖 AI Collaboration
 
@@ -62,8 +62,8 @@ future linting — it is not executed automatically.
 
 ### Prerequisites
 
-- Node.js (LTS version)
-- pnpm/npm/yarn
+- Node.js 22.12 or newer (LTS recommended)
+- pnpm 10.16.1 through Corepack
 
 ### Installation
 
@@ -96,8 +96,8 @@ pnpm lint
 # Clean build files
 pnpm clean
 
-# Deploy to Cloudflare Workers
-npx wrangler deploy
+# Build and deploy to Cloudflare Workers
+pnpm deploy
 ```
 
 ## Build & Optimization
@@ -120,7 +120,7 @@ The build process is configured in `astro.config.mjs` with the following feature
 - Minified Tailwind output
 - SVG optimization with astro-icon
 - Manual chunk splitting for vendor code
-- Squoosh image service for Cloudflare Workers compatibility
+- Sharp-based preprocessing with AVIF/WebP assets served from Cloudflare R2
 - Terser minification with console stripping in production
 
 ## Components
@@ -160,7 +160,7 @@ The project uses Tailwind CSS with custom configurations:
 
 - **astro.config.mjs**: Main Astro configuration with static build settings
 - **wrangler.toml**: Cloudflare Workers deployment configuration
-- **tailwind.config.mjs**: Tailwind CSS customization
+- **tailwind.config.js**: Tailwind theme customization
 - **tsconfig.json**: TypeScript compiler options
 - **package.json**: Dependencies and build scripts
 
@@ -191,13 +191,13 @@ The site is deployed to **Cloudflare Workers** using static assets hosting. The 
 
 ```bash
 # Build and deploy
-pnpm build && npx wrangler deploy
+pnpm deploy
 
 # Deploy with dry run (test configuration)
-npx wrangler deploy --dry-run
+pnpm exec wrangler deploy --dry-run
 
 # View deployment history
-npx wrangler deployments list
+pnpm exec wrangler deployments list
 ```
 
 ## License

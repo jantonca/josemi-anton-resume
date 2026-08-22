@@ -4,7 +4,7 @@
  */
 
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const url = new URL(request.url)
 
     // Route to appropriate handler
@@ -12,7 +12,7 @@ export default {
       url.hostname === 'cdn.josemianton.com' ||
       url.pathname.startsWith('/images/')
     ) {
-      return handleImageRequest(request, env, ctx)
+      return handleImageRequest(request, env)
     }
 
     // Serve static assets (Astro site)
@@ -20,15 +20,10 @@ export default {
   },
 }
 
-async function handleImageRequest(request, env, ctx) {
+async function handleImageRequest(request, env) {
   const url = new URL(request.url)
   const accept = request.headers.get('Accept') || ''
   const saveData = request.headers.get('Save-Data') === 'on'
-  const dpr = parseFloat(request.headers.get('DPR') || '1')
-  const viewportWidth = parseInt(
-    request.headers.get('Viewport-Width') || '1920'
-  )
-
   // Extract image path
   let imagePath = url.pathname.startsWith('/images/')
     ? url.pathname.substring(1)
@@ -59,7 +54,9 @@ async function handleImageRequest(request, env, ctx) {
   }
 
   // Add performance headers
-  const headers = new Headers(response.headers)
+  const headers = new Headers()
+  response.writeHttpMetadata(headers)
+  headers.set('ETag', response.httpEtag)
   headers.set('Cache-Control', 'public, max-age=31536000, immutable')
   headers.set('CDN-Cache-Control', 'max-age=31536000')
   headers.set('Vary', 'Accept, Save-Data')
@@ -71,7 +68,7 @@ async function handleImageRequest(request, env, ctx) {
   }
 
   return new Response(response.body, {
-    status: response.status,
+    status: 200,
     headers,
   })
 }
@@ -127,8 +124,6 @@ async function fetchWithFallback(imagePath, env, supportedFormats) {
   if (!match) return null
 
   const [, baseName, size, format] = match
-  const baseWithFolder = baseName // Keep folder structure
-
   // Fallback chain
   const fallbacks = []
 

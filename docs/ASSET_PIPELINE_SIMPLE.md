@@ -1,5 +1,8 @@
 # 🎯 Simplified Asset Pipeline - Pragmatic Implementation
 
+> Historical design draft. The current implementation uses 400, 800, and
+> 1200px AVIF/WebP variants; follow `lib/assets/README.md` for active commands.
+
 ## Core Principle: Keep It Simple, Stupid (KISS)
 **Mirror local structure in R2, optimize on upload, serve efficiently.**
 
@@ -115,13 +118,13 @@ Keep it predictable!
 ### 5. CLI Commands (Just 3)
 ```bash
 # Process and upload everything
-npm run assets:sync
+pnpm run assets:sync
 
 # Check storage usage
-npm run assets:status
+pnpm run assets:status
 
 # Clean up unused files in R2
-npm run assets:clean
+pnpm run assets:clean
 ```
 
 **Tasks:**

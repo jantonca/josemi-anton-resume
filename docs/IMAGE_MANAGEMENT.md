@@ -14,7 +14,7 @@ Simply start developing! The enhanced `R2Image` component will automatically fet
 
 ```bash
 # Just start developing
-npm run dev
+pnpm run dev
 ```
 
 **Pros:** No setup required, always up-to-date images
@@ -26,13 +26,13 @@ Use the development helper script to download images locally:
 
 ```bash
 # Interactive mode - choose what to download
-npm run dev:images
+pnpm run dev:images
 
 # Download all images from R2
-npm run dev:images:pull
+pnpm run dev:images:pull
 
 # Check what's missing locally
-npm run dev:images:check
+pnpm run dev:images:check
 ```
 
 **Pros:** Works offline, faster local loading
@@ -156,21 +156,21 @@ Console will show when using R2 fallback:
 ### Images not showing in development
 
 1. **Check internet connection** - CDN fallback requires internet
-2. **Run `npm run dev:images:check`** - See what's missing
-3. **Pull images if needed** - `npm run dev:images:pull`
+2. **Run `pnpm run dev:images:check`** - See what's missing
+3. **Pull images if needed** - `pnpm run dev:images:pull`
 
 ### Want to work offline?
 
 Download all images once:
 
 ```bash
-npm run dev:images:pull
+pnpm run dev:images:pull
 ```
 
 ### Adding new images
 
 1. **Add to `public/images/`** locally
-2. **Run `npm run assets:sync`** to process and upload
+2. **Run `pnpm run assets:sync`** to process and upload
 3. **Commit your code** (images are git-ignored)
 
 ## 📊 Storage Status
@@ -178,7 +178,7 @@ npm run dev:images:pull
 Check R2 storage usage:
 
 ```bash
-npm run assets:status
+pnpm run assets:status
 ```
 
 Output:
@@ -209,8 +209,8 @@ Production automatically uses CDN URLs. No special deployment steps needed for i
 
 ```bash
 # Deploy to production
-npm run build
-npx wrangler deploy
+pnpm run build
+pnpm exec wrangler deploy
 ```
 
 ## 📚 Additional Resources

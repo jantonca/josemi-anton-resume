@@ -6,9 +6,10 @@ Cloudflare Workers, with images served from a Cloudflare R2 CDN
 (cdn.josemianton.com). Single-purpose, solo-maintained.
 
 ## Stack
-Astro 6 (`output: 'static'`), Tailwind CSS v3 (via `@astrojs/tailwind`,
-`applyBaseStyles: false`), TypeScript (`astro/tsconfigs/base` + `strict`,
-`strictNullChecks`). No UI framework — `.astro` components only. Imports
+Astro 7 (`output: 'static'`), Tailwind CSS v4 (via `@tailwindcss/vite`
+with the legacy JavaScript theme config loaded explicitly), TypeScript
+(`astro/tsconfigs/base` + `strict`, `strictNullChecks`). No UI framework —
+`.astro` components only. Imports
 from `src` use the `@/*` alias. Production build minifies with Terser
 (`drop_console`/`drop_debugger` on).
 
@@ -24,7 +25,7 @@ reason.
 - Typecheck: `pnpm type-check` (`astro check && tsc --noEmit`)
 - Lint: `pnpm lint` (`astro check` — there is no ESLint/Prettier)
 - Clean: `pnpm clean`
-- Deploy: `pnpm deploy` (`pnpm build && npx wrangler deploy` → Cloudflare Workers)
+- Deploy: `pnpm deploy` (`pnpm build && pnpm exec wrangler deploy` → Cloudflare Workers)
 - Assets: `pnpm run assets:sync` / `pnpm run assets:status` /
   `pnpm run images:add` / `pnpm run dev:images:pull`
 - Test: none configured
@@ -34,14 +35,14 @@ reason.
   `pnpm run assets:sync` to optimize (AVIF/WebP at 400/800/1200 px;
   quality 90/85/80) and upload to R2. Reference images via the `R2Image` /
   `R2Picture` components — never hardcode `/images/...` paths in
-  production markup. `public/.asset-manifest.json` is gitignored and
+  production markup. `public/assets-manifest.json` is gitignored and
   regenerated on sync; do not commit it. Keep R2 usage under ~8 GB.
 - **Dev vs prod images:** `pnpm dev` serves originals from
   `public/images/`; production serves optimized assets from the R2 CDN.
 - **Secrets:** R2/Cloudflare credentials (`CF_ACCOUNT_ID`,
   `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`) come from
   env only. Never commit `.env`; never hardcode keys.
-- **Styling:** Tailwind v3 utilities via `@astrojs/tailwind`. No CSS-in-JS,
+- **Styling:** Tailwind v4 utilities via `@tailwindcss/vite`. No CSS-in-JS,
   no new styling system without justification.
 - **Accessibility:** all `<img>` / `R2Image` need descriptive alt text
   (target WCAG AA).

@@ -6,22 +6,24 @@ main = "worker.js"
 compatibility_date = "2025-09-13"
 compatibility_flags = ["nodejs_compat"]
 
+# Custom domain configuration must remain at the top level in TOML.
+routes = [
+  { pattern = "cdn.josemianton.com", custom_domain = true },
+  { pattern = "josemianton.com", custom_domain = true },
+  { pattern = "www.josemianton.com", custom_domain = true }
+]
+
 # Account ID is set via environment variable CF_ACCOUNT_ID for security
 # account_id = set via CF_ACCOUNT_ID env var
 
 # Static assets configuration - serves the Astro static site
 [assets]
 directory = "dist"
-not_found_handling = "single-page-application"
+binding = "ASSETS"
+not_found_handling = "404-page"
+run_worker_first = ["/images/*"]
 
 # R2 bucket binding for portfolio images
 [[r2_buckets]]
 binding = "IMAGES_BUCKET"
 bucket_name = "josemianton-com"
-
-# Custom domain configuration
-routes = [
-  { pattern = "cdn.josemianton.com/*", custom_domain = true },
-  { pattern = "josemianton.com", custom_domain = true },
-  { pattern = "www.josemianton.com", custom_domain = true }
-]

@@ -17,8 +17,8 @@
     "avif"
   ],
   "dependencies": {
-    "sharp": "^0.34.5",
-    "@aws-sdk/client-s3": "^3.1056.0"
+    "sharp": "^0.35.3",
+    "@aws-sdk/client-s3": "^3.1116.0"
   },
   "engines": {
     "node": ">=20.0.0"
