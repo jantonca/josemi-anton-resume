@@ -2,7 +2,7 @@
 
 ## Current Status
 
-✅ **Project Status**: Stable
+✅ **Project Status**: Stable; maintenance refreshed in August 2026
 
 ## Completed
 
@@ -10,14 +10,14 @@
 - [x] R2 asset processor configuration
 - [x] CDN delivery via cdn.josemianton.com
 - [x] TypeScript strict mode
-- [x] Accessibility compliance (WCAG 2.1 AA)
+- [x] Semantic structure, keyboard-operable controls, and descriptive image alt text
 
 ## Ongoing Maintenance
 
 ### Regular Tasks
 - **Content Updates**: Update experience, skills, and projects as needed
 - **Asset Optimization**: Run `pnpm run assets:sync` when adding new images
-- **Dependencies**: Review and update quarterly (`pnpm update`)
+- **Dependencies**: Review quarterly (`pnpm outdated` and `pnpm audit --prod`)
 - **API Keys**: Rotate R2 credentials quarterly
 - **Storage Monitoring**: Check `pnpm run assets:status` monthly
 
@@ -52,7 +52,6 @@
 
 ### Accessibility
 - [ ] Add skip navigation links
-- [ ] Implement focus trap for modals
 - [ ] Add reduced motion preferences
 - [ ] Test with screen readers (NVDA, JAWS, VoiceOver)
 

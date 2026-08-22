@@ -6,8 +6,8 @@
       "enabled": true,
       "severity": "info",
       "description": "Track R2 asset manifest updates",
-      "message": "Ensure .asset-manifest.json is up to date after adding images",
-      "filePatterns": ["public/.asset-manifest.json"],
+      "message": "Ensure assets-manifest.json is up to date after adding images",
+      "filePatterns": ["public/assets-manifest.json"],
       "applicableWhen": "changes to public/images/**"
     },
     "hardcodedR2Credentials": {
@@ -46,7 +46,7 @@
       "severity": "warning",
       "description": "Prevent asset manifest from being committed",
       "message": "Asset manifest should be gitignored as it's regenerated on each sync",
-      "filePatterns": ["public/.asset-manifest.json", ".asset-manifest.json"]
+      "filePatterns": ["public/assets-manifest.json", "assets-manifest.json"]
     },
     "cdnDomainHardcoded": {
       "enabled": true,
@@ -162,7 +162,7 @@
     "node_modules/",
     "dist/",
     ".astro/",
-    "public/.asset-manifest.json",
+    "public/assets-manifest.json",
     ".env",
     ".env.local",
     ".env.production",

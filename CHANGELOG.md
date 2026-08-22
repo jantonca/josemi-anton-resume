@@ -1,5 +1,25 @@
 # Changelog
 
+## [2026-08-22] - Repository Maintenance
+
+### Fixed
+
+- Corrected Cloudflare route scoping and static-assets binding
+- Added a custom static 404 page so missing routes no longer fail with HTTP 500
+- Preserved R2 HTTP metadata, including image content types and ETags
+
+### Changed
+
+- Upgraded to Astro 7 and Tailwind CSS 4
+- Updated supported dependencies and removed unused packages
+- Removed the public image-component test route
+- Consolidated Tailwind configuration and standardized documentation on pnpm
+
+### Improved
+
+- Production build now completes without diagnostics
+- Wrangler dry-run validates both the static assets and R2 bindings
+
 ## [2025-09-13] - Asset Pipeline & CDN Implementation
 
 ### Added
@@ -11,9 +31,9 @@
   - WebP and AVIF formats for optimal compression
 - **CDN Subdomain**: Images now served from `cdn.josemianton.com`
 - **Asset Management Scripts**:
-  - `npm run assets:sync`: Optimize and upload images to R2
-  - `npm run assets:status`: Check storage usage
-  - `npm run images:add`: Interactive image addition
+  - `pnpm run assets:sync`: Optimize and upload images to R2
+  - `pnpm run assets:status`: Check storage usage
+  - `pnpm run images:add`: Interactive image addition
 - **R2 Components**:
   - `R2Image.astro`: Optimized image component with automatic format selection
   - `R2Picture.astro`: Multi-format picture element with responsive srcset
@@ -60,7 +80,7 @@ Desktop (1200px): Quality 80 - Optimized for larger, lower-DPI displays
 #### Storage Optimization
 
 - Smart hash-based change detection prevents re-uploading unchanged files
-- Manifest tracking in `.asset-manifest.json`
+- Manifest tracking in `public/assets-manifest.json`
 - Optimized for Cloudflare R2's 10GB free tier
 
 #### Deployment Configuration
@@ -77,7 +97,7 @@ To use this system in other projects:
 2. Install dependencies: `sharp`, `@aws-sdk/client-s3`
 3. Configure environment variables
 4. Copy R2Image and R2Picture components
-5. Run `npm run assets:sync` to optimize and upload images
+5. Run `pnpm run assets:sync` to optimize and upload images
 
 ### Security Considerations
 

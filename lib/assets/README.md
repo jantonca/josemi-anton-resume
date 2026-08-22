@@ -26,10 +26,10 @@ cd your-project
 node lib/assets/setup.js
 
 # 3. Install dependencies
-npm install sharp @aws-sdk/client-s3
+pnpm install sharp @aws-sdk/client-s3
 
 # 4. Start using!
-npm run assets:sync
+pnpm run assets:sync
 ```
 
 ### Method 2: Manual Setup
@@ -41,7 +41,7 @@ npm run assets:sync
 
 2. **Install Dependencies**
    ```bash
-   npm install sharp @aws-sdk/client-s3
+   pnpm install sharp @aws-sdk/client-s3
    ```
 
 3. **Create `.env` file**
@@ -71,12 +71,12 @@ npm run assets:sync
 
 ### Process and Upload Assets
 ```bash
-npm run assets:sync
+pnpm run assets:sync
 ```
 
 ### Check Storage Status
 ```bash
-npm run assets:status
+pnpm run assets:status
 ```
 
 ## 🎯 How It Works
@@ -222,7 +222,7 @@ lib/assets/
 
 ## ⚙️ Requirements
 
-- Node.js 18+
+- Node.js 20+
 - Cloudflare R2 bucket
 - R2 API credentials
 

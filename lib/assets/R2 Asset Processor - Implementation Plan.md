@@ -1,5 +1,8 @@
 # 🚀 R2 Asset Processor - Implementation Plan
 
+> Historical plan. The implemented workflow is documented in `README.md` in
+> this directory and uses pnpm commands from the repository root.
+
 ## Overview
 
 Transform your existing asset processor into a **flexible, reusable package** that can be used across multiple projects while keeping it simple and maintainable.
@@ -111,7 +114,7 @@ cd ../other-project
 node lib/assets/setup.js
 
 # Start using
-npm run assets:sync
+pnpm run assets:sync
 ```
 
 ---
@@ -260,15 +263,15 @@ const processor = new AssetProcessor({
 2. **Update processor:** Replace `lib/assets/processor.js`
 3. **Add config:** Create `assets.config.js` (optional)
 4. **Update worker:** Replace `worker.js`
-5. **Test:** Run `npm run assets:sync` with `--dry-run`
-6. **Deploy:** `npx wrangler deploy`
+5. **Test:** Run `pnpm run assets:sync` with `--dry-run`
+6. **Deploy:** `pnpm exec wrangler deploy`
 
 ### For New Projects
 
 1. **Copy folder:** `cp -r lib/assets new-project/lib/`
 2. **Run setup:** `cd new-project && node lib/assets/setup.js`
 3. **Configure:** Edit `assets.config.js`
-4. **Process:** `npm run assets:sync`
+4. **Process:** `pnpm run assets:sync`
 
 ---
 
@@ -337,7 +340,7 @@ const processor = new AssetProcessor({
 - Uses R2 for image storage
 - Automatic optimization to WebP/AVIF
 - Configurable via assets.config.js
-- Run `npm run assets:sync` to process
+- Run `pnpm run assets:sync` to process
 ```
 
 ### For Package README
@@ -351,7 +354,7 @@ Simple, effective asset optimization for Cloudflare R2.
 
 1. Run setup: `node lib/assets/setup.js`
 2. Add images to `public/images/`
-3. Process: `npm run assets:sync`
+3. Process: `pnpm run assets:sync`
 
 ## Configuration
 

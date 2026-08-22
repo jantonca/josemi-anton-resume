@@ -107,10 +107,10 @@ Test that secrets are properly protected:
 ```bash
 # Test 1: Code should fail without env vars
 unset CF_ACCOUNT_ID
-npm run assets:sync  # Should error
+pnpm run assets:sync  # Should error
 
 # Test 2: Check for leaks in output
-npm run assets:sync 2>&1 | grep -i "secret\|key\|token"  # Should be empty
+pnpm run assets:sync 2>&1 | grep -i "secret\|key\|token"  # Should be empty
 
 # Test 3: Verify gitignore
 echo "test" >> .env
