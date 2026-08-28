@@ -72,8 +72,30 @@ export interface JobsContent {
   jobs: JobContent[]
 }
 
-export interface Skills {
+export interface SkillGroup {
+  label: string
   tags: string[]
+}
+
+export interface Skills {
+  groups: SkillGroup[]
+}
+
+export interface EducationItem {
+  degree: string
+  institution: string
+  year: string
+  detail?: string
+}
+
+export interface Language {
+  name: string
+  level: string
+}
+
+export interface EducationContent {
+  items: EducationItem[]
+  languages: Language[]
 }
 
 export interface Contact {

@@ -1,0 +1,38 @@
+---
+import NumberedHeading from './NumberedHeading.astro'
+import { educationContent } from '@/content/education'
+
+const { items, languages } = educationContent
+---
+
+<section
+  id='education'
+  class='scroll-mt-16 py-8 lg:py-32'
+>
+  <div class='container mx-auto px-4 max-w-[1200px]'>
+    <NumberedHeading
+      number='04.'
+      title='Education'
+    />
+    <div class='space-y-8'>
+      {
+        items.map((item) => (
+          <div>
+            <h3 class='text-xl font-heading mb-1'>{item.degree}</h3>
+            <p class='font-mono text-sm text-muted-foreground'>
+              {item.institution} &middot; {item.year}
+            </p>
+            {item.detail && (
+              <p class='text-lg font-extralight text-muted-foreground'>
+                {item.detail}
+              </p>
+            )}
+          </div>
+        ))
+      }
+    </div>
+    <p class='mt-10 font-mono text-sm text-muted-foreground'>
+      Languages: {languages.map(({ name, level }) => `${name} — ${level}`).join(' · ')}
+    </p>
+  </div>
+</section>

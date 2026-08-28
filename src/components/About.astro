@@ -4,8 +4,7 @@ import SkillList from './SkillList.astro'
 import R2Image from './R2Image.astro'
 import { aboutContent } from '@/content/about'
 
-const { skills, description, profileImage, currentWork, previousWork } =
-  aboutContent
+const { skills, description, profileImage, previousWork } = aboutContent
 ---
 
 <section
@@ -22,9 +21,8 @@ const { skills, description, profileImage, currentWork, previousWork } =
     <div class='grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-12'>
       <div class='space-y-6 text-lg font-extralight text-muted-foreground'>
         {description.map((paragraph) => <p>{paragraph}</p>)}
-
         <p>
-          Fast-forward to today, and I've had the privilege of working at{' '}
+          Before Rotor, I worked at{' '}
           {
             previousWork.map((work, index) => (
               <>
@@ -37,24 +35,13 @@ const { skills, description, profileImage, currentWork, previousWork } =
                 >
                   {work.company}
                 </a>
-                {index < previousWork.length - 1 && ', '}
+                {index < previousWork.length - 1 &&
+                  (index === previousWork.length - 2 ? ' and ' : ', ')}
               </>
             ))
           }
-          .
-        </p>
-        <p>
-          Currently, I'm focused on building innovative web experiences at{' '}
-          <a
-            href={currentWork.url}
-            target='_blank'
-            rel='noopener noreferrer'
-            class='text-(--links) font-normal hover:underline'
-            aria-label={currentWork.company}
-          >
-            {currentWork.company}
-          </a>
-          , on groundbreaking projects in VR/AR and WebGL.
+          {' '}across publishing, e-commerce, WordPress and custom web
+          applications.
         </p>
         <p>Here are a few technologies I've been working with recently:</p>
       </div>

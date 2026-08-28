@@ -11,6 +11,7 @@ export interface HomePageConfig {
     about: boolean
     experience: boolean
     skills: boolean
+    education: boolean
     contact: boolean
     footer: boolean
   }
