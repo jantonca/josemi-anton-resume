@@ -9,31 +9,26 @@ A personal website/resume built with Astro and TypeScript. The site features a c
 - **Framework**: [Astro](https://astro.build/) v7
 - **Styling**: Tailwind CSS v4 via its Vite plugin
 - **Language**: TypeScript
-- **Icons**: Simple Icons
+- **Icons**: astro-icon with local SVGs (`src/icons/`)
 - **Build Tools**: Vite (integrated with Astro)
-- **Hosting**: Cloudflare Workers (static assets)
+- **Hosting**: Cloudflare Workers (static assets + Worker)
 - **Image Pipeline**: Sharp preprocessing with Cloudflare R2 delivery
 
 ## Project Structure
 
 ```
 josemi-anton-resume/
-├── public/            # Static assets
-│   ├── fonts/        # Custom fonts (Proto Grotesk, Akzidenz Grotesk)
-│   └── images/       # Profile images and assets
-├── src/
-│   ├── components/    # Reusable Astro components
-│   ├── content/       # TypeScript content definitions
-│   ├── icons/         # SVG icons and related components
-│   ├── layouts/       # Page layouts
-│   ├── lib/          # Utility functions
-│   ├── pages/        # Route pages
-│   ├── styles/       # Global styles and themes
-│   └── types/        # TypeScript type definitions
-├── dist/             # Build output (generated)
-├── astro.config.mjs  # Astro configuration
-├── wrangler.toml     # Cloudflare Workers config
-└── tailwind.config.js  # Tailwind theme config
+├── public/            # Static assets served as-built (fonts, favicon, robots)
+│   └── fonts/         # Custom fonts (Proto Grotesk, Akzidenz Grotesk)
+├── src/               # Astro site (components, content, layouts, pages, styles)
+├── lib/assets/        # R2 asset processor (see lib/assets/README.md)
+├── workers/           # Worker helpers shared by worker.js
+├── dist/              # Build output (generated)
+├── assets.config.js   # Image pipeline + Worker variant configuration
+├── worker.js          # Cloudflare Worker (site + CDN image delivery)
+├── astro.config.mjs   # Astro configuration
+├── wrangler.toml      # Cloudflare Workers config
+└── tailwind.config.js # Tailwind theme config
 ```
 
 ## Key Features
@@ -95,6 +90,9 @@ pnpm lint
 
 # Clean build files
 pnpm clean
+
+# Unit tests (asset pipeline + Worker helpers)
+pnpm test
 
 # Build and deploy to Cloudflare Workers
 pnpm deploy
@@ -174,17 +172,25 @@ This project was migrated from Cloudflare Pages to Cloudflare Workers for better
 
 ## Deployment
 
-The site is deployed to **Cloudflare Workers** using static assets hosting. The deployment process:
+The site is deployed to **Cloudflare Workers** using static assets hosting.
+The repository is connected to Cloudflare Workers Builds: every push builds
+automatically, and **merges to `master` deploy production** — no manual
+deploy step is required. `pnpm deploy` remains available for manual
+deployments from a machine with wrangler auth.
+
+The deployment process:
 
 1. **Build**: Static files are generated in the `dist/` directory
-2. **Deploy**: Uses Wrangler CLI to deploy to Cloudflare Workers
+2. **Deploy**: Automatic via Workers Builds on merge to `master` (or
+   manually via Wrangler CLI)
 3. **Hosting**: Served via Cloudflare's global edge network
 
 ### Deployment Configuration
 
 - **wrangler.toml**: Configures Cloudflare Workers deployment
 - **Static Assets**: All site content served from `dist/` directory
-- **Custom Domain**: `josemianton.com` configured via Cloudflare Workers
+- **Custom Domains**: `josemianton.com`, `www.josemianton.com`, and
+  `cdn.josemianton.com` (R2 image delivery) configured via Cloudflare Workers
 - **Performance**: Global CDN with edge caching
 
 ### Deploy Commands
@@ -229,5 +235,5 @@ SOFTWARE.
 You can reach out to me through various channels:
 
 - **Personal Website**: [josemianton.com](https://josemianton.com)
-- **GitHub**: [@josemianton](https://github.com/jantonca)
+- **GitHub**: [@jantonca](https://github.com/jantonca)
 - **LinkedIn**: [Josemi Anton](https://linkedin.com/in/josemiantoncasado)

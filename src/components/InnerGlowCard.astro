@@ -18,7 +18,7 @@ const variants = {
 } as const
 
 const animations = {
-  default: 'animate-glow',
+  default: '',
   none: '',
 } as const
 ---
@@ -31,11 +31,7 @@ const animations = {
     className
   )}
 >
-  <div
-    class='InnerGlowCard__content'
-    role='region'
-    aria-label='Content with glow effect'
-  >
+  <div class='InnerGlowCard__content'>
     <slot />
   </div>
 </div>

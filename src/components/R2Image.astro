@@ -127,6 +127,9 @@ const containerStyle = aspectRatio ? `aspect-ratio: ${aspectRatio};` : undefined
 
 // Dev mode indicator (optional - can be removed in production)
 const showDevIndicator = isDev && !localFileExists && useR2
+
+// Truthful provenance label: dev CDN-fallback vs production CDN vs local file
+const imageSource = showDevIndicator ? 'r2-fallback' : useR2 ? 'r2' : 'local'
 ---
 
 {
@@ -144,7 +147,7 @@ const showDevIndicator = isDev && !localFileExists && useR2
         srcset={srcset}
         sizes={sizes}
         class='w-full h-full object-cover'
-        data-source={showDevIndicator ? 'r2-fallback' : 'local'}
+        data-source={imageSource}
       />
     </div>
   ) : (
@@ -157,15 +160,18 @@ const showDevIndicator = isDev && !localFileExists && useR2
       srcset={srcset}
       sizes={sizes}
       class={className}
-      data-source={showDevIndicator ? 'r2-fallback' : 'local'}
+      data-source={imageSource}
     />
   )
 }
 
 {
   showDevIndicator && (
-    <script>
-      console.info(`[R2Image] Using CDN fallback for: ${Astro.props.src}`)
+    <script
+      is:inline
+      define:vars={{ fallbackSrc: src }}
+    >
+      console.info(`[R2Image] Using CDN fallback for: ${fallbackSrc}`)
     </script>
   )
 }

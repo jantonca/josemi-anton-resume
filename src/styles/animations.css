@@ -35,3 +35,18 @@
     transform: translateX(-50%);
   }
 }
+
+/* Honor the user's reduced-motion preference for all decorative animation
+   (hero gradient blobs, glow border, skills marquee). */
+@media (prefers-reduced-motion: reduce) {
+  .g1,
+  .g2,
+  .g3,
+  .g4,
+  .g5,
+  .interactive,
+  .InnerGlowCard .InnerGlowCard__content::before,
+  .loop-slider .inner {
+    animation: none;
+  }
+}

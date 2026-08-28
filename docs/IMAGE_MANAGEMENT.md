@@ -56,9 +56,9 @@ project/
 │   └── assets-manifest.json  # Asset tracking (git-ignored)
 ├── lib/
 │   └── assets/           # R2 processor system
-│       ├── processor.js  # Main processing logic
-│       ├── sync.js      # Upload to R2
-│       └── dev-images.js # Dev helper (new)
+│       ├── cli/          # sync.js, status.js, dev-images.js entry points
+│       ├── core/         # processor.js, rules.js, utils.js
+│       └── test/         # Unit tests (pnpm test)
 └── src/
     └── components/
         ├── R2Image.astro    # Smart image component
@@ -67,21 +67,15 @@ project/
 
 ## 🔧 Setup Scripts
 
-Add these to your `package.json`:
+All scripts are already wired up in `package.json` and read R2 credentials
+from `.env` automatically:
 
-```json
-{
-  "scripts": {
-    // Existing scripts
-    "assets:sync": "export $(grep -v '^#' .env | xargs) && node lib/assets/sync.js",
-    "assets:status": "export $(grep -v '^#' .env | xargs) && node lib/assets/status.js",
-
-    // New development scripts
-    "dev:images": "export $(grep -v '^#' .env | xargs) && node lib/assets/dev-images.js",
-    "dev:images:pull": "export $(grep -v '^#' .env | xargs) && node lib/assets/dev-images.js pull",
-    "dev:images:check": "export $(grep -v '^#' .env | xargs) && node lib/assets/dev-images.js check"
-  }
-}
+```bash
+pnpm run assets:sync        # Optimize and upload to R2
+pnpm run assets:status      # Storage usage + manifest summary
+pnpm run dev:images         # Interactive download helper
+pnpm run dev:images:pull    # Download all originals missing locally
+pnpm run dev:images:check   # Report local vs R2 differences
 ```
 
 ## 🌐 How It Works
@@ -138,10 +132,10 @@ Check the browser DevTools for image source information:
   src="/images/profile.jpg"
 />
 
-<!-- R2 fallback in dev -->
+<!-- R2-served image in production -->
 <img
-  data-source="r2-fallback"
-  src="https://cdn.josemianton.com/images/profile-800.webp"
+  data-source="r2"
+  src="https://cdn.josemianton.com/images/profile-400.webp"
 />
 ```
 
@@ -216,5 +210,4 @@ pnpm exec wrangler deploy
 ## 📚 Additional Resources
 
 - [Cloudflare R2 Documentation](https://developers.cloudflare.com/r2/)
-- [Asset Pipeline README](./lib/assets/README.md)
-- [Component Documentation](./src/components/README.md)
+- [Asset Pipeline README](../lib/assets/README.md)
