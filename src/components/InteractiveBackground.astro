@@ -43,6 +43,9 @@ const { class: className } = Astro.props
       tgY = event.clientY
     }
 
+    // Skip the follow-cursor loop entirely when the user prefers reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     window.addEventListener('mousemove', handleMouseMove)
     move()
 

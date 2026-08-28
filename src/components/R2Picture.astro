@@ -174,7 +174,10 @@ const imageSource = showDevIndicator ? 'r2-fallback' : useR2 ? 'r2' : 'local'
 
 {
   showDevIndicator && (
-    <script define:vars={{ fallbackSrc: src }}>
+    <script
+      is:inline
+      define:vars={{ fallbackSrc: src }}
+    >
       console.info(`[R2Picture] Using CDN fallback for: ${fallbackSrc}`)
     </script>
   )
