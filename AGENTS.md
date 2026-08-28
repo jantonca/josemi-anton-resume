@@ -55,6 +55,11 @@ reason.
 - **Accessibility:** all `<img>` / `R2Image` need descriptive alt text
   (target WCAG AA).
 - **Deployment:** static build to Cloudflare Workers via `wrangler`.
+- **Auto-deploy:** GitHub is connected to Cloudflare Workers Builds — every
+  push builds automatically, and merges to `master` deploy **production**.
+  Treat pushes and merges as deployment-affecting actions. Local
+  `pnpm deploy` still works but requires its own wrangler auth
+  (`wrangler login` or `CLOUDFLARE_API_TOKEN`).
 - **Cloudflare deploy:** this is a single-package repo deployed on
   Cloudflare Workers with pnpm 10.x. Do not add `pnpm-workspace.yaml`
   unless converting to a real workspace with a valid `packages:` field.

@@ -172,10 +172,17 @@ This project was migrated from Cloudflare Pages to Cloudflare Workers for better
 
 ## Deployment
 
-The site is deployed to **Cloudflare Workers** using static assets hosting. The deployment process:
+The site is deployed to **Cloudflare Workers** using static assets hosting.
+The repository is connected to Cloudflare Workers Builds: every push builds
+automatically, and **merges to `master` deploy production** — no manual
+deploy step is required. `pnpm deploy` remains available for manual
+deployments from a machine with wrangler auth.
+
+The deployment process:
 
 1. **Build**: Static files are generated in the `dist/` directory
-2. **Deploy**: Uses Wrangler CLI to deploy to Cloudflare Workers
+2. **Deploy**: Automatic via Workers Builds on merge to `master` (or
+   manually via Wrangler CLI)
 3. **Hosting**: Served via Cloudflare's global edge network
 
 ### Deployment Configuration
