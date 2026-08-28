@@ -45,8 +45,8 @@ ls -la .env  # Should exist locally
 git ls-files .env  # Should return nothing (not tracked)
 
 # 4. Check for hardcoded values
-grep -r "25a61ab" lib/  # Your account ID
-grep -r "josemianton-com" lib/ --exclude="*.md"  # Your bucket
+grep -rEi "[0-9a-f]{32}" lib/ workers/ assets.config.js  # Account IDs are 32-char hex; should find nothing
+grep -r "josemianton-com" lib/ --exclude="*.md"  # Your bucket name
 ```
 
 ## How to Share This Code Safely
@@ -55,7 +55,7 @@ grep -r "josemianton-com" lib/ --exclude="*.md"  # Your bucket
 1. Use `.env.example` with placeholders
 2. Document required environment variables
 3. Never include actual credentials
-4. Use the setup script for configuration
+4. Enter credentials directly in your local `.env` (never in code)
 
 ### Option 2: Private Sharing
 1. Share the `lib/assets/` folder

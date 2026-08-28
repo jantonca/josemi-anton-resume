@@ -1,235 +1,77 @@
-# 📦 R2 Asset Processor
+# R2 Asset Processor
 
-A simple, reusable asset optimization and upload system for Cloudflare R2.
+Optimization and upload pipeline for this site's Cloudflare R2 image bucket.
+Structured after the canonical `r2-assets-astro-template`; this repo's local
+configuration (sizes, formats, quality, paths) lives in `assets.config.js`.
 
-## ✨ Features
-
-- 🎨 Automatic image optimization (AVIF + WebP)
-- 📱 Mobile-first responsive sizes (400px, 800px, 1200px)
-- 📁 Mirrors local folder structure in R2
-- 🔄 Smart change detection (skip unchanged files)
-- 📊 Storage monitoring (10GB free tier aware)
-- 🚀 Zero configuration for basic usage
-- 📝 Manifest tracking for processed files
-- ⚡ Adaptive quality settings per size
-
-## 🚀 Quick Start
-
-### Method 1: Automated Setup (Recommended)
+## Commands
 
 ```bash
-# 1. Copy the module to your project
-cp -r /path/to/lib/assets ./lib/
-
-# 2. Run setup script
-cd your-project
-node lib/assets/setup.js
-
-# 3. Install dependencies
-pnpm install sharp @aws-sdk/client-s3
-
-# 4. Start using!
-pnpm run assets:sync
+pnpm run assets:sync        # Optimize public/images/* and upload to R2
+pnpm run assets:status      # R2 storage usage + manifest summary
+pnpm run dev:images         # Interactive helper for local dev images
+pnpm run dev:images:pull    # Download all originals missing locally
+pnpm run dev:images:check   # Report local vs R2 differences
+pnpm test                   # Unit tests (node:test, no extra dependencies)
 ```
 
-### Method 2: Manual Setup
+All commands read R2 credentials from `.env`
+(`CF_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`,
+`R2_BUCKET_NAME`) — see `.env.example` and `SECURITY.md`.
 
-1. **Copy the Module**
-   ```bash
-   cp -r lib/assets /path/to/your/project/lib/
-   ```
+## How it works
 
-2. **Install Dependencies**
-   ```bash
-   pnpm install sharp @aws-sdk/client-s3
-   ```
+1. Source files live in `public/images/` (git-ignored).
+2. `assets:sync` uploads the **original** plus generated variants:
+   - `.jpg` / `.jpeg` / `.png` → WebP + AVIF at 400 / 800 / 1200 px
+   - `.gif` → WebP (original size)
+   - `.svg` / `.pdf` → uploaded as-is
+   - `.webp` / `.avif` sources are skipped (already optimized)
+3. Objects are keyed `{name}-{width}.{format}` next to the original, e.g.
+   `images/profile.jpg` → `images/profile-400.webp`, `…-400.avif`, `…-800.webp`, …
+4. Uploads carry `Content-Type` and
+   `Cache-Control: public, max-age=31536000, immutable`.
+5. `public/assets-manifest.json` (git-ignored) records a content hash and
+   output list per source, stamped with a manifest entry **version**
+   (currently `2`). Entries with an older version are reprocessed, so
+   pipeline fixes self-heal on the next sync. A failed upload aborts the
+   file's manifest update, so partial work is retried next run.
+6. Sources that produce the same R2 key (e.g. `a.png` and `a.jpg` in the same
+   folder) fail fast with a collision error instead of silently overwriting.
 
-3. **Create `.env` file**
-   ```env
-   CF_ACCOUNT_ID=your-account-id
-   R2_ACCESS_KEY_ID=your-access-key
-   R2_SECRET_ACCESS_KEY=your-secret-key
-   R2_BUCKET_NAME=your-bucket-name
-   ```
+## Quality
 
-4. **Add NPM Scripts** to `package.json`:
-   ```json
-   {
-     "scripts": {
-       "assets:sync": "export $(grep -v '^#' .env | xargs) && node lib/assets/sync.js",
-       "assets:status": "export $(grep -v '^#' .env | xargs) && node lib/assets/status.js"
-     }
-   }
-   ```
+Configured per format in `assets.config.js`:
 
-5. **Create Folders**
-   ```bash
-   mkdir -p public/images public/documents
-   ```
+| Format | 400 px | 800 px | 1200 px | original |
+| ------ | ------ | ------ | ------- | -------- |
+| WebP   | 90     | 85     | 80      | 80       |
+| AVIF   | 75     | 65     | 55      | 55       |
 
-## 📖 Usage
+## Worker integration
 
-### Process and Upload Assets
-```bash
-pnpm run assets:sync
-```
+`workers/r2-response.js` (imported by `worker.js`) derives format
+negotiation, size fallbacks, and Save-Data downgrades from the same
+`assets.config.js`, so the bucket contents and the Worker's expectations
+cannot drift apart.
 
-### Check Storage Status
-```bash
-pnpm run assets:status
-```
-
-## 🎯 How It Works
-
-1. **Input**: Place files in `public/images/` or `public/documents/`
-2. **Process**: Optimizes based on file type
-3. **Output**: Uploads to R2 with same folder structure
-4. **Track**: Saves manifest to avoid reprocessing
-
-### Naming Convention
-
-```
-Original: profile.jpg
-Outputs:
-  - profile-400.webp   (mobile, quality 90)
-  - profile-400.avif   (mobile, quality 90)
-  - profile-800.webp   (tablet, quality 85)
-  - profile-800.avif   (tablet, quality 85)
-  - profile-1200.webp  (desktop, quality 80)
-  - profile-1200.avif  (desktop, quality 80)
-```
-
-## 🔧 Customization
-
-### Change Output Sizes
-
-Edit `processor.js` RULES object:
-
-```javascript
-'.jpg': { 
-  outputs: ['webp', 'avif'], 
-  sizes: [400, 800, 1200],
-  quality: { 400: 90, 800: 85, 1200: 80 }
-},
-```
-
-### Change Quality Settings
-
-The processor uses adaptive quality based on image size:
-
-```javascript
-// Mobile-first quality strategy
-const quality = this.getQualityForSize(width)
-// 400px → 90, 800px → 85, 1200px → 80
-
-pipeline.webp({ quality, effort: 6 })
-pipeline.avif({ quality, effort: 6 })
-```
-
-### Add More Formats
-
-Add to the `RULES` object in `processor.js`:
-
-```javascript
-'.heic': { outputs: ['webp', 'avif'], sizes: [800, 1600] },
-```
-
-## 📊 Storage Management
-
-- **10GB Free Tier**: Optimized for Cloudflare R2's free tier
-- **Warning at 80%**: Alerts when approaching limit
-- **Manifest Tracking**: Prevents re-uploading unchanged files
-
-## 🔍 Manifest Structure
-
-The system creates `public/assets-manifest.json`:
-
-```json
-{
-  "processed": {
-    "images/profile.jpg": {
-      "hash": "abc123...",
-      "outputs": ["images/profile-800.webp", ...],
-      "size": 2914203,
-      "updated": "2025-09-13T08:52:32.139Z"
-    }
-  },
-  "storage": {
-    "used": 15623900,
-    "limit": 10737418240,
-    "percentage": 0
-  }
-}
-```
-
-## 🛠️ Advanced Usage
-
-### Use in Astro Components
-
-```astro
----
-// R2Image component example
-import R2Image from './R2Image.astro'
----
-
-<R2Image 
-  src="profile.jpg" 
-  alt="Profile"
-  width={800}
-  height={800}
-  class="rounded-lg"
-/>
-```
-
-### Picture Element with Multiple Formats
-
-```astro
----
-import R2Picture from './R2Picture.astro'
----
-
-<R2Picture 
-  src="hero.jpg" 
-  alt="Hero image"
-  sizes="(max-width: 768px) 100vw, 50vw"
-  class="w-full"
-/>
-```
-
-### Programmatic Usage
-
-```javascript
-import { AssetProcessor } from './lib/assets/processor.js'
-
-const processor = new AssetProcessor()
-await processor.init()
-await processor.processAll()
-
-// Get storage status
-const status = await processor.getStorageStatus()
-console.log(`Using ${status.percentage}% of storage`)
-```
-
-## 📝 File Structure
+## File structure
 
 ```
 lib/assets/
-├── processor.js    # Main processor class
-├── sync.js        # CLI for syncing
-├── status.js      # CLI for status
-└── README.md      # This file
+├── cli/
+│   ├── sync.js          # Entry point for assets:sync
+│   ├── status.js        # Entry point for assets:status
+│   └── dev-images.js    # Local development image helper
+├── core/
+│   ├── processor.js     # AssetProcessor class
+│   ├── rules.js         # Default rules + defaults config
+│   └── utils.js         # Shared helpers (hash, content types, R2 client)
+├── test/                # node:test suites (pnpm test)
+├── README.md            # This file
+└── SECURITY.md          # Credential handling guidelines
 ```
 
-## ⚙️ Requirements
-
-- Node.js 20+
-- Cloudflare R2 bucket
-- R2 API credentials
-
-## 📄 License
-
-MIT - Use freely in your projects
-
-## 🤝 Contributing
-
-Feel free to modify and improve for your needs!
+Further background: `docs/IMAGE_MANAGEMENT.md` (development workflows) and the
+historical drafts in `docs/` (`ASSET_PIPELINE_*.md` are superseded notes kept
+for reference).
