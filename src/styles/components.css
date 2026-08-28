@@ -38,7 +38,9 @@
   }
 
   .gradients-container {
-    filter: url(#goo) blur(40px);
+    /* No SVG filter with id "goo" exists; an invalid url() reference voids the
+       whole filter property in browsers, so the intended blur never applied. */
+    filter: blur(40px);
     width: 100%;
     height: 100%;
     position: absolute;

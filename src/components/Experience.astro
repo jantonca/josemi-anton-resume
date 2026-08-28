@@ -17,7 +17,7 @@ const initialActiveTab = 0
       title="Where I've Worked"
     />
 
-    <div class='flex flex-col md:grid md:grid-cols-[max-content,1fr] gap-4'>
+    <div class='flex flex-col md:grid md:grid-cols-[max-content_1fr] gap-4'>
       {/* Tabs list */}
       <div
         role='tablist'
@@ -35,7 +35,7 @@ const initialActiveTab = 0
               class:list={[
                 'experience-tab px-5 py-2 text-left font-mono text-lg relative transition-colors duration-300 border md:border-0',
                 index === initialActiveTab
-                  ? 'text-[--link] font-semibold text-lg bg-pacific border-pacific md:text-[--link] md:bg-transparent md:border-l-2 md:border-pacific'
+                  ? 'text-(--links) font-semibold text-lg bg-pacific border-pacific md:bg-transparent md:border-l-2 md:border-pacific'
                   : 'text-muted-foreground border-border',
                 'md:hover:text-pacific md:hover:bg-pacific/5',
               ]}
@@ -93,11 +93,10 @@ const initialActiveTab = 0
     tabs[oldIndex].setAttribute('aria-selected', 'false')
     tabs[oldIndex].setAttribute('tabindex', '-1')
     tabs[oldIndex].classList.remove(
-      'text-[--link]',
+      'text-(--links)',
       'font-semibold',
       'bg-pacific',
       'border-pacific',
-      'md:text-[--link]',
       'md:bg-transparent',
       'md:border-l-2',
       'md:border-pacific'
@@ -107,11 +106,10 @@ const initialActiveTab = 0
     tabs[newIndex].setAttribute('aria-selected', 'true')
     tabs[newIndex].setAttribute('tabindex', '0')
     tabs[newIndex].classList.add(
-      'text-[--link]',
+      'text-(--links)',
       'font-semibold',
       'bg-pacific',
       'border-pacific',
-      'md:text-[--link]',
       'md:bg-transparent',
       'md:border-l-2',
       'md:border-pacific'
@@ -176,12 +174,13 @@ const initialActiveTab = 0
   }
 
   .experience-tab:focus-visible {
-    outline: 2px solid var(--pacific);
+    outline: 2px solid #00b4d8;
     outline-offset: 2px;
   }
 
   /* Content still accessible when hidden */
   .experience-content.hidden {
+    opacity: 0;
     display: none;
   }
 </style>
