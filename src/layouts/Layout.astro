@@ -9,7 +9,7 @@ interface Props extends LayoutProps {}
 
 const {
   title,
-  description = "Josemi Anton's professional resume and portfolio",
+  description = 'Senior Frontend Engineer based in Sydney with 10+ years of experience in React, TypeScript, frontend architecture, WebGL, automated testing and CI/CD.',
 } = Astro.props
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
@@ -20,7 +20,7 @@ const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Josemi Anton',
-  jobTitle: 'Web Designer & Developer',
+  jobTitle: 'Senior Frontend Engineer',
   url: canonicalURL.href,
   sameAs: socialUrls,
 }
