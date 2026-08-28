@@ -7,10 +7,13 @@
 ## Completed
 
 - [x] AI collaboration rules via AGENTS.md (+ inherited personal-ai-assistant rules)
-- [x] R2 asset processor configuration
+- [x] R2 asset processor configuration (canonical core/cli/test layout, manifest v2)
 - [x] CDN delivery via cdn.josemianton.com
 - [x] TypeScript strict mode
 - [x] Semantic structure, keyboard-operable controls, and descriptive image alt text
+- [x] Tailwind v4 migration fixes (grid layouts, CSS-variable utilities)
+- [x] Worker hardening (method checks, HEAD, directory markers, Save-Data downgrade)
+- [x] Unit tests for the asset pipeline and Worker helpers
 
 ## Ongoing Maintenance
 

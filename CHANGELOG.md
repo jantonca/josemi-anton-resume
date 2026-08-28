@@ -1,5 +1,46 @@
 # Changelog
 
+## [2026-08-28] - Repository Maintenance
+
+### Fixed
+
+- Restored the desktop two-column layouts for About and Experience that
+  broke in the Tailwind v4 migration (comma-separated arbitrary
+  `grid-template-columns` values compiled to invalid CSS)
+- Restored link and active-tab colors by migrating `text-[--link]` /
+  `text-[--links]` to valid Tailwind v4 CSS-variable syntax
+- Hero gradient background now applies its intended blur (the missing
+  `#goo` SVG filter reference voided the whole `filter` property)
+- Worker Save-Data handling now downgrades exactly one size step instead of
+  skipping straight to the smallest variant (which could be larger)
+- Worker rejects non-GET/HEAD methods (405), sends empty bodies for HEAD,
+  sets `Content-Length`, and never serves R2 directory markers
+- Dev-only R2Image/R2Picture fallback indicator no longer crashes
+  (`Astro.props` was read inside a client script)
+
+### Changed
+
+- Migrated `lib/assets/` to the canonical `r2-assets-astro-template`
+  layout (`core/`, `cli/`, `test/`) with local behavior in
+  `assets.config.js`; the Worker imports the same config
+- `assets:sync` now uploads original sources alongside generated variants,
+  stamps manifest entries with a version marker (older entries are
+  reprocessed), fails hard on upload/optimize errors, paginates R2
+  listings, and rejects same-directory output-key collisions
+- Removed broken `images:add` script (referenced deleted `src/scripts/`)
+  and the unused `setup.js` distribution wizard
+- Upgraded astro 7.2.9, wrangler 4.127.0, sharp 0.35.4,
+  @aws-sdk/client-s3 3.1120.0, terser 5.51.2
+- Removed the inert `postcss.config.js` (Astro config supplies cssnano
+  inline) and the unused `Card.astro` starter component
+
+### Improved
+
+- Added unit tests for the asset processor and Worker response helpers
+  (`pnpm test`, node:test, no new dependencies)
+- Refreshed README, image-management docs, and pipeline documentation to
+  match actual behavior
+
 ## [2026-08-22] - Repository Maintenance
 
 ### Fixed

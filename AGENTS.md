@@ -27,16 +27,24 @@ reason.
 - Clean: `pnpm clean`
 - Deploy: `pnpm deploy` (`pnpm build && pnpm exec wrangler deploy` → Cloudflare Workers)
 - Assets: `pnpm run assets:sync` / `pnpm run assets:status` /
-  `pnpm run images:add` / `pnpm run dev:images:pull`
-- Test: none configured
+  `pnpm run dev:images:pull`
+- Test: `pnpm test` (`node --test` — asset processor + Worker helper units;
+  no browser/E2E framework)
 
 ## Architecture constraints
 - **R2 asset pipeline:** source images go in `public/images/`. Run
   `pnpm run assets:sync` to optimize (AVIF/WebP at 400/800/1200 px;
-  quality 90/85/80) and upload to R2. Reference images via the `R2Image` /
-  `R2Picture` components — never hardcode `/images/...` paths in
-  production markup. `public/assets-manifest.json` is gitignored and
-  regenerated on sync; do not commit it. Keep R2 usage under ~8 GB.
+  WebP quality 90/85/80, AVIF 75/65/55) and upload originals + variants to
+  R2. Reference images via the `R2Image` / `R2Picture` components — never
+  hardcode `/images/...` paths in production markup.
+  `public/assets-manifest.json` is gitignored and regenerated on sync; do not
+  commit it. Keep R2 usage under ~8 GB.
+- **Pipeline/Worker alignment:** `lib/assets/` mirrors the canonical
+  `r2-assets-astro-template` layout (`core/`, `cli/`, `test/`), with local
+  behavior kept in `assets.config.js`. `workers/r2-response.js` imports that
+  same config so generated keys, format negotiation, and Save-Data downgrades
+  stay aligned with component srcsets. When updating pipeline behavior,
+  migrate from the canonical template instead of forking further.
 - **Dev vs prod images:** `pnpm dev` serves originals from
   `public/images/`; production serves optimized assets from the R2 CDN.
 - **Secrets:** R2/Cloudflare credentials (`CF_ACCOUNT_ID`,
@@ -55,9 +63,9 @@ reason.
 
 ## Verification requirements
 `pnpm build` must pass before declaring done (it runs `astro check` first,
-so it covers typecheck + diagnostics). There is no test suite and no
-standalone linter beyond `astro check` — do not introduce one as part of
-unrelated work.
+so it covers typecheck + diagnostics). `pnpm test` covers the asset
+pipeline and Worker helper units; there is no standalone linter beyond
+`astro check`.
 
 Inherited frontend rules (below) apply primarily to new and changed work,
 not as a mandate to refactor pre-existing code in passing.
