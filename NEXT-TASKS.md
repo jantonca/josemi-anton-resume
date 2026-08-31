@@ -14,6 +14,9 @@
 - [x] Tailwind v4 migration fixes (grid layouts, CSS-variable utilities)
 - [x] Worker hardening (method checks, HEAD, directory markers, Save-Data downgrade)
 - [x] Unit tests for the asset pipeline and Worker helpers
+- [x] SEO pass: ProfilePage/Person JSON-LD, social image metadata, canonical-only sitemap
+- [x] Selected Work section with live configurator links
+- [x] SEO checklist and case-study plan docs (`docs/SEO_CHECKLIST.md`, `docs/CASE_STUDY_PLAN.md`)
 
 ## Ongoing Maintenance
 
@@ -35,7 +38,8 @@
 ## Future Enhancements (Optional)
 
 ### Content
-- [ ] Add case studies or detailed project descriptions
+- [ ] Write the "Automotive Configurator Systems" case study once the questionnaire in `docs/CASE_STUDY_PLAN.md` is answered (selected: one substantial page over multiple thin pages)
+- [ ] Work through `docs/SEO_CHECKLIST.md`: Search Console, Bing, Cloudflare settings, profile consistency
 - [ ] Include testimonials or recommendations
 - [ ] Add blog section for technical articles
 - [ ] Create downloadable resume PDF

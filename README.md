@@ -21,6 +21,7 @@ josemi-anton-resume/
 ├── public/            # Static assets served as-built (fonts, favicon, robots)
 │   └── fonts/         # Custom fonts (Proto Grotesk, Akzidenz Grotesk)
 ├── src/               # Astro site (components, content, layouts, pages, styles)
+├── docs/              # Project docs (SEO checklist, case-study plan, pipeline docs)
 ├── lib/assets/        # R2 asset processor (see lib/assets/README.md)
 ├── workers/           # Worker helpers shared by worker.js
 ├── dist/              # Build output (generated)
@@ -125,13 +126,17 @@ The build process is configured in `astro.config.mjs` with the following feature
 
 The website consists of several key components:
 
+- Hero
 - About
 - Experience
+- Selected Work
 - Skills
+- Education
 - Contact
 - Interactive Background
 - Theme Toggle
 - Navigation
+- Footer
 
 ## Styling
 
