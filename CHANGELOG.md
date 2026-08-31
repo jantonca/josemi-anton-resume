@@ -1,5 +1,31 @@
 # Changelog
 
+## [2026-08-31] - SEO & Selected Work
+
+### Added
+
+- **Selected Work section**: homepage section (03) linking to two live
+  vehicle configurators (Lexus Crafted NX, Toyota For You — HiLux) with
+  descriptive external-link labels and exact deep-link parameters; the
+  navigation includes it and the numbered sections now run 01–06
+- **Documentation**: `docs/SEO_CHECKLIST.md` (manual indexing, Cloudflare,
+  and profile-consistency steps) and `docs/CASE_STUDY_PLAN.md` (single
+  "Automotive Configurator Systems" case-study plan plus the confirmation
+  questionnaire that must be answered before drafting)
+
+### Changed
+
+- Structured data: the homepage emits opt-in ProfilePage JSON-LD whose
+  Person uses a stable `@id` and includes only page-visible facts (name,
+  role, description, Sydney location, employer, expertise, profile links);
+  other pages emit no JSON-LD
+- Social metadata: added OG image dimensions, alt text, and locale, plus
+  explicit Twitter image metadata
+- Sitemap: reduced to canonical URLs only — build-time `lastmod`,
+  `changefreq`, and `priority` were removed as inaccurate freshness signals
+- Skill group labels are centered so they read cleanly over the tag-slider
+  fade overlay
+
 ## [2026-08-28] - Repository Maintenance
 
 ### Fixed
