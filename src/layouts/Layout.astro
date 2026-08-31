@@ -3,27 +3,67 @@ import type { LayoutProps } from '@/types'
 import ThemeProvider from '../components/ThemeProvider.astro'
 import Navigation from '../components/Navigation.astro'
 import { socialLinksContent } from '@/content/socialLinksContent'
+import { heroContent } from '@/content/hero'
 import '../styles/globals.css'
 
-interface Props extends LayoutProps {}
+interface Props extends LayoutProps {
+  profilePage?: boolean
+}
 
 const {
   title,
   description = 'Senior Frontend Engineer based in Sydney with 10+ years of experience in React, TypeScript, frontend architecture, WebGL, automated testing and CI/CD.',
+  profilePage = false,
 } = Astro.props
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const homepageURL = new URL('/', Astro.site ?? canonicalURL).href
 const socialUrls = socialLinksContent.socialLinks.map((link) => link.url)
 
-// Minimal structured data so search engines attribute the site to its author
-const personSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Josemi Anton',
-  jobTitle: 'Senior Frontend Engineer',
-  url: canonicalURL.href,
-  sameAs: socialUrls,
-}
+const profileImageURL = 'https://cdn.josemianton.com/images/profile.jpg'
+const profileImageAlt = 'Josemi Anton, Senior Frontend Engineer'
+
+// Profile structured data is opt-in so ordinary pages are not classified as
+// profile pages. The Person uses a stable homepage @id.
+const profileSchema = profilePage
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'ProfilePage',
+      url: canonicalURL.href,
+      mainEntity: {
+        '@type': 'Person',
+        '@id': `${homepageURL}#person`,
+        name: heroContent.name,
+        jobTitle: heroContent.tagline,
+        description,
+        url: homepageURL,
+        image: profileImageURL,
+        homeLocation: {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Sydney',
+            addressCountry: 'AU',
+          },
+        },
+        worksFor: {
+          '@type': 'Organization',
+          name: heroContent.currentWork.company,
+          url: heroContent.currentWork.url,
+        },
+        knowsAbout: [
+          'React',
+          'TypeScript',
+          'Frontend Architecture',
+          'Automated Testing',
+          'CI/CD',
+          'WebGL',
+          'XR',
+        ],
+        sameAs: socialUrls,
+      },
+    }
+  : undefined
 ---
 
 <!doctype html>
@@ -76,7 +116,23 @@ const personSchema = {
     />
     <meta
       property='og:image'
-      content='https://cdn.josemianton.com/images/profile.jpg'
+      content={profileImageURL}
+    />
+    <meta
+      property='og:image:width'
+      content='1600'
+    />
+    <meta
+      property='og:image:height'
+      content='1600'
+    />
+    <meta
+      property='og:image:alt'
+      content={profileImageAlt}
+    />
+    <meta
+      property='og:locale'
+      content='en_AU'
     />
     <meta
       name='twitter:card'
@@ -90,12 +146,24 @@ const personSchema = {
       name='twitter:description'
       content={description}
     />
-    <title>{title}</title>
-    <script
-      is:inline
-      type='application/ld+json'
-      set:html={JSON.stringify(personSchema)}
+    <meta
+      name='twitter:image'
+      content={profileImageURL}
     />
+    <meta
+      name='twitter:image:alt'
+      content={profileImageAlt}
+    />
+    <title>{title}</title>
+    {
+      profileSchema && (
+        <script
+          is:inline
+          type='application/ld+json'
+          set:html={JSON.stringify(profileSchema)}
+        />
+      )
+    }
     <ThemeProvider
       defaultTheme='dark'
       storageKey='theme-preference'

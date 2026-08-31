@@ -22,22 +22,9 @@ export default defineConfig({
         ],
       },
     }),
-    sitemap({
-      changefreq: 'weekly',
-      priority: 0.9,
-      lastmod: new Date(),
-      serialize(item) {
-        if (item.url === 'https://www.josemianton.com/') {
-          return {
-            url: item.url,
-            changefreq: 'weekly',
-            priority: 1.0,
-            lastmod: new Date().toISOString(),
-          }
-        }
-        return item
-      },
-    }),
+    // Keep the sitemap to canonical URLs. Build-time modification dates and
+    // unsupported freshness hints would not describe the content accurately.
+    sitemap(),
   ],
 
   vite: {
