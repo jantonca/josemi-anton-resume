@@ -5,6 +5,7 @@ import Logo from './Logo.astro'
 const links = [
   { name: 'About', href: '#about' },
   { name: 'Experience', href: '#experience' },
+  { name: 'Selected Work', href: '#selected-work' },
   { name: 'Skills', href: '#skills' },
   { name: 'Education', href: '#education' },
   { name: 'Contact', href: '#contact' },
@@ -22,12 +23,12 @@ const links = [
         height={50}
         title='Josemi Anton Logo'
       />
-      <div class='hidden md:flex items-center space-x-8'>
+      <div class='hidden md:flex items-center gap-3 lg:gap-8'>
         {
           links.map((link, index) => (
             <a
               href={link.href}
-              class='text-muted-foreground hover:text-primary transition-colors font-heading group'
+              class='whitespace-nowrap text-sm text-muted-foreground hover:text-primary transition-colors font-heading group lg:text-base'
             >
               <span class='text-pacific font-mono mr-1'>0{index + 1}. </span>
               {link.name}

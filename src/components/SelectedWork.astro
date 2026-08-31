@@ -1,0 +1,50 @@
+---
+import NumberedHeading from './NumberedHeading.astro'
+import { selectedWorkContent } from '@/content/selectedWork'
+import { Icon } from 'astro-icon/components'
+
+const { description, items } = selectedWorkContent
+---
+
+<section
+  id='selected-work'
+  class='scroll-mt-16 py-8 lg:py-32'
+  aria-label='Selected work'
+>
+  <div class='container mx-auto px-4 lg:max-w-[900px]'>
+    <NumberedHeading
+      number={selectedWorkContent.headingNumber}
+      title={selectedWorkContent.headingText}
+    />
+    <p class='max-w-2xl text-lg text-muted-foreground font-extralight mb-12'>
+      {description}
+    </p>
+    <ul class='space-y-10'>
+      {
+        items.map((item) => (
+          <li class='max-w-2xl'>
+            <h3 class='text-xl font-heading mb-2'>{item.title}</h3>
+            <p class='text-muted-foreground font-extralight mb-4'>
+              {item.description}
+            </p>
+            <a
+              href={item.url}
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label={item.linkLabel}
+              class='inline-flex items-center gap-2 font-mono text-sm text-(--links) hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pacific focus-visible:ring-offset-2'
+            >
+              <Icon
+                name='web'
+                class='h-4 w-4'
+                aria-hidden='true'
+                focusable='false'
+              />
+              {item.linkText}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

@@ -10,6 +10,7 @@ export interface HomePageConfig {
     hero: boolean
     about: boolean
     experience: boolean
+    selectedWork: boolean
     skills: boolean
     education: boolean
     contact: boolean

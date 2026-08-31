@@ -7,6 +7,7 @@ import About from '../components/About.astro'
 import Skills from '../components/Skills.astro'
 import Education from '../components/Education.astro'
 import Experience from '../components/Experience.astro'
+import SelectedWork from '../components/SelectedWork.astro'
 import Footer from '../components/Footer.astro'
 import Contact from '../components/Contact.astro'
 
@@ -19,6 +20,7 @@ const pageConfig: HomePageConfig = {
     hero: true,
     about: true,
     experience: true,
+    selectedWork: true,
     skills: true,
     education: true,
     contact: true,
@@ -30,11 +32,13 @@ const pageConfig: HomePageConfig = {
 <Layout
   title={pageConfig.seoTitle}
   description={pageConfig.seoDescription}
+  profilePage
 >
   <main class='bg-background'>
     {pageConfig.sections.hero && <Hero />}
     {pageConfig.sections.about && <About />}
     {pageConfig.sections.experience && <Experience />}
+    {pageConfig.sections.selectedWork && <SelectedWork />}
     {pageConfig.sections.skills && <Skills />}
     {pageConfig.sections.education && <Education />}
     {pageConfig.sections.contact && <Contact />}
