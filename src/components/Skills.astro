@@ -34,7 +34,7 @@ const groups = skillsContent.groups.map(({ label, tags }, i) => ({
         {
           groups.map(({ label, duration, reverse, tags }) => (
             <div>
-              <p class='font-mono text-sm text-pacific mb-4'>{label}</p>
+              <p class='font-mono text-sm text-pacific mb-4 text-center'>{label}</p>
               <div
                 class='loop-slider'
                 style={`--duration: ${duration}ms; --direction: ${reverse ? 'reverse' : 'normal'};`}
