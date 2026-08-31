@@ -114,3 +114,18 @@ export interface socialLink {
 export interface SocialLinks {
   socialLinks: socialLink[]
 }
+
+export interface SelectedWorkItem {
+  title: string
+  description: string
+  url: string
+  linkText: string
+  linkLabel: string
+}
+
+export interface SelectedWorkContent {
+  headingNumber: string
+  headingText: string
+  description: string
+  items: SelectedWorkItem[]
+}
