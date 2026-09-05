@@ -1,13 +1,30 @@
 import type { SelectedWorkContent } from '@/types/components'
 
-// Only user-confirmed facts: these are live configurators worked on recently.
-// No claims about contribution scope, technologies, or outcomes.
+// Only user-confirmed facts. The configurator entries are client work delivered
+// as part of a team, so they carry no contribution claims. Cortex TMS and the
+// freelance sites are wholly owned and can be described directly.
 export const selectedWorkContent: SelectedWorkContent = {
   headingNumber: '03.',
   headingText: 'Selected Work',
   description:
-    'Live automotive configurators I have worked on recently. The links open the live products.',
+    'Open-source tooling I maintain, client sites I built end to end, and live automotive configurators I have worked on. The links open the live products.',
   items: [
+    {
+      title: 'Cortex TMS',
+      description:
+        'Open-source governance tooling for AI coding agents: a tiered documentation model, git-based staleness detection and optional LLM-assisted pattern review. Published on npm, MIT licensed.',
+      url: 'https://cortex-tms.org/',
+      linkText: 'View Cortex TMS',
+      linkLabel: 'Open the Cortex TMS site (opens in a new tab)',
+    },
+    {
+      title: 'Linda Jaivin',
+      description:
+        'Site for the Australian author Linda Jaivin, built and maintained end to end in Astro, TypeScript and Tailwind on Cloudflare.',
+      url: 'https://lindajaivin.com.au/',
+      linkText: 'View lindajaivin.com.au',
+      linkLabel: 'Open lindajaivin.com.au (opens in a new tab)',
+    },
     {
       title: 'Lexus Crafted NX',
       description:

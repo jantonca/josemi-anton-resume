@@ -2,18 +2,18 @@ import type { AboutContent } from '@/types/components'
 
 export const aboutContent: AboutContent = {
   skills: [
+    'React',
     'TypeScript',
     'JavaScript',
-    'React',
     'Next.js',
-    'Node.js',
     'Astro',
-    'PHP',
-    'WordPress',
+    'Frontend Architecture',
+    'WebGL',
+    'Node.js',
   ],
   description: [
-    "I'm a Senior Frontend Engineer with more than 10 years of experience building web applications.",
-    'At Rotor Studios, I own the frontend architecture for React and TypeScript vehicle configurators covering more than 40 models across Toyota, Lexus and Nissan. I also work on WebGL and XR experiences, automated testing, CI/CD and frontend standards.',
+    "I'm a Senior Frontend Engineer with more than 10 years in web development. My React work started with Gutenberg in 2018, and I've been building with it ever since.",
+    'At Rotor Studios I\'m responsible for the frontend architecture of React and TypeScript vehicle configurators covering more than 40 models across Toyota, Lexus and Nissan, and I build the internal packages other teams use. I also work on WebGL and XR experiences, automated testing, CI/CD and frontend standards.',
   ],
   profileImage: {
     alt: 'Josemi Anton',
